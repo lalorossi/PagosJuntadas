@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+
+    function agregarConcepto()      {
+        var nuevo = document.createElement("div");
+        nuevo.id="ingreso";
+        var divs = document.getElementById("ingreso").innerHTML;
+        nuevo.innerHTML = divs;
+        document.getElementById("marco").appendChild(nuevo);
+    }
+
+
+    function chau(child)  {
+    var parent = document.getElementById("marco");
+    parent.removeChild(child.parentNode);
+    }
+    </script>
+    <body>
+    
+</head>
+
+<form action="upload.php" id="form" method="post">
+        <div id ="marco">
+            <div id="ingreso">
+                Ingrese el concepto
+                <input type="text" name="concepto[]" id="concepto"> 
+                Precio: $
+                <input type="number" name="precio[]" id="precio" style="width: 80px">
+                <button type="button" style="background-color: red; width: 25px"                                       onclick="chau(this)">D</button>
+                <br></br>
+            </div>
+        </div>
+        
+        <input type="button" value="+" onclick="agregarConcepto()">
+        <br></br>
+        <input type="submit" id="botonSubmit" value="Siguiente" name="submit">
+
+    </form>
+
+
+</body>
+</html>
+
