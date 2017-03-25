@@ -14,6 +14,12 @@
         }
         if(cla == "persona"){
             document.getElementById("page2").appendChild(nuevo);            
+            var td = document.getElementById("page2").getElementsByTagName("tr");
+            td = td[td.length - 1];
+            td = td.getElementsByTagName("td");
+            td = td[td.length - 1];
+            td = td.lastChild;
+            td.id = "activado";
         }
     }
 
@@ -71,9 +77,14 @@
             var boton = document.createElement("input");
             boton.type = "button";
             boton.value = "OK";
+            boton.onclick = guardarPersona;
             document.getElementById("pag2").appendChild(boton);       
             yo.id = "desactivado";
         }
+    }
+
+    function guardarPersona() {
+        window.alert("HOLA");
     }
 
     </script>
