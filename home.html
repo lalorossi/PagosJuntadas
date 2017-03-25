@@ -3,6 +3,8 @@
 <head>
     <script>
 
+    var cantPersonas = 1;
+
     function agregar(cla) {
         var nuevo = document.createElement("tr");
         nuevo.className=cla;
@@ -68,6 +70,8 @@
             for (var i = compras.length - 1; i >= 0; i--) {
                 checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
+                checkbox.className = "checkCompra";
+                checkbox.value = compras[i];
                 txt = document.createTextNode(compras[i][0]);
                 div = document.createElement("div");
                 div.appendChild(checkbox);
@@ -83,8 +87,17 @@
         }
     }
 
-    function guardarPersona() {
-        window.alert("HOLA");
+    var nombres = [];
+
+    function guardarPersona(persona) {
+        var comprasXPers = [];
+        var boxes = document.getElementsByClassName("checkCompra");
+        for (var i = boxes.length - 1; i >= 0; i--) {
+            if(boxes[i].checked){
+                window.alert(boxes[i].value);
+                comprasXPers.push[boxes[i].value]
+            }
+        };
     }
 
     </script>
@@ -113,7 +126,7 @@
         <table id="page2">
             <tr class="persona">
                 <td>Nombre</td>
-                <td><input type="text" name="nombre[]" id="nombre" placeholder="Nombre"> </td>
+                <td><input type="text" name="nombre[]" id="nombre1" placeholder="Nombre" onblur="nombres.push(this.value)"> </td>
                 <td><input type="button" id="activado" onclick="mostrarCompras(this)"></td>
             </tr>
         </table>
