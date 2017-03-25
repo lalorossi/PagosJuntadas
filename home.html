@@ -3,18 +3,23 @@
 <head>
     <script>
 
-    function agregarCompra()      {
+    function agregar(cla) {
         var nuevo = document.createElement("tr");
-        nuevo.className="ingreso";
-        var col = document.getElementsByClassName("ingreso");
+        nuevo.className=cla;
+        var col = document.getElementsByClassName(cla);
         col = col[0].innerHTML;
         nuevo.innerHTML = col;
-        document.getElementById("marco").appendChild(nuevo);
+        if(cla == "compra"){
+            document.getElementById("page1").appendChild(nuevo);            
+        }
+        if(cla == "persona"){
+            document.getElementById("page2").appendChild(nuevo);            
+        }
     }
 
 
     function chau0(child)  {
-    var grand = document.getElementById("marco");
+    var grand = document.getElementById("page1");
     grand.removeChild(child.parentNode);
     }
 
@@ -26,17 +31,21 @@
     function checkSubmit(){
 
         var vacio = 0;
-        var rows = document.getElementsByClassName("ingreso");
+        compras = [];
+        var rows = document.getElementsByClassName("compra");
         for (var i = rows.length - 1; i >= 0; i--) {
             var celdas = rows[i].getElementsByTagName('input');
             if(celdas[0].value=="" || celdas[1].value=="" || celdas[1].value == 0){
             }
             else{
             vacio=1;
+            compras.push([celdas[0].value, celdas[1].value]);
             }
         }
         if (vacio==1) {
-        return true;
+            document.getElementById("pag2").style.display="";
+            document.getElementById("pag1").style.display="none";
+            return true;
         }
         else{
             window.alert("Ingrese al menos una compra con precio");
@@ -45,41 +54,69 @@
 
     }
 
+    function mostrarCompras(yo){
+        var checkbox;
+        var txt;
+        var div;
+        if(yo.id == "activado"){
+            for (var i = compras.length - 1; i >= 0; i--) {
+                checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                txt = document.createTextNode(compras[i][0]);
+                div = document.createElement("div");
+                div.appendChild(checkbox);
+                div.appendChild(txt);
+                document.getElementById("pag2").appendChild(div);
+            };
+            var boton = document.createElement("input");
+            boton.type = "button";
+            boton.value = "OK";
+            document.getElementById("pag2").appendChild(boton);       
+            yo.id = "desactivado";
+        }
+    }
+
     </script>
     <body>
     
 </head>
 
 <form action="upload.php" id="form" method="post" onsubmit="return checkSubmit()">
-    <!--- 
-        <div id ="marco">
-            <div id="ingreso">
-                Ingrese el concepto
-                <input type="text" name="concepto[]" id="concepto"> 
-                Precio: $
-                <input type="number" name="precio[]" id="precio" style="width: 80px">
-                <button type="button" style="background-color: red; width: 25px" onclick="chau(this)">D</button>
-                <br></br>
-            </div>
-        </div>
-    -->
-
-        <table id="marco">
-            <tr class="ingreso">
+    <div id="pag1">
+        <table id="page1">
+            <tr class="compra">
                 <td>Compra</td>
-                <td><input type="text" name="concepto[]" id="concepto"> </td>
+                <td><input type="text" name="concepto[]" id="concepto" placeholder="Compra"> </td>
                 <td>$</td>
                 <td><input type="number" name="precio[]" id="precio"></td>
                 <td><button type="button" style="background-color: red; width: 25px" onclick="chau(this)">D</button></td>
             </tr>
         </table>
         
-        <input type="button" value="+" onclick="agregarCompra()">
-        <br></br>
-        <input type="button" value="2" onclick="checkSubmit()">
-        <input type="submit" id="botonSubmit" value="Siguiente" name="submit">
+        <input type="button" value="+" onclick='agregar("compra")'>
 
-    </form>
+        <input type="button" value="Siguiente" onclick="checkSubmit()">
+    </div>
+    
+    <div id="pag2"  style="display:none">
+        <table id="page2">
+            <tr class="persona">
+                <td>Nombre</td>
+                <td><input type="text" name="nombre[]" id="nombre" placeholder="Nombre"> </td>
+                <td><input type="button" id="activado" onclick="mostrarCompras(this)"></td>
+            </tr>
+        </table>
+        <input type="button" value="+" onclick='agregar("persona")'>
+
+        
+        <br></br>
+
+        <div id="select">
+        </div>
+
+        <input type="submit" id="botonSubmit" value="Siguiente" name="submit">
+    </div>
+</form>
 
 
 </body>
