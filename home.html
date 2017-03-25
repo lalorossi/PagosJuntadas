@@ -3,38 +3,80 @@
 <head>
     <script>
 
-    function agregarConcepto()      {
-        var nuevo = document.createElement("div");
-        nuevo.id="ingreso";
-        var divs = document.getElementById("ingreso").innerHTML;
-        nuevo.innerHTML = divs;
+    function agregarCompra()      {
+        var nuevo = document.createElement("tr");
+        nuevo.className="ingreso";
+        var col = document.getElementsByClassName("ingreso");
+        col = col[0].innerHTML;
+        nuevo.innerHTML = col;
         document.getElementById("marco").appendChild(nuevo);
     }
 
 
-    function chau(child)  {
-    var parent = document.getElementById("marco");
-    parent.removeChild(child.parentNode);
+    function chau0(child)  {
+    var grand = document.getElementById("marco");
+    grand.removeChild(child.parentNode);
     }
+
+    function chau(yo) {
+     var papa=yo.parentNode.parentNode;
+         papa.parentNode.removeChild(papa);
+    }
+
+    function checkSubmit(){
+
+        var vacio = 0;
+        var rows = document.getElementsByClassName("ingreso");
+        for (var i = rows.length - 1; i >= 0; i--) {
+            var celdas = rows[i].getElementsByTagName('input');
+            if(celdas[0].value=="" || celdas[1].value=="" || celdas[1].value == 0){
+            }
+            else{
+            vacio=1;
+            }
+        }
+        if (vacio==1) {
+        return true;
+        }
+        else{
+            window.alert("Ingrese al menos una compra con precio");
+            return false;
+        }
+
+    }
+
     </script>
     <body>
     
 </head>
 
-<form action="upload.php" id="form" method="post">
+<form action="upload.php" id="form" method="post" onsubmit="return checkSubmit()">
+    <!--- 
         <div id ="marco">
             <div id="ingreso">
                 Ingrese el concepto
                 <input type="text" name="concepto[]" id="concepto"> 
                 Precio: $
                 <input type="number" name="precio[]" id="precio" style="width: 80px">
-                <button type="button" style="background-color: red; width: 25px"                                       onclick="chau(this)">D</button>
+                <button type="button" style="background-color: red; width: 25px" onclick="chau(this)">D</button>
                 <br></br>
             </div>
         </div>
+    -->
+
+        <table id="marco">
+            <tr class="ingreso">
+                <td>Compra</td>
+                <td><input type="text" name="concepto[]" id="concepto"> </td>
+                <td>$</td>
+                <td><input type="number" name="precio[]" id="precio"></td>
+                <td><button type="button" style="background-color: red; width: 25px" onclick="chau(this)">D</button></td>
+            </tr>
+        </table>
         
-        <input type="button" value="+" onclick="agregarConcepto()">
+        <input type="button" value="+" onclick="agregarCompra()">
         <br></br>
+        <input type="button" value="2" onclick="checkSubmit()">
         <input type="submit" id="botonSubmit" value="Siguiente" name="submit">
 
     </form>
