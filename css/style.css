@@ -67,3 +67,57 @@
     background-color: #5cb85c;
     color: white;
 }
+
+
+
+.eliminar {
+    background-color: red; 
+    width: 25px;
+    margin : 10px;
+}
+
+.tabla1 {
+    width: 100%;
+    height: 16px;
+}
+
+table { 
+    border-collapse: collapse; 
+}
+
+tr {
+    border-bottom: 3px solid #1a1a1a;
+    background-color: #39868c;
+}
+
+tr:last-child {
+    border: 0px;    
+}
+
+tr:first-child {
+    border-bottom: 3px solid #1a1a1a;
+    background-color: #39868c;
+}
+
+input {
+    background-color: #39868c;
+    border: 0px;
+    padding: 10px;
+}
+
+input::placeholder {
+    color: #ffffff;
+}
+
+.body {
+    width: 100%;
+    height: 16px;
+    background-color: #3f557a;
+}
+
+
+input[type="button"]{
+    background-color: #ffffff;
+    border: 0px;
+    padding: 10px;
+}

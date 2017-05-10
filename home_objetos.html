@@ -6,20 +6,20 @@
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="js/funciones.js"></script>
 
-    <body>
     
 </head>
+<body style="background-color: #3f557a">
 
 <div id="form">
     <div id="pag1">
-        <table id="page1">
+        <table id="page1" class="tabla1">
             <tr class="compra">
                 <td>Compra</td>
                 <td><input type="text" name="concepto[]" id="concepto" placeholder="Compra"> </td>
                 <td>$</td>
                 <td><input type="number" name="precio[]" id="precio"></td>
                 <!-- Boton de eliminar -->
-                <td><button type="button" style="background-color: red; width: 25px" onclick="chau(this)">D</button></td>
+                <td><button type="button" class="eliminar" onclick="chau(this)">D</button></td>
             </tr>
         </table>
         <!-- Boton de agregar -->

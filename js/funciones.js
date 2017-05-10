@@ -255,8 +255,6 @@ function actualizarPersona(pers, boton) {
 }
 
 
-//Agregar funcionalidad para guardar la misma persona aunque se presione mas de una vez el boton de agregar
-//Para eso, cuando se trata de calcular, solo calcula a las personas que sigan en el input
 function guardarPersona(nombre){
     var bandera = 0;
     if(nombre != ""){
@@ -270,19 +268,15 @@ function guardarPersona(nombre){
             personas.push(nuevaPersona);
         }
         for (var i = personas.length - 1; i >= 0; i--) {
-            //window.alert(personas[i].nombre);
         }
     }
 }
 
 function filtrarPersonasBorradas(){
-    //window.alert("HOLA");
     var ingresadas = document.getElementsByClassName("ingresoPersona");
     for (var i = personas.length - 1; i >= 0; i--) {
         var bandera = 0;
         for (var o = ingresadas.length - 1; o >= 0; o--) {
-            //window.alert(ingresadas[o].value);
-            //window.alert(personas[i].nombre);
             if(ingresadas[o].value == personas[i].nombre){
                 bandera = 1;
             }
@@ -343,13 +337,6 @@ function calcular(){
                     }
                 }
             }
-        div = document.createElement("div");
-        txt = document.createTextNode(mensaje);
-
-        div.appendChild(txt);
-
-
-        //escribirModal(div);
 
     }
     mostrarModal();
