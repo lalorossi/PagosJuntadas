@@ -65,7 +65,6 @@ function chau(yo) {
 
 function checkSubmit(){
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
-    //Por ahora solo funciona para pasar a la pagina 2, checkeando las compras
     var vacio = 0;
     compras = [];   //Notar que al no poner var, se hace global
 
@@ -79,7 +78,6 @@ function checkSubmit(){
         }
         else{
             //Cuando encuentra una compra completa la agrega al array de compras
-            //compras.push([celdas[0].value, celdas[1].value]);
             var nuevaCompra = new Compra(celdas[0].value, celdas[1].value);
             compras.push(nuevaCompra);
             vacio=1;
@@ -124,6 +122,7 @@ function setUltimoBoton(boton){
     ultimoBoton = boton;
 }
 
+//Se fija si una compra dada por nombre esta en el array de una persona
 function esCompra(persona, prod){
     //Buscar el objeto persona
     for (var i = personas.length - 1; i >= 0; i--) {
@@ -142,16 +141,15 @@ function esCompra(persona, prod){
     };
 }
 
-//Hacer que se vacie el array de comprasPorPersona cuando se apreta el OK, antes de agregarle nuevas compras
+//Muestra las compras siempre que el boton de la persona este activado
+//Creo que la activacion del boton quedo obsoleta
 function mostrarCompras(yo){
-    //Muestra las compras siempre que el boton de la persona este activado
     var checkbox;
     var txt;
     var div;
 
     var personaClicker = yo.parentNode.parentNode.getElementsByTagName("td")[1];
     personaClicker = personaClicker.getElementsByTagName('input')[0].value;
-    //window.alert(personaClicker);
 
     borrarModal();
 
@@ -167,9 +165,8 @@ function mostrarCompras(yo){
             checkbox.type = "checkbox";
             checkbox.className = "checkCompra";
             checkbox.value = compras[i].producto;    //No se bien por que hace esto
-            //checkbox.value = compras[i];    //No se bien por que hace esto
 
-            //Lo que podria hacer es checkear las compras que ya tenga asignadas
+            //Checkear las compras que ya estan en el array de la persona
             checkbox.checked =  esCompra(personaClicker, compras[i].producto);
 
             div.appendChild(checkbox);
@@ -200,11 +197,12 @@ function mostrarCompras(yo){
 
 
 function vaciarComprasPersona(pos){
-    //Resto en 1 la cantidad de compras de cada compra de la persona, para resetear las compras
+    //Resto en 1 la cantidad de compras de cada compra de la persona, para resetear las compras 
     for (var i = compras.length - 1; i >= 0; i--) {
         for (var o = personas[pos].comprasPorPersona.length - 1; o >= 0; o--) {
             if(personas[pos].comprasPorPersona[o].producto == compras[i].producto){
                 compras[i].cantCompras -= 1;
+                break;  //NO TESTEADO
             }
         };
     };
@@ -213,7 +211,6 @@ function vaciarComprasPersona(pos){
     personas[pos].comprasPorPersona = [];
 }
 
-//Cambiar para que guarde las compras en el array de la persona que apreto el boton
 function actualizarPersona(pers, boton) {    
     var pos;
     var boxes = document.getElementsByClassName("checkCompra");
@@ -227,7 +224,7 @@ function actualizarPersona(pers, boton) {
 
     vaciarComprasPersona(pos);
 
-
+    //Despues de eliminar las compras de la persona clikcer, agrega las compras checkeadas al apretar OK
     for (var i = boxes.length - 1; i >= 0; i--) {
         if(boxes[i].checked){
             for (var o = compras.length - 1; o >= 0; o--) {
@@ -291,6 +288,7 @@ function filtrarPersonasBorradas(){
             }
         }
         if(bandera != 1){
+            vaciarComprasPersona(i);
             personas.splice(i, 1);
         }
     }
