@@ -18,6 +18,8 @@ var cantPersonas = 1;
 
 var ultimoBoton;
 
+var personas = [];
+
 //Agrega un input de compra o persona
 function agregar(cla) {
 
@@ -122,12 +124,34 @@ function setUltimoBoton(boton){
     ultimoBoton = boton;
 }
 
+function esCompra(persona, prod){
+    //Buscar el objeto persona
+    for (var i = personas.length - 1; i >= 0; i--) {
+        if(personas[i].nombre == persona){
+            //Ver si ya tiene la compra
+            var bandera = 0;
+            for (var o = personas[i].comprasPorPersona.length - 1; o >= 0; o--) {
+                if(personas[i].comprasPorPersona[o].producto == prod){
+                    bandera = 1;
+                    return true;
+                }
+            }
+            return false;
+            break;
+        }
+    };
+}
+
 //Hacer que se vacie el array de comprasPorPersona cuando se apreta el OK, antes de agregarle nuevas compras
 function mostrarCompras(yo){
     //Muestra las compras siempre que el boton de la persona este activado
     var checkbox;
     var txt;
     var div;
+
+    var personaClicker = yo.parentNode.parentNode.getElementsByTagName("td")[1];
+    personaClicker = personaClicker.getElementsByTagName('input')[0].value;
+    //window.alert(personaClicker);
 
     borrarModal();
 
@@ -145,6 +169,9 @@ function mostrarCompras(yo){
             checkbox.value = compras[i].producto;    //No se bien por que hace esto
             //checkbox.value = compras[i];    //No se bien por que hace esto
 
+            //Lo que podria hacer es checkear las compras que ya tenga asignadas
+            checkbox.checked =  esCompra(personaClicker, compras[i].producto);
+
             div.appendChild(checkbox);
             div.appendChild(txt);           //Adiciona el texto al lado del checkbox con el nombre de la compra
 
@@ -156,12 +183,9 @@ function mostrarCompras(yo){
         boton.type = "button";
         boton.value = "OK";
 
-        var personaParaActualizar = yo.parentNode.parentNode.getElementsByTagName("td")[1];
-        personaParaActualizar = personaParaActualizar.getElementsByTagName('input')[0].value;
-        //window.alert(personaParaActualizar);
 
         boton.onclick = function() { 
-            actualizarPersona(personaParaActualizar, yo);
+            actualizarPersona(personaClicker, yo);
         };
 
         escribirModal(boton);
@@ -174,29 +198,50 @@ function mostrarCompras(yo){
     }
 }
 
-var personas = [];
+
+function vaciarComprasPersona(pos){
+    //Resto en 1 la cantidad de compras de cada compra de la persona, para resetear las compras
+    for (var i = compras.length - 1; i >= 0; i--) {
+        for (var o = personas[pos].comprasPorPersona.length - 1; o >= 0; o--) {
+            if(personas[pos].comprasPorPersona[o].producto == compras[i].producto){
+                compras[i].cantCompras -= 1;
+            }
+        };
+    };
+
+    //Vacio el array de compras de la persona
+    personas[pos].comprasPorPersona = [];
+}
 
 //Cambiar para que guarde las compras en el array de la persona que apreto el boton
 function actualizarPersona(pers, boton) {    
     var pos;
     var boxes = document.getElementsByClassName("checkCompra");
 
+    //Busco a la persona en el array de personas
+    for (var o = personas.length - 1; o >= 0; o--) {
+        if (personas[o].nombre == pers) {
+            pos = o;
+        }
+    }
+
+    vaciarComprasPersona(pos);
+
 
     for (var i = boxes.length - 1; i >= 0; i--) {
         if(boxes[i].checked){
-            //Busco a la persona en el array de personas
-            for (var o = personas.length - 1; o >= 0; o--) {
-                if (personas[o].nombre == pers) {
-                    pos = o;
-                }
-            }
-            //Antes de continuar, vacio el array de compras de la persona
-            personas[pos].comprasDePersona = []
-
             for (var o = compras.length - 1; o >= 0; o--) {
                 if(compras[o].producto == boxes[i].value){
-                    compras[o].cantCompras += 1;
-                    personas[pos].comprasPorPersona.push(compras[o]);
+                    var bandera = 0;
+                    for (var u = personas[pos].comprasPorPersona.length - 1; u >= 0; u--) {
+                        if(personas[pos].comprasPorPersona[u].producto == boxes[i].value){
+                            bandera = 1;
+                        }
+                    }
+                    if(bandera != 1){
+                        compras[o].cantCompras += 1;
+                        personas[pos].comprasPorPersona.push(compras[o]);
+                    }
                 }
             }
         }
@@ -265,7 +310,6 @@ function filtrarPersonasBorradas(){
     */
 }
 
-//Agregar checkeo de que los nombres sean los que sigan ingresados o borrar de la lista de personas los que ya no esten
 function calcular(){
 
     filtrarPersonasBorradas();
