@@ -91,7 +91,14 @@ function checkSubmit(){
         return true;
     }
     else{
-        window.alert("Ingrese al menos una compra con precio");
+        borrarModal();
+        var parrafo = document.createElement("p");
+        var texto = document.createTextNode("Ingrese al menos una compra con precio");
+        parrafo.appendChild(texto);
+        setModoModal("error");
+        escribirModal(parrafo);
+        mostrarModal();
+        window.alert("aaaaaaaaaaIngrese al menos una compra con precio");
         return false;
     }
 
@@ -120,6 +127,14 @@ function esconderModal(){
 
 function setUltimoBoton(boton){
     ultimoBoton = boton;
+}
+
+function setModoModal(estado){
+    var header = document.getElementsByClassName("modal-header")
+    var footer = document.getElementsByClassName("modal-header")
+
+    header.id = estado;
+    footer.id = estado;
 }
 
 //Se fija si una compra dada por nombre esta en el array de una persona
