@@ -88,7 +88,7 @@ function checkSubmit(){
     if (vacio==1) {
         document.getElementById("pag2").style.display="";
         document.getElementById("pag1").style.display="none";
-        return true;
+        //return true;
     }
     else{
         borrarModal();
@@ -98,8 +98,8 @@ function checkSubmit(){
         setModoModal("error");
         escribirModal(parrafo);
         mostrarModal();
-        window.alert("aaaaaaaaaaIngrese al menos una compra con precio");
-        return false;
+        //window.alert("Ingrese al menos una compra con precio");
+        //return false;
     }
 
 }
@@ -129,12 +129,24 @@ function setUltimoBoton(boton){
     ultimoBoton = boton;
 }
 
-function setModoModal(estado){
-    var header = document.getElementsByClassName("modal-header")
-    var footer = document.getElementsByClassName("modal-header")
+function setModoModal(estado=""){
+    var header = document.getElementsByClassName("modal-header");
+    var footer = document.getElementsByClassName("modal-footer");
 
-    header.id = estado;
-    footer.id = estado;
+    header[0].id = estado;
+    footer[0].id = estado;
+}
+
+function setHeader(algo=""){
+    var header = document.getElementsByClassName("modal-header")[0];
+    header = header.getElementsByTagName("h2")[0];
+    header.innerHTML = algo;
+}
+
+function setFooter(algo=""){
+    var footer = document.getElementsByClassName("modal-footer")[0];
+    footer = footer.getElementsByTagName("h3")[0];
+    footer.innerHTML = algo;
 }
 
 //Se fija si una compra dada por nombre esta en el array de una persona
@@ -201,6 +213,12 @@ function mostrarCompras(yo){
         };
 
         escribirModal(boton);
+
+        setHeader("Compras");
+
+        setFooter();
+
+        setModoModal();
 
         mostrarModal();
 
@@ -354,5 +372,6 @@ function calcular(){
             }
 
     }
+    setModoModal();
     mostrarModal();
 }

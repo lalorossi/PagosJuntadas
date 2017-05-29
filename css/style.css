@@ -68,6 +68,12 @@
     color: white;
 }
 
+#error {
+    padding: 2px 16px;
+    background-color: #ff0000;
+    color: white;
+}
+
 
 
 .eliminar {
@@ -112,7 +118,7 @@ input::placeholder {
 .body {
     width: 100%;
     height: 16px;
-    background-color: #3f557a;
+    background-color: #ff0000;
 }
 
 
