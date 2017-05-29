@@ -3,8 +3,7 @@
 <head>
 
 
-    <link rel="stylesheet" href="../www/css/style.css">
-    <script type="text/javascript" src="js/funciones.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 
     
 </head>
@@ -34,7 +33,8 @@
                 <td>Nombre</td>
                 <td><input type="text" class="ingresoPersona" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
-                <td><input type="button" id="activado" onclick="mostrarCompras(this)"></td>
+                <td><input type="button" id="activado" onclick="mostrarCompras(this)" value="+"></td>
+                <td><button type="button" class="eliminar" onclick="chau(this)">D</button></td>
             </tr>
         </table>
         <input type="button" value="+" onclick='agregar("persona")'>
@@ -50,7 +50,7 @@
         <input type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()">
     </div>
     <!-- The Modal -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal" style="display: none">
         <!-- Modal content -->
         <div class="modal-content">
           <div class="modal-header">
@@ -68,6 +68,8 @@
     </div>
 </div>
 
+<!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
+<script type="text/javascript" src="js/funciones.js"></script>
 
 </body>
 </html>

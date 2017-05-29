@@ -20,24 +20,25 @@ var ultimoBoton;
 
 var personas = [];
 
+//De entrada tomo los primeros elementos de compras y personas para copiarlos al agregar un nuevo elemento a la tabla
+var primerCampoPersona = document.getElementsByClassName("persona")[0].innerHTML;
+var primerCampoCompra = document.getElementsByClassName("compra")[0].innerHTML;
+
 //Agrega un input de compra o persona
 function agregar(cla) {
 
     var nuevo = document.createElement("tr");
     nuevo.className=cla;
 
-    //Toma el primer elemento existente de la clase que quiero crear y copia el HTML a mi nuevo elemento
-    var col = document.getElementsByClassName(cla);
-    col = col[0].innerHTML;
-    nuevo.innerHTML = col;
-
     //Si quiero agregar una compra, lo agreago a la pagina 1
     if(cla == "compra"){
+        nuevo.innerHTML = primerCampoCompra;
         document.getElementById("page1").appendChild(nuevo);            
     }
 
     //Si es una persona, a la pagina 2
     if(cla == "persona"){
+        nuevo.innerHTML = primerCampoPersona;
         document.getElementById("page2").appendChild(nuevo);    
 
         //Activa el boton de seleccion de compras para ser usado
@@ -137,16 +138,28 @@ function setModoModal(estado=""){
     footer[0].id = estado;
 }
 
-function setHeader(algo=""){
+function setTextHeader(algo=""){
     var header = document.getElementsByClassName("modal-header")[0];
     header = header.getElementsByTagName("h2")[0];
     header.innerHTML = algo;
 }
 
-function setFooter(algo=""){
+function setTextFooter(algo=""){
     var footer = document.getElementsByClassName("modal-footer")[0];
     footer = footer.getElementsByTagName("h3")[0];
     footer.innerHTML = algo;
+}
+
+function setElementFooter(element){
+    var footer = document.getElementsByClassName("modal-footer")[0];
+    footer.innerHTML = '<h3></h3>'
+    footer.appendChild(element);
+}
+
+function setElementHeader(element){
+    var header = document.getElementsByClassName("modal-header")[0];
+    header.innerHTML = '<h2></h2>'
+    header.appendChild(element);
 }
 
 //Se fija si una compra dada por nombre esta en el array de una persona
@@ -212,9 +225,9 @@ function mostrarCompras(yo){
             actualizarPersona(personaClicker, yo);
         };
 
-        escribirModal(boton);
-        setHeader("Compras");
-        setFooter();
+        setElementFooter(boton);
+        setTextHeader("Compras");
+        setTextFooter();
         setModoModal();
         mostrarModal();
 
