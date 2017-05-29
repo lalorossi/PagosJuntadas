@@ -213,17 +213,12 @@ function mostrarCompras(yo){
         };
 
         escribirModal(boton);
-
         setHeader("Compras");
-
         setFooter();
-
         setModoModal();
-
         mostrarModal();
 
         setUltimoBoton(yo);
-
         yo.id = "desactivado";      //Desactiva el boton para que no sea activado mas de una vez sin seleccionar compras
     }
 }
@@ -257,7 +252,7 @@ function actualizarPersona(pers, boton) {
 
     vaciarComprasPersona(pos);
 
-    //Despues de eliminar las compras de la persona clikcer, agrega las compras checkeadas al apretar OK
+    //Despues de eliminar las compras de la persona "clikcer", agrega las compras checkeadas al apretar OK
     for (var i = boxes.length - 1; i >= 0; i--) {
         if(boxes[i].checked){
             for (var o = compras.length - 1; o >= 0; o--) {
