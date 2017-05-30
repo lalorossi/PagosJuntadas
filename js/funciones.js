@@ -95,10 +95,21 @@ function checkSubmit(){
         var parrafo = document.createElement("p");
         var texto = document.createTextNode("Ingrese al menos una compra con precio");
         parrafo.appendChild(texto);
+
+        //Crear boton de OK que esconde el modal
+        var boton = document.createElement("input");
+        boton.type = "button";
+        boton.value = "OK";
+
+        boton.onclick = function() { 
+            esconderModal();
+        };
+
+
+        setElementFooter(boton);
         setModoModal("error");
         escribirModal(parrafo);
         mostrarModal();
-        //window.alert("Ingrese al menos una compra con precio");
         //return false;
     }
 
@@ -198,8 +209,11 @@ function mostrarCompras(yo){
         for (var i = compras.length - 1; i >= 0; i--) {
             div = document.createElement("div");
             checkbox = document.createElement("input");
-            txt = document.createTextNode(compras[i].producto);
 
+            // Agrega el texto con "compra ($precio)" al checkbox
+            txt = compras[i].producto;
+            txt += " ($" + compras[i].precio + ")";
+            txt = document.createTextNode(txt);
 
             checkbox.type = "checkbox";
             checkbox.className = "checkCompra";

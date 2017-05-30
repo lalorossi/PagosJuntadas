@@ -102,14 +102,14 @@ tr:first-child {
 input[type="button"]{
     background-color: #ffffff;
     border: 0px;
-    padding: 10px;
+    padding: 5px;
 }
 
 /* Botones */
 .eliminar {
-    background-color: red; 
     width: 25px;
     margin : 10px;
+    padding: 0px;
 }
 
 /* Estilos de input */
@@ -133,3 +133,11 @@ input::placeholder {
 #form {
     width: 100%;
 }
+
+.eliminar i{
+    color: #ffb3b3;
+}
+
+.eliminar:hover i{
+    color: red;
+};
