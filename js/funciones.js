@@ -52,7 +52,6 @@ function agregar(cla) {
     }
 }
 
-
 function chau0(child)  {
     var grand = document.getElementById("page1");
     grand.removeChild(child.parentNode);
@@ -236,7 +235,6 @@ function mostrarCompras(yo){
     }
 }
 
-
 function vaciarComprasPersona(pos){
     //Resto en 1 la cantidad de compras de cada compra de la persona, para resetear las compras 
     for (var i = compras.length - 1; i >= 0; i--) {
@@ -253,7 +251,7 @@ function vaciarComprasPersona(pos){
 }
 
 function actualizarPersona(pers, boton) {    
-    var pos;
+    var pos=-1;     //Valor imposible por si no se encuentran personas
     var boxes = document.getElementsByClassName("checkCompra");
 
     //Busco a la persona en el array de personas
@@ -263,27 +261,30 @@ function actualizarPersona(pers, boton) {
         }
     }
 
-    vaciarComprasPersona(pos);
+    //No se buscarian las compras si la persona no existiera
+    if(pos>=0){
+        vaciarComprasPersona(pos);
 
-    //Despues de eliminar las compras de la persona "clikcer", agrega las compras checkeadas al apretar OK
-    for (var i = boxes.length - 1; i >= 0; i--) {
-        if(boxes[i].checked){
-            for (var o = compras.length - 1; o >= 0; o--) {
-                if(compras[o].producto == boxes[i].value){
-                    var bandera = 0;
-                    for (var u = personas[pos].comprasPorPersona.length - 1; u >= 0; u--) {
-                        if(personas[pos].comprasPorPersona[u].producto == boxes[i].value){
-                            bandera = 1;
+        //Despues de eliminar las compras de la persona "clikcer", agrega las compras checkeadas al apretar OK
+        for (var i = boxes.length - 1; i >= 0; i--) {
+            if(boxes[i].checked){
+                for (var o = compras.length - 1; o >= 0; o--) {
+                    if(compras[o].producto == boxes[i].value){
+                        var bandera = 0;
+                        for (var u = personas[pos].comprasPorPersona.length - 1; u >= 0; u--) {
+                            if(personas[pos].comprasPorPersona[u].producto == boxes[i].value){
+                                bandera = 1;
+                            }
                         }
-                    }
-                    if(bandera != 1){
-                        compras[o].cantCompras += 1;
-                        personas[pos].comprasPorPersona.push(compras[o]);
+                        if(bandera != 1){
+                            compras[o].cantCompras += 1;
+                            personas[pos].comprasPorPersona.push(compras[o]);
+                        }
                     }
                 }
             }
         }
-    };
+    }
 
     esconderModal();
     boton.id = "activado";
@@ -291,10 +292,9 @@ function actualizarPersona(pers, boton) {
     for (var i = personas[pos].comprasPorPersona.length - 1; i >= 0; i--) {
         window.alert(personas[pos].comprasPorPersona[i]);
     }
-    */       
+    */
     
 }
-
 
 function guardarPersona(nombre){
     var bandera = 0;
