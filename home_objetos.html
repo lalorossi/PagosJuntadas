@@ -3,7 +3,7 @@
 <head>
 
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     
@@ -11,34 +11,34 @@
 <body style="background-color: #3f557a">
 
 <div id="form">
-    <div id="pag1">
+    <div id="pag1" class="pagina">
         <table id="page1" class="tabla">
             <tr class="compra">
                 <td>Compra</td>
-                <td><input type="text" name="concepto[]" id="concepto" placeholder="Compra"> </td>
+                <td><input type="text" name="concepto[]" id="concepto" placeholder="Compra" class="table-text"> </td>
                 <td>$</td>
-                <td><input type="number" name="precio[]" id="precio"></td>
+                <td><input type="number" name="precio[]" id="precio" class="table-number"></td>
                 <!-- Boton de eliminar -->
                 <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
         <!-- Boton de agregar -->
-        <input type="button" value="+" onclick='agregar("compra")'>
+        <input type="button" value="+" onclick='agregar("compra")' class="boton-add">
 
-        <input type="button" value="Siguiente" onclick="checkSubmit()">
+        <input type="button" value="Siguiente" onclick="checkSubmit()" class="boton-next">
     </div>
     
-    <div id="pag2"  style="display:none">
+    <div id="pag2" class="pagina" style="display:none">
         <table id="page2" class="tabla">
             <tr class="persona">
                 <td>Nombre</td>
-                <td><input type="text" class="ingresoPersona" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
+                <td><input type="text" class="table-text" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
                 <td><input type="button" id="activado" onclick="mostrarCompras(this)" value="+"></td>
                 <td><button type="button" class="eliminar" onclick="chau(this)">D</button></td>
             </tr>
         </table>
-        <input type="button" value="+" onclick='agregar("persona")'>
+        <input type="button" value="+" onclick='agregar("persona")' class="boton-add">
 
         
         <br></br>
@@ -48,7 +48,7 @@
         </div>
 
 
-        <input type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()">
+        <input type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()" class="boton-next">
     </div>
     <!-- The Modal -->
     <div id="myModal" class="modal" style="display: none">
@@ -70,7 +70,7 @@
 </div>
 
 <!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
-<script type="text/javascript" src="funciones.js"></script>
+<script type="text/javascript" src="js/funciones.js"></script>
 
 </body>
 </html>

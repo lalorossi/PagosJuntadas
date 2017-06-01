@@ -25,11 +25,16 @@ var personas = [];
 var primerCampoPersona = document.getElementsByClassName("persona")[0].innerHTML;
 var primerCampoCompra = document.getElementsByClassName("compra")[0].innerHTML;
 
+
 //Agrega un input de compra o persona
 function agregar(cla) {
 
+    /*
     var nuevo = document.createElement("tr");
     nuevo.className=cla;
+    */
+
+    var nuevo = crearNodo("tr", cla);
 
     //Si quiero agregar una compra, lo agreago a la pagina 1
     if(cla == "compra"){
@@ -62,7 +67,6 @@ function chau(yo) {
     //Elimina el input de una compra/persona. Se activa con el boton de eliminar
     var papa=yo.parentNode.parentNode;
     papa.parentNode.removeChild(papa);
-    window.alert("asdasdasd");
 }
 
 function checkSubmit(){
@@ -94,12 +98,14 @@ function checkSubmit(){
     }
     else{
         borrarModal();
-        var parrafo = document.createElement("p");
+        //var parrafo = document.createElement("p");
+        var parrafo = crearNodo("P");
         var texto = document.createTextNode("Ingrese al menos una compra con precio");
         parrafo.appendChild(texto);
 
         //Crear boton de OK que esconde el modal
-        var boton = document.createElement("input");
+        //var boton = document.createElement("input");
+        var boton = crearNodo("input", "boton-modal");
         boton.type = "button";
         boton.value = "OK";
 
@@ -114,7 +120,6 @@ function checkSubmit(){
         mostrarModal();
         //return false;
     }
-
 }
 
 function borrarModal(){
@@ -125,13 +130,13 @@ function borrarModal(){
     resetHeader();
 }
 
+function escribirModal(elemento){
+    document.getElementsByClassName("modal-body")[0].appendChild(elemento);
+}
+
 function mostrarModal(){
     var modal = document.getElementById("myModal");
     modal.style.display = "block";  
-}
-
-function escribirModal(elemento){
-    document.getElementsByClassName("modal-body")[0].appendChild(elemento);
 }
 
 function esconderModal(){
@@ -140,16 +145,26 @@ function esconderModal(){
     ultimoBoton.id = "activado";
 }
 
-function setUltimoBoton(boton){
-    ultimoBoton = boton;
-}
-
 function setModoModal(estado=""){
     var header = document.getElementsByClassName("modal-header");
     var footer = document.getElementsByClassName("modal-footer");
 
     header[0].id = estado;
     footer[0].id = estado;
+}
+
+function resetFooter() {
+    var footer = document.getElementsByClassName("modal-footer")[0];
+    footer.innerHTML = "";
+    //var h = document.createElement("h3");
+    var h = crearNodo("h3");
+    footer.appendChild(h);
+}
+
+function resetHeader() {
+    var header = document.getElementsByClassName("modal-header")[0];
+    header = header.getElementsByTagName("h2")[0];
+    header.innerHTML = "";
 }
 
 function setTextHeader(algo=""){
@@ -186,17 +201,17 @@ function setElementHeader(element=""){
     }
 }
 
-function resetFooter() {
-    var footer = document.getElementsByClassName("modal-footer")[0];
-    footer.innerHTML = "";
-    var h = document.createElement("h3");
-    footer.appendChild(h);
+
+function setUltimoBoton(boton){
+    ultimoBoton = boton;
 }
 
-function resetHeader() {
-    var header = document.getElementsByClassName("modal-header")[0];
-    header = header.getElementsByTagName("h2")[0];
-    header.innerHTML = "";
+function crearNodo(tipo, clase="", id=""){
+    var nodo = document.createElement(tipo);
+    nodo.id = id;
+    nodo.className = clase;
+
+    return nodo;
 }
 
 //Se fija si una compra dada por nombre esta en el array de una persona
@@ -234,8 +249,10 @@ function mostrarCompras(yo){
         //Busca los datos de las compras desde el array de compras
         //Hace una lista conm checkboxes para seleccionar las compras
         for (var i = compras.length - 1; i >= 0; i--) {
-            div = document.createElement("div");
-            checkbox = document.createElement("input");
+            //div = document.createElement("div");
+            div = crearNodo("div");
+            //checkbox = document.createElement("input");
+            checkbox = crearNodo("input");
 
             // Agrega el texto con "compra ($precio)" al checkbox
             txt = compras[i].producto;
@@ -264,17 +281,23 @@ function mostrarCompras(yo){
         }
 
         //Al final de los checkboxes, mostrar el input de lo que ya puso
-        div = document.createElement("div");
+        //div = document.createElement("div");
+        div = crearNodo("div");
         txt = document.createTextNode("Puso $");
+        /*
         var input = document.createElement("input");
-        input.placeholder = valor;
+        input.className = "modal-input"
+        */
+        var input = crearNodo("input", "modal-input");
         input.type = "number";
+        input.placeholder = valor;
         div.appendChild(txt)
         div.appendChild(input);
         escribirModal(div);
 
         //Crea el boton para confirmar la seleccion de compras
-        var boton = document.createElement("input");
+        //var boton = document.createElement("input");
+        var boton = crearNodo("input", "modal-boton");
         boton.type = "button";
         boton.value = "OK";
 
@@ -292,6 +315,7 @@ function mostrarCompras(yo){
     }
 }
 
+//Vacia el array de compras de una persona para llenarlo nuevamente cuendo las seleccione en el modal
 function vaciarComprasPersona(pos){
     //Resto en 1 la cantidad de compras de cada compra de la persona, para resetear las compras 
     for (var i = compras.length - 1; i >= 0; i--) {
@@ -307,6 +331,25 @@ function vaciarComprasPersona(pos){
     personas[pos].comprasPorPersona = [];
 }
 
+//Guarda el nombre de la persona ingresda
+function guardarPersona(nombre){
+    var bandera = 0;
+    if(nombre != ""){
+        for (var i = personas.length - 1; i >= 0; i--) {
+            if(personas[i].nombre == nombre){
+                bandera = 1;
+            }
+        }
+        if(bandera != 1){
+            nuevaPersona = new Persona(nombre);
+            personas.push(nuevaPersona);
+        }
+        for (var i = personas.length - 1; i >= 0; i--) {
+        }
+    }
+}
+
+//Guarda las compras seleccionadas para una persona
 function actualizarPersona(pers, boton) {    
     var pos=-1;     //Valor imposible por si no se encuentran personas
     var boxes = document.getElementsByClassName("checkCompra");
@@ -316,7 +359,6 @@ function actualizarPersona(pers, boton) {
     if(puso <= 0){
         puso = 0;
     }
-    window.alert(puso);
 
 
     //Busco a la persona en el array de personas
@@ -326,10 +368,9 @@ function actualizarPersona(pers, boton) {
         }
     }
 
-    personas[pos].plataPuesta = puso;
-
     //No se buscarian las compras si la persona no existiera
     if(pos>=0){
+        personas[pos].plataPuesta = puso;
         vaciarComprasPersona(pos);
 
         //Despues de eliminar las compras de la persona "clikcer", agrega las compras checkeadas al apretar OK
@@ -361,28 +402,11 @@ function actualizarPersona(pers, boton) {
         window.alert(personas[pos].comprasPorPersona[i]);
     }
     */
-    
 }
 
-function guardarPersona(nombre){
-    var bandera = 0;
-    if(nombre != ""){
-        for (var i = personas.length - 1; i >= 0; i--) {
-            if(personas[i].nombre == nombre){
-                bandera = 1;
-            }
-        }
-        if(bandera != 1){
-            nuevaPersona = new Persona(nombre);
-            personas.push(nuevaPersona);
-        }
-        for (var i = personas.length - 1; i >= 0; i--) {
-        }
-    }
-}
-
+//Elimina a las personas que no están en input al momento de calcular
 function filtrarPersonasBorradas(){
-    var ingresadas = document.getElementsByClassName("ingresoPersona");
+    var ingresadas = document.getElementsByClassName("table-text");
     for (var i = personas.length - 1; i >= 0; i--) {
         var bandera = 0;
         for (var o = ingresadas.length - 1; o >= 0; o--) {
@@ -408,6 +432,8 @@ function filtrarPersonasBorradas(){
         div.appendChild(parrafo)
     }
     escribirModal(div);
+    esconderModal();
+    mostrarModal();
     */
 }
 
@@ -422,7 +448,8 @@ function calcular(){
         mensaje = mensaje.concat(personas[i].nombre);
         mensaje = mensaje.concat(": ");
         var text = document.createTextNode(mensaje);
-        var parrafo = document.createElement("p");
+        //var parrafo = document.createElement("p");
+        var parrafo = crearNodo("p");
         parrafo.appendChild(text);
         escribirModal(parrafo);
         //window.alert(personas[i].nombre);
@@ -443,7 +470,8 @@ function calcular(){
                     mensaje = mensaje.concat(" - $");
                     mensaje = mensaje.concat(pago);
                     text = document.createTextNode(mensaje);
-                    parrafo = document.createElement("p");
+                    //parrafo = document.createElement("p");
+                    parrafo = crearNodo("p");
                     parrafo.appendChild(text);
                     escribirModal(parrafo);
 
