@@ -486,10 +486,10 @@ function calcular(){
             parrafo2.appendChild(text);
             //escribirModal(parrafo);
             div2.appendChild(parrafo2);
+            div2.style = "text-indent : 1em";
         }
 
         pagoTotal -= personas[i].plataPuesta;
-        window.alert(personas[i].plataPuesta);
 
         var mensajeTotal = "";
         mensajeTotal = mensajeTotal.concat(personas[i].nombre);
