@@ -354,8 +354,10 @@ function actualizarPersona(pers, boton) {
     var pos=-1;     //Valor imposible por si no se encuentran personas
     var boxes = document.getElementsByClassName("checkCompra");
     var puso = document.getElementsByClassName("modal-body")[0];
-    puso = puso.getElementsByTagName("div")[1];
-    puso = puso.getElementsByTagName("input")[0].value;
+    puso = puso.getElementsByTagName("div");
+    puso = puso[puso.length-1];
+    puso = puso.getElementsByTagName("input");
+    puso = puso[puso.length-1].value;
     if(puso <= 0){
         puso = 0;
     }
@@ -441,26 +443,20 @@ function calcular(){
 
     filtrarPersonasBorradas();
 
-    var pago = 0;
+    var pagoCompra = 0;
     borrarModal();
     for (var i = personas.length - 1; i >= 0; i--) {
-        var mensaje = " ";
-        mensaje = mensaje.concat(personas[i].nombre);
-        mensaje = mensaje.concat(": ");
-        var text = document.createTextNode(mensaje);
-        //var parrafo = document.createElement("p");
-        var parrafo = crearNodo("p");
-        parrafo.appendChild(text);
-        escribirModal(parrafo);
         //window.alert(personas[i].nombre);
         var comprasDePersona = personas[i].comprasPorPersona;
+        var pagoTotal = 0;
+        var div2 = crearNodo("div");
         for (var o = comprasDePersona.length - 1; o >= 0; o--) {
+            /*
             for (var u = compras.length - 1; u >= 0; u--) {
                 //window.alert(compras[u].producto);
                 //window.alert(comprasDePersona[o].producto);
 
                 //Se podria evitar. En cada persona, ya estan los objetos compra, no hace falta buscarlos por coincidencias con el array de compras
-
                 if(compras[u].producto == comprasDePersona[o].producto){
                     //window.alert(compras[u].producto);
                     mensaje = "";
@@ -477,7 +473,49 @@ function calcular(){
 
                 }
             }
+            */
+            mensajeCompra = "";
+            var pagoCompra = comprasDePersona[o].precio / comprasDePersona[o].cantCompras;
+            pagoTotal += pagoCompra;
+            mensajeCompra = mensajeCompra.concat(comprasDePersona[o].producto);
+            mensajeCompra = mensajeCompra.concat(" : $");
+            mensajeCompra = mensajeCompra.concat(pagoCompra);
+            text = document.createTextNode(mensajeCompra);
+            //parrafo = document.createElement("p");
+            var parrafo2 = crearNodo("p");
+            parrafo2.appendChild(text);
+            //escribirModal(parrafo);
+            div2.appendChild(parrafo2);
         }
+
+        pagoTotal -= personas[i].plataPuesta;
+        window.alert(personas[i].plataPuesta);
+
+        var mensajeTotal = "";
+        mensajeTotal = mensajeTotal.concat(personas[i].nombre);
+        mensajeTotal = mensajeTotal.concat(": ");
+        var text1 = document.createTextNode(mensajeTotal);
+
+        var span = crearNodo("span");
+        if(pagoTotal<0){
+            span.style="color:green;font-weight:bold";
+        }
+        else{
+            span.style="color:red;font-weight:bold";
+        }
+        mensajeTotal = "$" + pagoTotal;
+        var textPrecio = document.createTextNode(mensajeTotal);
+        span.appendChild(textPrecio);
+
+        //var parrafo = document.createElement("p");
+        var parrafo = crearNodo("p");
+        parrafo.appendChild(text1);
+        parrafo.appendChild(span);
+        //escribirModal(parrafo);
+        var div1 = crearNodo("div");
+        div1.appendChild(parrafo);
+        escribirModal(div1);
+        escribirModal(div2);
 
     }
     setModoModal();
