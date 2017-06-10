@@ -290,7 +290,12 @@ function mostrarCompras(yo){
         */
         var input = crearNodo("input", "modal-input");
         input.type = "number";
-        input.placeholder = valor;
+        if(valor>0){
+            input.value = valor;
+        }
+        else{
+            input.placeholder = valor;
+        }
         div.appendChild(txt)
         div.appendChild(input);
         escribirModal(div);
