@@ -39,13 +39,13 @@ function agregar(cla) {
     //Si quiero agregar una compra, lo agreago a la pagina 1
     if(cla == "compra"){
         nuevo.innerHTML = primerCampoCompra;
-        document.getElementById("page1").appendChild(nuevo);            
+        document.getElementById("page1").getElementsByTagName("tbody")[0].appendChild(nuevo);            
     }
 
     //Si es una persona, a la pagina 2
     if(cla == "persona"){
         nuevo.innerHTML = primerCampoPersona;
-        document.getElementById("page2").appendChild(nuevo);    
+        document.getElementById("page2").getElementsByTagName("tbody")[0].appendChild(nuevo);    
 
         //Activa el boton de seleccion de compras para ser usado
         //Esto va a cambiar con el uso de "modals" (para mostrar las compras en una ventana)
