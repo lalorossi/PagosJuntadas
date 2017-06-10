@@ -15,10 +15,10 @@
         <table id="page1" class="tabla">
             <tr class="compra">
                 <td>Compra</td>
-                <td><input type="text" name="concepto[]" id="concepto" placeholder="Compra" class="table-text"> </td>
+                <td><input type="text" id="concepto" placeholder="Compra" class="table-text" style="width:50%"> </td>
                 <td>$</td>
-                <td><input type="number" name="precio[]" id="precio" class="table-number"></td>
-                <!-- Boton de eliminar -->
+                <td><input type="number" id="precio" class="table-number" style="width:50%"></td>
+                
                 <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
@@ -35,7 +35,7 @@
                 <td><input type="text" class="table-text" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
                 <td><input type="button" id="activado" onclick="mostrarCompras(this)" value="+"></td>
-                <td><button type="button" class="eliminar" onclick="chau(this)">D</button></td>
+                <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
         <input type="button" value="+" onclick='agregar("persona")' class="boton-add">
