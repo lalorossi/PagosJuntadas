@@ -78,7 +78,7 @@
 /* Estilos de tabla */
 .tabla {
     /*width: 100%;*/
-    height: 56px;
+    /*height: 56px;*/
 }
 
 table { 
@@ -94,6 +94,7 @@ table {
 tr {
     border-bottom: 3px solid #1a1a1a;
     background-color: #39868c;
+    height: 56px;
 }
 
 tr:last-child {
@@ -128,6 +129,14 @@ input {
     padding: 10px;
 }
 
+input[type="text"]{
+     font-size:14pt;
+}
+
+input[type="number"]{
+     font-size:14pt;
+}
+
 input::placeholder {
     color: #ffffff;
 }
@@ -151,6 +160,10 @@ input::placeholder {
     color: red;
 }
 
+.agregar {
+    color: #66ccff;
+}
+
 .app{
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -167,4 +180,8 @@ input::placeholder {
     margin: auto;
     padding: 0;
     width: 98%;
+}
+
+.boton-add {
+    color : #33cc33;
 }

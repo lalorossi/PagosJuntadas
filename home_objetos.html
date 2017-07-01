@@ -15,17 +15,17 @@
         <table id="page1" class="tabla">
             <tr class="compra">
                 <td>Compra</td>
-                <td style="width:85%"><input style="width:90%" type="text" id="concepto" placeholder="Compra" class="table-text"> </td>
+                <td style="width:80%"><input style="width:90%" type="text" id="concepto" placeholder="Compra" class="table-text"> </td>
                 <td>$</td>
-                <td style="width:15%"><input style="width:50%" type="number" id="precio" class="table-number"></td>
+                <td style="width:15%"><input style="width:75%" type="number" id="precio" class="table-number"></td>
                 
                 <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
         <!-- Boton de agregar -->
-        <input type="button" value="+" onclick='agregar("compra")' class="boton-add">
+        <button type="button" value="+" onclick='agregar("compra")' class="boton-add"><i class="material-icons">person_add</i></button>
 
-        <input type="button" value="Siguiente" onclick="checkSubmit()" class="boton-next">
+        <button type="button" value="Siguiente" onclick="checkSubmit()" class="boton-next"><i class="material-icons">forward</i></button>
     </div>
     
     <div id="pag2" class="pagina" style="display:none">
@@ -34,7 +34,7 @@
                 <td>Nombre</td>
                 <td><input type="text" class="table-text" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
-                <td><input type="button" id="activado" onclick="mostrarCompras(this)" value="+"></td>
+                <td><button type="button" class="agregar" id="activado" onclick="mostrarCompras(this)"><i class="material-icons">add_shopping_cart</i></button></td>
                 <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
