@@ -69,6 +69,16 @@ function chau(yo) {
     papa.parentNode.removeChild(papa);
 }
 
+function cambiarPagina(idPagina) {
+    document.getElementById(idPagina).style.display="";
+    if(idPagina == "pag1"){
+        document.getElementById("pag2").style.display="none";
+    }
+    else{
+        document.getElementById("pag1").style.display="none";
+    }
+}
+
 function checkSubmit(){
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
     var vacio = 0;
@@ -92,8 +102,7 @@ function checkSubmit(){
 
     //Si encontro al menos una compra, pasa a la pagina2        
     if (vacio==1) {
-        document.getElementById("pag2").style.display="";
-        document.getElementById("pag1").style.display="none";
+        cambiarPagina("pag2");
         //return true;
     }
     else{

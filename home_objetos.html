@@ -15,7 +15,7 @@
         <table id="page1" class="tabla">
             <tr class="compra">
                 <td>Compra</td>
-                <td style="width:80%"><input style="width:90%" type="text" id="concepto" placeholder="Compra" class="table-text"> </td>
+                <td style="width:70%"><input style="width:85%" type="text" id="concepto" placeholder="Compra" class="table-text"> </td>
                 <td>$</td>
                 <td style="width:15%"><input style="width:75%" type="number" id="precio" class="table-number"></td>
                 
@@ -23,7 +23,7 @@
             </tr>
         </table>
         <!-- Boton de agregar -->
-        <button type="button" value="+" onclick='agregar("compra")' class="boton-add"><i class="material-icons">person_add</i></button>
+        <button type="button" value="+" onclick='agregar("compra")' class="boton-add"><i class="material-icons">add_shopping_cart</i></button>
 
         <button type="button" value="Siguiente" onclick="checkSubmit()" class="boton-next"><i class="material-icons">forward</i></button>
     </div>
@@ -32,13 +32,21 @@
         <table id="page2" class="tabla">
             <tr class="persona">
                 <td>Nombre</td>
-                <td><input type="text" class="table-text" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
+                <td style="width:90%"><input type="text" style="width:90%" class="table-text" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
-                <td><button type="button" class="agregar" id="activado" onclick="mostrarCompras(this)"><i class="material-icons">add_shopping_cart</i></button></td>
-                <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
+                <td>
+                    <button type="button" id="activado" class="agregar" onclick="mostrarCompras(this)" value="+">
+                        <i style="padding:0px" class="material-icons">local_atm</i>
+                    </button>
+                </td>
+                <td style="width:15%">
+                    <button type="button" class="eliminar" onclick="chau(this)">
+                        <i class="material-icons">delete</i>
+                    </button>
+                </td>
             </tr>
         </table>
-        <input type="button" value="+" onclick='agregar("persona")' class="boton-add">
+        <button type="button" value="+" onclick='agregar("persona")' class="boton-add"><i class="material-icons">person_add</i></button>   
 
         
         <br></br>
@@ -48,7 +56,10 @@
         </div>
 
 
-        <input type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()" class="boton-next">
+        <!--
+        <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next"><i class="material-icons">keyboard_return</i></button>
+        !-->
+        <button type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()" class="boton-next"><i class="material-icons">send</i></button> 
     </div>
     <!-- The Modal -->
     <div id="myModal" class="modal" style="display: none">
