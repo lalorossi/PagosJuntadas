@@ -492,26 +492,36 @@ function calcular(){
             var pagoCompra = comprasDePersona[o].precio / comprasDePersona[o].cantCompras;
             pagoTotal += pagoCompra;
             mensajeCompra = mensajeCompra.concat(comprasDePersona[o].producto);
-            mensajeCompra = mensajeCompra.concat(" : $");
+            mensajeCompra = mensajeCompra.concat(" : +$");
             mensajeCompra = mensajeCompra.concat(pagoCompra);
             text = document.createTextNode(mensajeCompra);
             //parrafo = document.createElement("p");
             var parrafo2 = crearNodo("p");
             parrafo2.appendChild(text);
+            div2.style = "text-indent : 1em";
+            div2.style.display = "none";
+            div2.className = "detalles-" + personas[i].nombre;
             //escribirModal(parrafo);
             div2.appendChild(parrafo2);
-            div2.style = "text-indent : 1em";
         }
+        
+        text = "Puesto : -$" + personas[i].plataPuesta;
+        text = document.createTextNode(text);
+        var parrafo2 = crearNodo("p");
+        parrafo2.appendChild(text);
+        div2.appendChild(parrafo2);
 
         pagoTotal -= personas[i].plataPuesta;
 
-        var mensajeTotal = "";
-        mensajeTotal = mensajeTotal.concat(personas[i].nombre);
-        mensajeTotal = mensajeTotal.concat(": ");
-        var text1 = document.createTextNode(mensajeTotal);
+        if(pagoTotal>0){   
+            var mensajeTotal = "";
+            mensajeTotal = mensajeTotal.concat(personas[i].nombre);
+            mensajeTotal = mensajeTotal.concat(": ");
+            var text1 = document.createTextNode(mensajeTotal);
+        }
 
         var span = crearNodo("span");
-        if(pagoTotal<0){
+        if(pagoTotal<=0){
             span.style="color:green;font-weight:bold";
         }
         else{
@@ -522,9 +532,34 @@ function calcular(){
         span.appendChild(textPrecio);
 
         //var parrafo = document.createElement("p");
+
+        var botonDetalles = crearNodo("button");
+        //var textBoton = document.createTextNode("+");
+        //botonDetalles.appendChild(textBoton);
+
+        botonDetalles.innerHTML = '<i class="material-icons" style="font-size: 1.3em;">info_outline</i>';
+
+        botonDetalles.id = div2.className;
+        //window.alert(div2.id);
+        botonDetalles.addEventListener("click", function(){
+            //window.alert(this.id);
+            //window.alert(document.getElementsByClassName(this.id)[0].style.display);
+            if (document.getElementsByClassName(this.id)[0].style.display != "none"){
+                document.getElementsByClassName(this.id)[0].style.display = "none";
+            }else{
+                document.getElementsByClassName(this.id)[0].style.display = "block";
+            }
+        });
+
         var parrafo = crearNodo("p");
         parrafo.appendChild(text1);
         parrafo.appendChild(span);
+        parrafo.appendChild(botonDetalles);
+
+        parrafo.style = "font-size:1.3em";
+
+
+
         //escribirModal(parrafo);
         var div1 = crearNodo("div");
         div1.appendChild(parrafo);
