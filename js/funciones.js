@@ -79,10 +79,19 @@ function cambiarPagina(idPagina) {
     }
 }
 
+function existeCompra(compra) {
+    for (var i = compras.length - 1; i >= 0; i--) {
+        if(compras[i].producto == compra){
+            return true;
+        }
+    }
+    return false;
+}
+
+compras = [];   //Notar que al no poner var, se hace global
 function checkSubmit(){
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
     var vacio = 0;
-    compras = [];   //Notar que al no poner var, se hace global
 
     var rows = document.getElementsByClassName("compra");
 
@@ -94,8 +103,11 @@ function checkSubmit(){
         }
         else{
             //Cuando encuentra una compra completa la agrega al array de compras
+            //Verifica que el nombre de la compra no exista
             var nuevaCompra = new Compra(celdas[0].value, celdas[1].value);
-            compras.push(nuevaCompra);
+            if(!existeCompra(nuevaCompra.producto)){
+                compras.push(nuevaCompra);
+            }
             vacio=1;
         }
     }
@@ -273,7 +285,7 @@ function mostrarCompras(yo){
             checkbox.value = compras[i].producto;    //No se bien por que hace esto
 
             //Checkear las compras que ya estan en el array de la persona
-            checkbox.checked =  esCompra(personaClicker, compras[i].producto);
+            checkbox.checked = esCompra(personaClicker, compras[i].producto);
 
             div.appendChild(checkbox);
             div.appendChild(txt);           //Adiciona el texto al lado del checkbox con el nombre de la compra
@@ -340,7 +352,6 @@ function vaciarComprasPersona(pos){
             }
         };
     };
-
     //Vacio el array de compras de la persona
     personas[pos].comprasPorPersona = [];
 }
@@ -383,7 +394,6 @@ function actualizarPersona(pers, boton) {
             pos = o;
         }
     }
-
     //No se buscarian las compras si la persona no existiera
     if(pos>=0){
         personas[pos].plataPuesta = puso;
