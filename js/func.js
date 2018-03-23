@@ -73,9 +73,11 @@ function cambiarPagina(idPagina) {
     document.getElementById(idPagina).style.display="";
     if(idPagina == "pag1"){
         document.getElementById("pag2").style.display="none";
+        atras = document.getElementsByClassName("boton-next")[0].style.color="#00ffff";
     }
     else{
         document.getElementById("pag1").style.display="none";
+        atras = document.getElementsByClassName("boton-next")[0].style.color="#000000";
     }
 }
 

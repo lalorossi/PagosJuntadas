@@ -3,7 +3,7 @@
 <head>
 
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     
@@ -13,13 +13,33 @@
     cambiar para que los estilos se hagan desde el css y no en la etiqueta
     separar bien por clases para que no haya problemas con el estilo de la tabla header
     esconder el boton de atras hasta que se use pagina 2 (ver cambioPagina)
+        para esconderlo, solo pude haciendolo del mismo colo que el fondo.
+
+
     agregar funcionalidad al botón de atrás
+
+    el modal se muestra vacio cuando no hay nada que mostrar. Validar que haya personas ingresadas antes de mostrarlo
 
  -->
 
 <body style="background-color: #3f557a; margin: 0px">
 <header style="background-color: #00ffff; margin-bottom: 15px">
-    <i class="material-icons" style="margin: 18px;">arrow_back </i>
+    <table>
+        <tr>
+            <td style="width: 50%">    
+                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next" style="color: #00ffff; background-color: #00ffff; border: 0">
+                    <i class="material-icons" style="margin: 18px;">arrow_back </i>        
+            </td>
+            <td style="width: 70%">
+                PAGINA1                
+            </td>
+            <td>
+                </button><button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next" style="color: #000000; background-color: #00ffff; border: 0">
+                    <i class="material-icons" style="margin: 18px;">more_vert</i>        
+                </button>
+            </td>
+        </tr>
+    </table>
 </header>
 
 <div id="form" class="app">
@@ -68,7 +88,9 @@
         </div>
 
 
-        <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next"><i class="material-icons">keyboard_return</i></button>
+        <!-- 
+            <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next"><i class="material-icons">keyboard_return</i></button>
+         -->
 
         <button type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()" class="boton-next"><i class="material-icons">send</i></button> 
     </div>
