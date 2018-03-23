@@ -143,7 +143,7 @@ input::placeholder {
 
 #form {
    /* width: 100%;*/
-    position: fixed; /* Stay in place */
+    /*position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
@@ -165,7 +165,7 @@ input::placeholder {
 }
 
 .app{
-    position: fixed; /* Stay in place */
+    /*position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
