@@ -74,10 +74,12 @@ function cambiarPagina(idPagina) {
     if(idPagina == "pag1"){
         document.getElementById("pag2").style.display="none";
         atras = document.getElementsByClassName("boton-header")[0].style.color="#00ffff";
+        document.getElementById("nombre-pagina").innerHTML = "INGRESO COMPRAS"
     }
     else{
         document.getElementById("pag1").style.display="none";
         atras = document.getElementsByClassName("boton-header")[0].style.color="#000000";
+        document.getElementById("nombre-pagina").innerHTML = "INGRESO PERSONAS"
     }
 }
 

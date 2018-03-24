@@ -81,7 +81,7 @@
     /*height: 56px;*/
 }
 
-table { 
+.tabla-form { 
     border-collapse: collapse;
     z-index: 1; /* Sit on top */
     left: 0;
@@ -91,22 +91,22 @@ table {
     overflow: auto; /* Enable scroll if needed */
 }
 
-tr {
+.tabla-form tr {
     border-bottom: 3px solid #1a1a1a;
     background-color: #39868c;
     height: 56px;
 }
 
-tr:last-child {
+.tabla-form tr:last-child {
     border: 0px;    
 }
 
-tr:first-child {
+.tabla-form tr:first-child {
     border-bottom: 3px solid #1a1a1a;
     background-color: #39868c;
 }
 
-td{
+.tabla-form td{
     font-size: 1.3em;
 }
 
