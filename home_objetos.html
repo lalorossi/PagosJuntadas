@@ -23,20 +23,28 @@
  -->
 
 <body style="background-color: #3f557a; margin: 0px">
-<header style="background-color: #00ffff; margin-bottom: 15px">
+<header class="header">
     <table>
         <tr>
             <td style="width: 50%">    
-                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next" style="color: #00ffff; background-color: #00ffff; border: 0">
+                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-header">
                     <i class="material-icons" style="margin: 18px;">arrow_back </i>        
+                </button>
             </td>
             <td style="width: 70%">
                 PAGINA1                
             </td>
             <td>
-                </button><button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next" style="color: #000000; background-color: #00ffff; border: 0">
-                    <i class="material-icons" style="margin: 18px;">more_vert</i>        
-                </button>
+                <div class="dropdown">
+                    <button type="button" value="Anterior" onclick="myFunction()" class="boton-header dropbtn" >
+                        <i class="material-icons dropbtn" style="margin: 18px;">more_vert</i>        
+                    </button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                </div>
             </td>
         </tr>
     </table>

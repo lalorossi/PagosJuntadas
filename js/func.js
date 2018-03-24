@@ -73,11 +73,11 @@ function cambiarPagina(idPagina) {
     document.getElementById(idPagina).style.display="";
     if(idPagina == "pag1"){
         document.getElementById("pag2").style.display="none";
-        atras = document.getElementsByClassName("boton-next")[0].style.color="#00ffff";
+        atras = document.getElementsByClassName("boton-header")[0].style.color="#00ffff";
     }
     else{
         document.getElementById("pag1").style.display="none";
-        atras = document.getElementsByClassName("boton-next")[0].style.color="#000000";
+        atras = document.getElementsByClassName("boton-header")[0].style.color="#000000";
     }
 }
 
@@ -590,4 +590,32 @@ function calcular(){
     }
     setModoModal();
     mostrarModal();
+}
+
+
+
+
+
+
+
+
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+    opcActivadas = true;
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
 }
