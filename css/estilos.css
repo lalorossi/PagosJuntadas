@@ -200,6 +200,19 @@ input::placeholder {
 }
 
 
+.tabla-header {
+    width: 100%;
+}
+
+.tabla-header tr {
+    width: 100%;
+}
+
+.tabla-header td{
+    width: 33%;
+}
+
+
 /* Dropdown Button */
 
 
@@ -208,7 +221,7 @@ input::placeholder {
 .dropbtn {
     color: #000000;
     background-color: #00ffff;
-    border: 0
+    border: 0;
 }
 
 
