@@ -73,7 +73,7 @@ function cambiarPagina(idPagina) {
     document.getElementById(idPagina).style.display="";
     if(idPagina == "pag1"){
         document.getElementById("pag2").style.display="none";
-        document.getElementsByClassName("boton-header")[0].style.color="#00ffff";
+        document.getElementsByClassName("boton-header")[0].style.color="#0088a3";
         document.getElementsByClassName("boton-header")[0].disabled=true
         document.getElementById("nombre-pagina").innerHTML = "INGRESO COMPRAS"
     }
