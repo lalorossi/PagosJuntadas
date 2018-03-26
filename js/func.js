@@ -605,7 +605,7 @@ function calcular(){
 
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
-function myFunction() {
+function dropdown() {
     document.getElementById("myDropdown").classList.toggle("show");
     opcActivadas = true;
 }
@@ -622,4 +622,8 @@ window.onclick = function(event) {
           }
         }
       }
+}
+
+function borrar(){
+    window.alert("BORRA");
 }
