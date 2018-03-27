@@ -18,12 +18,12 @@
     el modal se muestra vacio cuando no hay nada que mostrar. Validar que haya personas ingresadas antes de mostrarlo
  -->
 
-<body style="background-color: #62ebff; margin: 0px">
+<body style="margin: 0px" class="color1">
 <header class="header">
-    <table class="tabla-header">
+    <table class="tabla-header color2">
         <tr>
             <td align="left" style="width:20%">    
-                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-header" disabled>
+                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-header color2" disabled>
                     <i class="material-icons" style="margin: 18px;">arrow_back </i>        
                 </button>
             </td>
@@ -32,7 +32,7 @@
             </td>
             <td align:"right" style="width:20%">
                 <div class="dropdown" align="right">
-                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn" >
+                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn color2" >
                         <i class="material-icons dropbtn" style="margin: 18px;">more_vert</i>        
                     </button>
                     <div id="myDropdown" class="dropdown-content" align="left">
@@ -47,12 +47,12 @@
 
 <div id="form" class="app">
     <div id="pag1" class="pagina">
-        <table id="page1" class="tabla-form">
+        <table id="page1" class="tabla-form color3">
             <tr class="compra">
                 <td>Compra</td>
-                <td style="width:70%"><input style="width:85%" type="text" id="concepto" placeholder="Compra" class="table-text"> </td>
+                <td style="width:70%"><input style="width:85%" type="text" id="concepto" placeholder="Compra" class="table-text color3"> </td>
                 <td>$</td>
-                <td style="width:15%"><input style="width:75%" type="number" id="precio" class="table-number"></td>
+                <td style="width:15%"><input style="width:75%" type="number" id="precio" class="table-number color3"></td>
                 
                 <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
@@ -64,10 +64,10 @@
     </div>
     
     <div id="pag2" class="pagina" style="display:none">
-        <table id="page2" class="tabla-form">
+        <table id="page2" class="tabla-form color3">
             <tr class="persona">
                 <td>Nombre</td>
-                <td style="width:90%"><input type="text" style="width:90%" class="table-text" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
+                <td style="width:90%"><input type="text" style="width:90%" class="table-text color3" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
                 <td>
                     <button type="button" id="activado" class="agregar" onclick="mostrarCompras(this)" value="+">
