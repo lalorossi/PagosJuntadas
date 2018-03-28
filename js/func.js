@@ -368,6 +368,16 @@ function vaciarComprasPersona(pos){
     personas[pos].comprasPorPersona = [];
 }
 
+function actualizable(nombre){
+    if(nombre){
+            //window.alert(nombre);
+            isNombreSeteado = true;
+            nombreseteado = nombre;
+    }else{
+        isNombreSeteado = false;
+    }
+}
+
 //Guarda el nombre de la persona ingresda
 function guardarPersona(nombre){
     var bandera = 0;
@@ -378,8 +388,17 @@ function guardarPersona(nombre){
             }
         }
         if(bandera != 1){
-            nuevaPersona = new Persona(nombre);
-            personas.push(nuevaPersona);
+            if(isNombreSeteado){
+                for (var i = personas.length - 1; i >= 0; i--) {
+                    if(personas[i].nombre == nombreseteado){
+                        personas[i].nombre = nombre;
+                    }           
+                }
+            }
+            else{
+                nuevaPersona = new Persona(nombre);
+                personas.push(nuevaPersona);
+            }
         }
         for (var i = personas.length - 1; i >= 0; i--) {
         }
@@ -455,6 +474,7 @@ function filtrarPersonasBorradas(){
         if(bandera != 1){
             vaciarComprasPersona(i);
             personas.splice(i, 1);
+            //window.alert(personas.length);
         }
     }
 
