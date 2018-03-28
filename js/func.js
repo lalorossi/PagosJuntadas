@@ -424,6 +424,7 @@ function actualizarPersona(pers, boton) {
         if (personas[o].nombre == pers) {
             pos = o;
         }
+        //window.alert(personas[o].nombre);
     }
     //No se buscarian las compras si la persona no existiera
     if(pos>=0){
@@ -453,6 +454,9 @@ function actualizarPersona(pers, boton) {
                 }
             }
         }
+    }
+    else{
+        var marcadas = 0;
     }
 
     var rows = document.getElementsByClassName("persona");
@@ -484,10 +488,19 @@ function filtrarPersonasBorradas(){
         var bandera = 0;
         for (var o = ingresadas.length - 1; o >= 0; o--) {
             if(ingresadas[o].value == personas[i].nombre){
-                bandera = 1;
+                //window.alert("Encuentra el nombre");
+                if(personas[i].comprasPorPersona.length>0){
+                    bandera = 1;
+                }
+                else{
+                    //window.alert("Encuentra el nombre sin compras");
+                    var personaSinCompras = o;
+                }
             }
         }
         if(bandera != 1){
+            //window.alert(personaSinCompras);
+            ingresadas[personaSinCompras].value = "";
             vaciarComprasPersona(i);
             personas.splice(i, 1);
             //window.alert(personas.length);
@@ -526,7 +539,6 @@ function calcular(){
             for (var u = compras.length - 1; u >= 0; u--) {
                 //window.alert(compras[u].producto);
                 //window.alert(comprasDePersona[o].producto);
-
                 //Se podria evitar. En cada persona, ya estan los objetos compra, no hace falta buscarlos por coincidencias con el array de compras
                 if(compras[u].producto == comprasDePersona[o].producto){
                     //window.alert(compras[u].producto);
@@ -541,7 +553,6 @@ function calcular(){
                     parrafo = crearNodo("p");
                     parrafo.appendChild(text);
                     escribirModal(parrafo);
-
                 }
             }
             */
@@ -572,11 +583,14 @@ function calcular(){
 
         pagoTotal -= personas[i].plataPuesta;
 
+        var parrafo = crearNodo("p");
+
         if(pagoTotal!=0 || personas[i].plataPuesta>0){   
             var mensajeTotal = "";
             mensajeTotal = mensajeTotal.concat(personas[i].nombre);
             mensajeTotal = mensajeTotal.concat(": ");
             var text1 = document.createTextNode(mensajeTotal);
+            parrafo.appendChild(text1);
         }
 
         var span = crearNodo("span");
@@ -610,8 +624,6 @@ function calcular(){
             }
         });
 
-        var parrafo = crearNodo("p");
-        parrafo.appendChild(text1);
         parrafo.appendChild(span);
         if(pagoTotal!=0 || personas[i].plataPuesta>0){
             parrafo.appendChild(botonDetalles);
@@ -628,8 +640,37 @@ function calcular(){
         escribirModal(div2);
 
     }
-    setModoModal();
-    mostrarModal();
+    //window.alert("HOLA");
+    //Solo muestra los detalles de las compras si todas las personas tienen compras asignadas
+    //Esto falla si solo la primer persona es vacio
+    if(personas.length>0 && personas[0].nombre != ""){
+        setModoModal();
+        mostrarModal();   
+    }
+    else{
+
+        borrarModal();
+        //var parrafo = document.createElement("p");
+        var parrafo = crearNodo("P");
+        var texto = document.createTextNode("Inrese al menos una persona con compras");
+        parrafo.appendChild(texto);
+
+        //Crear boton de OK que esconde el modal
+        //var boton = document.createElement("input");
+        var boton = crearNodo("input", "boton-modal");
+        boton.type = "button";
+        boton.value = "OK";
+
+        boton.onclick = function() { 
+            esconderModal();
+        };
+
+
+        setElementFooter(boton);
+        setModoModal("error");
+        escribirModal(parrafo);
+        mostrarModal();
+    }
 }
 
 
