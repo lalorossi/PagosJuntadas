@@ -430,9 +430,12 @@ function actualizarPersona(pers, boton) {
         personas[pos].plataPuesta = puso;
         vaciarComprasPersona(pos);
 
+        var marcadas = 0;
+
         //Despues de eliminar las compras de la persona "clikcer", agrega las compras checkeadas al apretar OK
         for (var i = boxes.length - 1; i >= 0; i--) {
             if(boxes[i].checked){
+                marcadas++;
                 for (var o = compras.length - 1; o >= 0; o--) {
                     if(compras[o].producto == boxes[i].value){
                         var bandera = 0;
@@ -449,6 +452,19 @@ function actualizarPersona(pers, boton) {
                     }
                 }
             }
+        }
+    }
+
+    var rows = document.getElementsByClassName("persona");
+
+    for (var i = rows.length - 1; i >= 0; i--) {
+        var nombrePers = rows[i].getElementsByTagName("td")[1];
+        //window.alert(nombrePers);
+        nombrePers = nombrePers.getElementsByTagName("input")[0].value;
+        //window.alert(nombrePers);
+        if(nombrePers == pers){
+            rows[i].getElementsByTagName("td")[2].innerHTML = "(" + marcadas + ")";
+            break;
         }
     }
 
