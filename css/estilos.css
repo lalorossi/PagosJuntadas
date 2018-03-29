@@ -89,6 +89,7 @@
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
+    box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
 }
 
 .tabla-form tr {
@@ -192,7 +193,8 @@ input::placeholder {
 }
 
 .header {
-    margin-bottom: 15px
+    margin-bottom: 15px;
+    box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
 }
 
 

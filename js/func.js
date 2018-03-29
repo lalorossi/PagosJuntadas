@@ -379,7 +379,9 @@ function actualizable(nombre){
 }
 
 //Guarda el nombre de la persona ingresda
-function guardarPersona(nombre){
+function guardarPersona(inp){
+    nombre = inp.value;
+    window.alert(nombre);
     var bandera = 0;
     if(nombre != ""){
         for (var i = personas.length - 1; i >= 0; i--) {
@@ -402,6 +404,10 @@ function guardarPersona(nombre){
         }
         for (var i = personas.length - 1; i >= 0; i--) {
         }
+    }
+    else{
+        //No funciona todavia   
+        inp.parentNode.parentNode.getElementsByTagName("td")[2].innerHTML = "";
     }
 }
 
@@ -467,7 +473,11 @@ function actualizarPersona(pers, boton) {
         nombrePers = nombrePers.getElementsByTagName("input")[0].value;
         //window.alert(nombrePers);
         if(nombrePers == pers){
-            rows[i].getElementsByTagName("td")[2].innerHTML = "(" + marcadas + ")";
+            if(marcadas==0){
+                rows[i].getElementsByTagName("td")[2].innerHTML = "";    
+            }else{
+                rows[i].getElementsByTagName("td")[2].innerHTML = "(" + marcadas + ")";
+            }
             break;
         }
     }
@@ -483,27 +493,29 @@ function actualizarPersona(pers, boton) {
 
 //Elimina a las personas que no están en input al momento de calcular
 function filtrarPersonasBorradas(){
-    var ingresadas = document.getElementsByClassName("table-text");
+    var ingresadas = document.getElementsByClassName("inputNombre");
     for (var i = personas.length - 1; i >= 0; i--) {
         var bandera = 0;
+        window.alert("1");
         for (var o = ingresadas.length - 1; o >= 0; o--) {
+            window.alert("2");
             if(ingresadas[o].value == personas[i].nombre){
-                //window.alert("Encuentra el nombre");
+                window.alert("Encuentra el nombre");
                 if(personas[i].comprasPorPersona.length>0){
                     bandera = 1;
                 }
                 else{
-                    //window.alert("Encuentra el nombre sin compras");
+                    window.alert("Encuentra el nombre sin compras");
                     var personaSinCompras = o;
                 }
             }
         }
         if(bandera != 1){
-            //window.alert(personaSinCompras);
+            window.alert("Tiene que borrar");
             ingresadas[personaSinCompras].value = "";
             vaciarComprasPersona(i);
             personas.splice(i, 1);
-            //window.alert(personas.length);
+            window.alert("Borra bien");
         }
     }
 
