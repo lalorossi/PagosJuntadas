@@ -76,12 +76,14 @@ function cambiarPagina(idPagina) {
         document.getElementsByClassName("boton-header")[0].style.color="#0088a3";
         document.getElementsByClassName("boton-header")[0].disabled=true
         document.getElementById("nombre-pagina").innerHTML = "INGRESO COMPRAS"
+        document.getElementsByClassName("plus")[1].innerHTML = "keyboard_arrow_right";
     }
     else{
         document.getElementById("pag1").style.display="none";
         document.getElementsByClassName("boton-header")[0].style.color="#000000";
         document.getElementsByClassName("boton-header")[0].disabled=false;
         document.getElementById("nombre-pagina").innerHTML = "INGRESO PERSONAS"
+        document.getElementsByClassName("plus")[1].innerHTML = "check";
     }
 }
 
@@ -92,6 +94,15 @@ function existeCompra(compra) {
         }
     }
     return false;
+}
+
+function avanzar(){
+    if(document.getElementById("pag1").style.display != "none"){
+        checkSubmit();
+    }
+    else{
+        calcular();
+    }
 }
 
 function checkSubmit(){
@@ -381,7 +392,7 @@ function actualizable(nombre){
 //Guarda el nombre de la persona ingresda
 function guardarPersona(inp){
     nombre = inp.value;
-    window.alert(nombre);
+    //window.alert(nombre);
     var bandera = 0;
     if(nombre != ""){
         for (var i = personas.length - 1; i >= 0; i--) {
@@ -496,26 +507,26 @@ function filtrarPersonasBorradas(){
     var ingresadas = document.getElementsByClassName("inputNombre");
     for (var i = personas.length - 1; i >= 0; i--) {
         var bandera = 0;
-        window.alert("1");
+        //window.alert("1");
         for (var o = ingresadas.length - 1; o >= 0; o--) {
-            window.alert("2");
+            //window.alert("2");
             if(ingresadas[o].value == personas[i].nombre){
-                window.alert("Encuentra el nombre");
+                //window.alert("Encuentra el nombre");
                 if(personas[i].comprasPorPersona.length>0){
                     bandera = 1;
                 }
                 else{
-                    window.alert("Encuentra el nombre sin compras");
+                    //window.alert("Encuentra el nombre sin compras");
                     var personaSinCompras = o;
                 }
             }
         }
         if(bandera != 1){
-            window.alert("Tiene que borrar");
+            //window.alert("Tiene que borrar");
             ingresadas[personaSinCompras].value = "";
             vaciarComprasPersona(i);
             personas.splice(i, 1);
-            window.alert("Borra bien");
+            //window.alert("Borra bien");
         }
     }
 

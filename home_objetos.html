@@ -18,7 +18,7 @@
     el modal se muestra vacio cuando no hay nada que mostrar. Validar que haya personas ingresadas antes de mostrarlo
  -->
 
-<body style="margin: 0px" class="color1">
+<body style="margin: 0px; font-family: Helvetica" class="color1">
 <header class="header">
     <table class="tabla-header color2">
         <tr>
@@ -28,7 +28,7 @@
                 </button>
             </td>
             <td id="nombre-pagina" align="center" style="width:60%">
-                INGRESO COMPRAS                
+                Ingreso compras                
             </td>
             <td align:"right" style="width:20%">
                 <div class="dropdown" align="right">
@@ -59,8 +59,9 @@
         </table>
         <!-- Boton de agregar -->
         <button type="button" value="+" onclick='agregar("compra")' class="boton-add"><i class="material-icons">add_shopping_cart</i></button>
-
+<!-- 
         <button type="button" value="Siguiente" onclick="checkSubmit()" class="boton-next"><i class="material-icons">forward</i></button>
+ -->
     </div>
     
     <div id="pag2" class="pagina" style="display:none">
@@ -96,8 +97,14 @@
         <!-- 
             <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-next"><i class="material-icons">keyboard_return</i></button>
          -->
-
+<!-- 
         <button type="button" id="botonSubmit" value="Siguiente" name="submit" onclick="calcular()" class="boton-next"><i class="material-icons">send</i></button> 
+ -->
+
+        </div>
+
+
+
     </div>
     <!-- The Modal -->
     <div id="myModal" class="modal" style="display: none">
@@ -117,6 +124,16 @@
         </div>
     </div>
 </div>
+
+<div id="container-floating">
+
+  <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" onclick="avanzar()">
+    <p class="plus">
+        <i class="material-icons plus">keyboard_arrow_right</i>
+    </p>
+  </div>
+
+
 
 <!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
 <script type="text/javascript" src="js/func.js"></script>
