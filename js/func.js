@@ -105,8 +105,8 @@ function avanzar(){
     }
 }
 
+compras = [];   //Notar que al no poner var, se hace global
 function checkSubmit(){
-    compras = [];   //Notar que al no poner var, se hace global
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
     var vacio = 0;
 

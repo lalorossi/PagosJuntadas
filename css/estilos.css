@@ -16,12 +16,15 @@
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #fefefe;
+    background-color: #2d4887;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    //border: 1px solid #888;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    /*
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
+    */
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
@@ -56,7 +59,10 @@
 
 .modal-header {
     padding: 2px 16px;
+    /*
     background-color: #5cb85c;
+    background: linear-gradient(to top, #2d4887 0%, #5cb85c 100%);
+    */
     color: white;
 }
 
@@ -64,14 +70,20 @@
 
 .modal-footer {
     padding: 2px 16px;
+    /*
     background-color: #5cb85c;
+    background: linear-gradient(to bottom, #2d4887 0%, #5cb85c 100%);
+    */
     color: white;
 }
 
 /* Header y Footer de los mensajes de error */
 #error {
     padding: 2px 16px;
+    /*
     background-color: #ff0000;
+    */
+    background: linear-gradient(to top, #2d4887 0%, #ff0000 100%);
     color: white;
 }
 
@@ -313,4 +325,5 @@ input::placeholder {
    animation-delay: 0.1s;
   animation-fill-mode: forwards;
 }
+
 
