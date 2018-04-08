@@ -25,7 +25,44 @@ var personas = [];
 var primerCampoPersona = document.getElementsByClassName("persona")[0].innerHTML;
 var primerCampoCompra = document.getElementsByClassName("compra")[0].innerHTML;
 
+var placeholdersCompra = [  "Papitas",
+                            "Chizitos",
+                            "Cerveza",
+                            "Gaseosas",
+                            "Helado",
+                            "Pizzas",
+                            "Aderezos",
+                            "Hamburguesas",
+                            "Panes",
+                            "Delivery",
+                            "Agua mineral",
+                            "Verduras",
+                            "Mani",
+                            "Carbon",
+                            "Queso cheddar"
+                            ];
+var placeholdersExtra = [   "Algo mas?",
+                            "Bueno, ya fue no?",
+                            "Se fundieron con las compras",
+                            "Ricky Fort no compraba tanto",
+                            "Oro en polvo",
+                            "Se me sobrecarga la app",
+                            "El Santo Grial",
+                            "Cuerno de unicornio",
+                            "Un Bitcoin"
+                            ];
 
+//Este array no tiene los numeros para darlos de baja porque cuando llego acá, si sigo agregando compras tengo que repetir en algun punto
+var placeholdersExtra2 = [  "Una noche con Pampita",
+                            "Enanos",
+                            "Dignidad",
+                            "Pancho de Bob Esponja",
+                            "Trabas",
+                            "Ya en serio, pará",
+                            "El amor de ella"
+                            ]
+
+window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 //Agrega un input de compra o persona
 function agregar(cla) {
 
@@ -39,6 +76,8 @@ function agregar(cla) {
     //Si quiero agregar una compra, lo agreago a la pagina 1
     if(cla == "compra"){
         nuevo.innerHTML = primerCampoCompra;
+        inputNuevo = nuevo.getElementsByTagName("input")[0];
+        inputNuevo.placeholder = cambiarPlaceholder(inputNuevo);
         document.getElementById("page1").getElementsByTagName("tbody")[0].appendChild(nuevo);            
     }
 
@@ -56,6 +95,35 @@ function agregar(cla) {
         td = td.lastChild;
         td.id = "activado";
     }
+}
+/*
+function filtrarPlaceholders(array){
+    arrayFiltrado = [];
+    var o = 0;
+    for (var i = 0; i < array.length; i++) {
+        if(array[i][1] == 0){
+            arrayFiltrado[o] = array[i][0];
+            o++;
+        }
+    }
+    return arrayFiltrado;
+}
+*/
+function cambiarPlaceholder(inputNuevo){
+    var inputs = document.getElementsByClassName("plHolderRand");
+    if(inputs.length < 8){
+        var indiceRand = Math.floor(Math.random()*placeholdersCompra.length);
+        var ph = placeholdersCompra[indiceRand];
+        placeholdersCompra.splice(indiceRand, 1);
+    }else if(inputs.length < 13){
+        var indiceRand = Math.floor(Math.random()*placeholdersExtra.length);
+        var ph = placeholdersExtra[indiceRand];
+        placeholdersExtra.splice(indiceRand, 1);
+    }else{
+        var indiceRand = Math.floor(Math.random()*placeholdersExtra2.length);
+        var ph = placeholdersExtra2[indiceRand];
+    }
+    return ph;
 }
 
 function chau0(child)  {
