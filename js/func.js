@@ -73,16 +73,16 @@ function cambiarPagina(idPagina) {
     document.getElementById(idPagina).style.display="";
     if(idPagina == "pag1"){
         document.getElementById("pag2").style.display="none";
-        document.getElementsByClassName("boton-header")[0].style.color="#0088a3";
+        document.getElementsByClassName("boton-header")[0].style.color="#fff";
         document.getElementsByClassName("boton-header")[0].disabled=true
-        document.getElementById("nombre-pagina").innerHTML = "INGRESO COMPRAS"
+        document.getElementById("nombre-pagina").innerHTML = "Compras"
         document.getElementsByClassName("plus")[1].innerHTML = "keyboard_arrow_right";
     }
     else{
         document.getElementById("pag1").style.display="none";
-        document.getElementsByClassName("boton-header")[0].style.color="#000000";
+        document.getElementsByClassName("boton-header")[0].style.color="#0e657e";
         document.getElementsByClassName("boton-header")[0].disabled=false;
-        document.getElementById("nombre-pagina").innerHTML = "INGRESO PERSONAS"
+        document.getElementById("nombre-pagina").innerHTML = "Personas"
         document.getElementsByClassName("plus")[1].innerHTML = "check";
     }
 }

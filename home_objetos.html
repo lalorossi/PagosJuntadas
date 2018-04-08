@@ -18,22 +18,22 @@
     el modal se muestra vacio cuando no hay nada que mostrar. Validar que haya personas ingresadas antes de mostrarlo
  -->
 
-<body style="margin: 0px; font-family: Helvetica" class="color1">
+<body style="margin: 0px; font-family: Helvetica" class="fondo1">
 <header class="header">
-    <table class="tabla-header color2">
+    <table class="tabla-header fondo2">
         <tr>
             <td align="left" style="width:20%">    
-                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-header color2" disabled>
+                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' style="color: #fff"class="boton-header fondo2 color1" disabled>
                     <i class="material-icons" style="margin: 18px;">arrow_back </i>        
                 </button>
             </td>
-            <td id="nombre-pagina" align="center" style="width:60%">
-                Ingreso compras                
+            <td id="nombre-pagina" class="texto1" align="left" style="width:60%">
+                Compras                
             </td>
             <td align:"right" style="width:20%">
                 <div class="dropdown" align="right">
-                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn color2" >
-                        <i class="material-icons dropbtn" style="margin: 18px;">more_vert</i>        
+                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn fondo2" >
+                        <i class="material-icons texto1 dropbtn" style="margin: 18px;">more_vert</i>        
                     </button>
                     <div id="myDropdown" class="dropdown-content" align="left">
                         <a href="#" onclick="borrar()">Reset</a>
@@ -47,12 +47,12 @@
 
 <div id="form" class="app">
     <div id="pag1" class="pagina">
-        <table id="page1" class="tabla-form color3">
-            <tr class="compra">
+        <table id="page1" class="tabla-form fondo3">
+            <tr class="compra texto1">
                 <td>Compra</td>
-                <td style="width:70%"><input style="width:85%" type="text" id="concepto" placeholder="Compra" class="table-text color3"> </td>
-                <td>$</td>
-                <td style="width:15%"><input style="width:75%" type="number" id="precio" class="table-number color3"></td>
+                <td style="width:70%"><input style="width:85%" type="text" id="concepto" placeholder="Compra" class="table-text transparente1"> </td>
+                <td class="texto1">$</td>
+                <td style="width:15%"><input style="width:75%" type="number" id="precio" placeholder="00.0" class="table-number transparente1"></td>
                 
                 <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
@@ -65,10 +65,10 @@
     </div>
     
     <div id="pag2" class="pagina" style="display:none">
-        <table id="page2" class="tabla-form color3">
-            <tr class="persona">
+        <table id="page2" class="tabla-form fondo3">
+            <tr class="persona texto1">
                 <td>Nombre</td>
-                <td style="width:90%"><input type="text" style="width:90%" class="table-text inputNombre color3" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this)" onclick="actualizable(this.value)"> </td>
+                <td style="width:90%"><input type="text" style="width:90%" class="table-text inputNombre transparente1" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this)" onclick="actualizable(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
                 <td>
                 </td>
