@@ -1,3 +1,8 @@
+body{
+  font-family: 'Roboto', sans-serif;
+}
+
+
 /* The Modal (background) */    
 .modal {
     display: none; /* Hidden by default */
@@ -180,6 +185,8 @@ input[type="number"]:not(.modal-input){
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
+    margin-bottom: 100px; /*Para dejar lugar al boton flotante abajo*/
+    margin-top: 80px;
 }
 
 /* Modal Content */
@@ -207,6 +214,9 @@ input[type="number"]:not(.modal-input){
     box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
     font-size: 1.5em;
     color: white;
+    position: fixed;
+    z-index: 10;
+    top: 0;
 }
 
 
@@ -275,11 +285,19 @@ input[type="number"]:not(.modal-input){
 }
 
 .fondo3{
-    background-color: #fff;
+    background-color: #4285f4;
 }
 
 .texto1{
+  color: #fff;
+}
+
+.texto2{
   color: #0e657e;
+}
+
+.textoInvisible {
+  color: rgba(0,0,0,0);
 }
 
 .transparente1 {

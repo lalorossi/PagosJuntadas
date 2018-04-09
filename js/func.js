@@ -58,20 +58,28 @@ var placeholdersExtra2 = [  "Una noche con Pampita",
                             "Dignidad",
                             "Pancho de Bob Esponja",
                             "Trabas",
-                            "Ya en serio, pará",
+                            "Ya en serio, para",
                             "El amor de ella"
                             ]
 
 window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 //Agrega un input de compra o persona
-function agregar(cla) {
+function agregar() {
 
     /*
     var nuevo = document.createElement("tr");
     nuevo.className=cla;
     */
+    if(document.getElementById("pag1").style.display != "none"){
+        var cla = "compra";
+    }
+    else{
+        var cla = "persona";
+    }
+    //window.alert(cla);
 
     var nuevo = crearNodo("tr", cla);
+    nuevo.classList.add("texto2");
 
     //Si quiero agregar una compra, lo agreago a la pagina 1
     if(cla == "compra"){
@@ -141,18 +149,23 @@ function cambiarPagina(idPagina) {
     document.getElementById(idPagina).style.display="";
     if(idPagina == "pag1"){
         document.getElementById("pag2").style.display="none";
-        document.getElementsByClassName("boton-header")[0].style.color="#fff";
+        //document.getElementsByClassName("boton-header")[0].style.color="#4285f4";
+        document.getElementsByClassName("boton-header")[0].style.display="none";
         document.getElementsByClassName("boton-header")[0].disabled=true
         document.getElementById("nombre-pagina").innerHTML = "Compras"
         document.getElementsByClassName("plus")[1].innerHTML = "keyboard_arrow_right";
     }
     else{
         document.getElementById("pag1").style.display="none";
-        document.getElementsByClassName("boton-header")[0].style.color="#0e657e";
+        //document.getElementsByClassName("boton-header")[0].style.color="#fff";
+        document.getElementsByClassName("boton-header")[0].style.display="";
         document.getElementsByClassName("boton-header")[0].disabled=false;
         document.getElementById("nombre-pagina").innerHTML = "Personas"
         document.getElementsByClassName("plus")[1].innerHTML = "check";
     }
+    //Funciona, pero le cambio el display en vez del color de letra para esconderlo
+    // document.getElementsByClassName("boton-header")[0].classList.toggle("textoInvisible");
+    // document.getElementsByClassName("boton-header")[0].classList.toggle("texto1");
 }
 
 function existeCompra(compra) {
