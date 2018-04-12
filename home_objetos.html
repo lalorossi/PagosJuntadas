@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/estilos.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-
+    <script src="https://hammerjs.github.io/dist/hammer.js"></script>
 
     
 </head>
@@ -63,7 +63,7 @@
                 <td class="texto2">$</td>
                 <td style="width:20%"><input style="width:75%" type="number" id="precio" placeholder="00.0" class="table-number transparente1"></td>
                 
-                <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
+                <td style="display: none"><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
         <!-- Boton de agregar -->
@@ -144,8 +144,39 @@
 </div>  
 
 
+
 <!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
 <script type="text/javascript" src="js/func.js"></script>
+<script type="text/javascript">
+        var myElement = document.getElementsByClassName('compra')[0];
+
+            hammer = new Hammer(myElement   );
+            var basura = myElement.getElementsByTagName("td");
+            basura = basura[basura.length-1];
+            hammer.on("swipeleft swiperight tap press", function(ev){
+                window.alert(ev.type);
+                if(ev.type == "swipeleft"){
+                    //myElement[0].style = "background-color: red";
+                    basura.style.display = "";
+                    //myElement.style.width = "80%";
+                    //window.alert(ev.type);
+                }
+                if (ev.type == "swiperight") {
+                    //window.alert(basura);
+                    basura.style.display = "none";
+                    //act = 0;
+                }
+            })
+
+        // // create a simple instance
+        // // by default, it only adds horizontal recognizers
+        // var mc = new Hammer(myElement);
+
+        // // listen to events...
+        // mc.on("panleft panright tap press", function(ev) {
+        //     myElement.textContent = ev.type +" gesture detected.";
+        // });
+    </script>
 
 </body>
 </html>
