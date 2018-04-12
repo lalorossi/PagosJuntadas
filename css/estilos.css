@@ -146,11 +146,11 @@ input {
 }
 
 input[type="text"]{
-     font-size:16pt;
+     font-size:13pt;
 }
 
 input[type="number"]:not(.modal-input){
-     font-size:16pt;
+     font-size:13pt;
 }
 
 
@@ -308,6 +308,15 @@ input[type="number"]:not(.modal-input){
   color: #69767b;
 }
 
+.textoL{
+}
+
+.textoM{
+
+}
+
+.textoS{
+}
 
 
 
