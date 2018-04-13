@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/estilos.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <script src="https://hammerjs.github.io/dist/hammer.js"></script>
+    <!-- <script src="https://hammerjs.github.io/dist/hammer.js"></script> -->
 
     
 </head>
@@ -63,7 +63,7 @@
                 <td class="texto2">$</td>
                 <td style="width:20%"><input style="width:75%" type="number" id="precio" placeholder="00.0" class="table-number transparente1"></td>
                 
-                <td style="display: none"><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
+                <td><button type="button" class="eliminar boton-form fondo2" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
         <!-- Boton de agregar -->
@@ -80,14 +80,12 @@
                 <td style="width:85%"><input type="text" style="width:90%" class="table-text inputNombre transparente1" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this)" onclick="actualizable(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
                 <td>
-                </td>
-                <td>
-                    <button type="button" id="activado" class="agregar" onclick="mostrarCompras(this)" value="+">
-                        <i style="padding:0px" class="material-icons">local_atm</i>
+                    <button type="button" id="activado" class="agregar boton-form fondo2" onclick="mostrarCompras(this)" value="+">
+                        <i style="padding:0px" class="material-icons">more_vert</i>
                     </button>
                 </td>
                 <td style="width:15%">
-                    <button type="button" class="eliminar" onclick="chau(this)">
+                    <button type="button" class="eliminar boton-form fondo2" onclick="chau(this)">
                         <i class="material-icons">delete</i>
                     </button>
                 </td>
@@ -147,6 +145,7 @@
 
 <!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
 <script type="text/javascript" src="js/func.js"></script>
+<!-- 
 <script type="text/javascript">
         var myElement = document.getElementsByClassName('compra')[0];
 
@@ -177,6 +176,6 @@
         //     myElement.textContent = ev.type +" gesture detected.";
         // });
     </script>
-
+ -->
 </body>
 </html>

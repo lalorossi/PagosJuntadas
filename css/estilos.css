@@ -166,15 +166,11 @@ input[type="number"]:not(.modal-input){
 }
 
 .eliminar i{
-    color: #ffb3b3;
-}
-
-.eliminar:hover i{
     color: red;
 }
 
 .agregar {
-    color: #66ccff;
+    /*color: #66ccff;*/
 }
 
 .app{
@@ -207,6 +203,10 @@ input[type="number"]:not(.modal-input){
 .boton-header{
     /*color: #839ba2;*/
     border: 0
+}
+
+.boton-form{
+  border: 0;
 }
 
 .header {
