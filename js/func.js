@@ -593,7 +593,8 @@ function filtrarPersonasBorradas(){
             //window.alert("2");
             if(ingresadas[o].value == personas[i].nombre){
                 //window.alert("Encuentra el nombre");
-                if(personas[i].comprasPorPersona.length>0){
+                //window.alert(personas[i].plataPuesta);
+                if(personas[i].comprasPorPersona.length>0 || personas[i].plataPuesta>0){
                     bandera = 1;
                 }
                 else{

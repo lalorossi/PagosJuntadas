@@ -52,7 +52,6 @@ body{
     color: white;
     float: right;
     font-size: 28px;
-    font-weight: bold;
 }
 
 .close:hover,
@@ -69,6 +68,7 @@ body{
     background: linear-gradient(to top, #2d4887 0%, #5cb85c 100%);
     */
     color: white;
+    font-weight: ;
 }
 
 .modal-body {padding: 2px 16px;}
@@ -136,6 +136,8 @@ input[type="button"]{
 .eliminar {
     width: 25px;
     padding: 0px;
+    border: none;
+    background: rgb(0,0,0,0);
 }
 
 /* Estilos de input */
@@ -171,6 +173,8 @@ input[type="number"]:not(.modal-input){
 
 .agregar {
     /*color: #66ccff;*/
+    border: none;
+    background: rgb(0,0,0,0);
 }
 
 .app{
@@ -293,7 +297,7 @@ input[type="number"]:not(.modal-input){
 }
 
 .texto2{
-  color: #0e657e;
+  color: #404040;
 }
 
 .textoInvisible {

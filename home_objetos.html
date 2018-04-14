@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/estilos.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <!-- <script src="https://hammerjs.github.io/dist/hammer.js"></script> -->
+    <!--<script src="https://hammerjs.github.io/dist/hammer.js"></script> -->
 
     
 </head>
@@ -23,8 +23,9 @@
 <body style="margin: 0px" class="fondo1">
 <header class="header">
     <table class="tabla-header fondo3">
+        <!-- Cambiar acá el height de la tabla de header -->
         <tr>
-            <td align="left" style="width:2%">    
+            <td align="left" style="width:2%; height:50px">    
                 <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-header fondo3 texto1" disabled style="display:none">
                     <i class="material-icons" style="margin: 18px;">arrow_back </i>        
                 </button>
@@ -35,14 +36,14 @@
             <td align:"right" style="width:2%">
                 <div class="boton-header" align="right" style="width:42px">
                     <button type="button" value="Anterior" onclick="agregar()" class="boton-header dropbtn fondo3" >
-                        <i class="material-icons texto1 dropbtn" style="margin: 18px;">add</i>        
+                        <i class="material-icons texto1 dropbtn">add</i>        
                     </button>
                 </div>
             </td>
             <td align:"right" style="width:2%">
                 <div class="dropdown boton-header" align="right">
-                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn fondo3" style="width: 30px; margin-right:30px">
-                        <i class="material-icons texto1 dropbtn" style="margin: 18px;">more_vert</i>        
+                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn fondo3" style="margin-right:15px">
+                        <i class="material-icons texto1 dropbtn">more_vert</i>        
                     </button>
                     <div id="myDropdown" class="dropdown-content" align="left">
                         <a href="#" onclick="borrar()">Reset</a>
@@ -63,7 +64,7 @@
                 <td class="texto2">$</td>
                 <td style="width:20%"><input style="width:75%" type="number" id="precio" placeholder="00.0" class="table-number transparente1"></td>
                 
-                <td><button type="button" class="eliminar boton-form fondo2" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
+                <td><button type="button" class="eliminar" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
         </table>
         <!-- Boton de agregar -->
@@ -80,12 +81,14 @@
                 <td style="width:85%"><input type="text" style="width:90%" class="table-text inputNombre transparente1" id="nombre1" placeholder="Nombre" onblur="guardarPersona(this)" onclick="actualizable(this.value)"> </td>
                 <!-- Cuando se "sale" del input, se guarda la persona -->
                 <td>
-                    <button type="button" id="activado" class="agregar boton-form fondo2" onclick="mostrarCompras(this)" value="+">
+                </td>
+                <td>
+                    <button type="button" id="activado" class="agregar texto2" onclick="mostrarCompras(this)" value="+">
                         <i style="padding:0px" class="material-icons">more_vert</i>
                     </button>
                 </td>
                 <td style="width:15%">
-                    <button type="button" class="eliminar boton-form fondo2" onclick="chau(this)">
+                    <button type="button" class="eliminar" onclick="chau(this)">
                         <i class="material-icons">delete</i>
                     </button>
                 </td>
@@ -118,6 +121,8 @@
         <!-- Modal content -->
         <div class="modal-content">
           <div class="modal-header">
+            <!-- Sacar el boton de cerrar cuando normalice los modals a material, con botones de acciones explicitas siempre abajo -->
+            <!-- Por ejemplo, agregar boton de cancelar en lugar de la cruz -->
             <span class="close" onclick="esconderModal()">&times;</span>
             <h2>Modal Header</h2>
           </div>
@@ -145,7 +150,6 @@
 
 <!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
 <script type="text/javascript" src="js/func.js"></script>
-<!-- 
 <script type="text/javascript">
         var myElement = document.getElementsByClassName('compra')[0];
 
@@ -176,6 +180,6 @@
         //     myElement.textContent = ev.type +" gesture detected.";
         // });
     </script>
- -->
+
 </body>
 </html>
