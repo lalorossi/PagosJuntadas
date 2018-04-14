@@ -24,25 +24,27 @@
 <header class="header">
     <table class="tabla-header fondo3">
         <!-- Cambiar acá el height de la tabla de header -->
-        <tr>
-            <td align="left" style="width:2%; height:50px">    
-                <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="boton-header fondo3 texto1" disabled style="display:none">
-                    <i class="material-icons" style="margin: 18px;">arrow_back </i>        
-                </button>
-            </td>
+        <tr style="height: 50px">
+            <td align:"right" style="width:2%">
+                <!-- <div class="" align="right" style="width:42px"> -->
+                    <button type="button" value="Anterior" onclick='cambiarPagina("pag1")' class="texto1 boton-header botonMaterial" disabled style="display: none">
+                        <i class="material-icons texto1 dropbtn">arrow_back</i>        
+                    </button>
+                <!-- </div> -->
+            </td>   
             <td id="nombre-pagina" class="texto1" align="left" style="width:60%">
                 Compras                
             </td>
             <td align:"right" style="width:2%">
-                <div class="boton-header" align="right" style="width:42px">
-                    <button type="button" value="Anterior" onclick="agregar()" class="boton-header dropbtn fondo3" >
+                <div class="" align="right" style="width:42px">
+                    <button type="button" value="Anterior" onclick="agregar()" class="boton-header botonMaterial" >
                         <i class="material-icons texto1 dropbtn">add</i>        
                     </button>
                 </div>
             </td>
             <td align:"right" style="width:2%">
-                <div class="dropdown boton-header" align="right">
-                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header dropbtn fondo3" style="margin-right:15px">
+                <div class="dropdown" align="right">
+                    <button type="button" value="Anterior" onclick="dropdown()" class="boton-header botonMaterial" style="margin-right:15px">
                         <i class="material-icons texto1 dropbtn">more_vert</i>        
                     </button>
                     <div id="myDropdown" class="dropdown-content" align="left">
@@ -130,7 +132,7 @@
             <p>Some text in the Modal Body</p>
             <p>Some other text...</p>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer" align="right">
             <h3>Modal Footer</h3>
           </div>
         </div>
@@ -150,36 +152,7 @@
 
 <!-- Cargo los scripts al funal para que ya se puedan seleccionar los elementos en la página -->
 <script type="text/javascript" src="js/func.js"></script>
-<script type="text/javascript">
-        var myElement = document.getElementsByClassName('compra')[0];
 
-            hammer = new Hammer(myElement   );
-            var basura = myElement.getElementsByTagName("td");
-            basura = basura[basura.length-1];
-            hammer.on("swipeleft swiperight tap press", function(ev){
-                window.alert(ev.type);
-                if(ev.type == "swipeleft"){
-                    //myElement[0].style = "background-color: red";
-                    basura.style.display = "";
-                    //myElement.style.width = "80%";
-                    //window.alert(ev.type);
-                }
-                if (ev.type == "swiperight") {
-                    //window.alert(basura);
-                    basura.style.display = "none";
-                    //act = 0;
-                }
-            })
-
-        // // create a simple instance
-        // // by default, it only adds horizontal recognizers
-        // var mc = new Hammer(myElement);
-
-        // // listen to events...
-        // mc.on("panleft panright tap press", function(ev) {
-        //     myElement.textContent = ev.type +" gesture detected.";
-        // });
-    </script>
 
 </body>
 </html>

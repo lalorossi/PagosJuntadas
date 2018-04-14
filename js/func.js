@@ -219,6 +219,7 @@ function checkSubmit(){
         borrarModal();
         //var parrafo = document.createElement("p");
         var parrafo = crearNodo("P");
+        parrafo.classList.add("textoModal");
         var texto = document.createTextNode("Ingrese al menos una compra con precio");
         parrafo.appendChild(texto);
 
@@ -231,6 +232,9 @@ function checkSubmit(){
         boton.onclick = function() { 
             esconderModal();
         };
+
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
 
 
         setElementFooter(boton);
@@ -757,7 +761,8 @@ function calcular(){
         borrarModal();
         //var parrafo = document.createElement("p");
         var parrafo = crearNodo("P");
-        var texto = document.createTextNode("Inrese al menos una persona con compras");
+        parrafo.classList.add("textoModal");
+        var texto = document.createTextNode("Ingrese al menos una persona con compras");
         parrafo.appendChild(texto);
 
         //Crear boton de OK que esconde el modal
@@ -769,6 +774,8 @@ function calcular(){
         boton.onclick = function() { 
             esconderModal();
         };
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial")
 
 
         setElementFooter(boton);
