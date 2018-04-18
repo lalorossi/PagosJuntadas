@@ -397,6 +397,7 @@ function mostrarCompras(yo){
 
             div.appendChild(checkbox);
             div.appendChild(txt);           //Adiciona el texto al lado del checkbox con el nombre de la compra
+            div.classList.add("textoModal");
 
             escribirModal(div);
         };
@@ -425,21 +426,47 @@ function mostrarCompras(yo){
         else{
             input.placeholder = valor;
         }
+
+        input.classList.add("transparente1");
+
         div.appendChild(txt)
         div.appendChild(input);
+        div.classList.add("textoModal");
         escribirModal(div);
 
         //Crea el boton para confirmar la seleccion de compras
         //var boton = document.createElement("input");
         var boton = crearNodo("input", "modal-boton");
         boton.type = "button";
-        boton.value = "OK";
+        boton.value = "CONFIRMAR";
+
+
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
 
 
         boton.onclick = function() { 
             actualizarPersona(personaClicker, yo);
         };
-        setElementFooter(boton);
+        var botonCancelar = crearNodo("input", "modal-boton");
+        botonCancelar.type = "button";
+        botonCancelar.value = "CANCELAR";
+        botonCancelar.style.color = "#000";
+
+
+        botonCancelar.classList.add("botonMaterial");
+        botonCancelar.classList.add("textoBotonMaterial");
+
+
+        botonCancelar.onclick = function() { 
+            esconderModal();
+        };
+
+        var divBotones = crearNodo("div");
+        divBotones.appendChild(botonCancelar);
+        divBotones.appendChild(boton);
+
+        setElementFooter(divBotones);
         setTextHeader("Compras");
         setModoModal();
         mostrarModal();
@@ -775,7 +802,7 @@ function calcular(){
             esconderModal();
         };
         boton.classList.add("botonMaterial");
-        boton.classList.add("textoBotonMaterial")
+        boton.classList.add("textoBotonMaterial");
 
 
         setElementFooter(boton);
