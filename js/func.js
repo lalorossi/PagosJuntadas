@@ -286,13 +286,13 @@ function resetFooter() {
 
 function resetHeader() {
     var header = document.getElementsByClassName("modal-header")[0];
-    header = header.getElementsByTagName("h2")[0];
+    header = header.getElementsByTagName("h3")[0];
     header.innerHTML = "";
 }
 
 function setTextHeader(algo=""){
     var header = document.getElementsByClassName("modal-header")[0];
-    header = header.getElementsByTagName("h2")[0];
+    header = header.getElementsByTagName("h3")[0];
     header.innerHTML = algo;
 }
 
@@ -398,6 +398,7 @@ function mostrarCompras(yo){
             div.appendChild(checkbox);
             div.appendChild(txt);           //Adiciona el texto al lado del checkbox con el nombre de la compra
 
+            div.classList.add("textoModal");
             escribirModal(div);
         };
 
@@ -412,12 +413,14 @@ function mostrarCompras(yo){
         //Al final de los checkboxes, mostrar el input de lo que ya puso
         //div = document.createElement("div");
         div = crearNodo("div");
+        div.classList.add("textoModal");
         txt = document.createTextNode("Puso $");
         /*
         var input = document.createElement("input");
         input.className = "modal-input"
         */
         var input = crearNodo("input", "modal-input");
+        input.classList.add("transparente1");
         input.type = "number";
         if(valor>0){
             input.value = valor;
@@ -434,6 +437,11 @@ function mostrarCompras(yo){
         var boton = crearNodo("input", "modal-boton");
         boton.type = "button";
         boton.value = "OK";
+
+
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
+
 
 
         boton.onclick = function() { 
@@ -775,7 +783,7 @@ function calcular(){
             esconderModal();
         };
         boton.classList.add("botonMaterial");
-        boton.classList.add("textoBotonMaterial")
+        boton.classList.add("textoBotonMaterial");
 
 
         setElementFooter(boton);
