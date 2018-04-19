@@ -25,14 +25,17 @@ body{
     margin: auto;
     padding: 0;
     width: 70%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    width: 40%;
     /*
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
     */
+    box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.2);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    border-radius: 2px;
 }
 
 /* Add Animation */
@@ -67,7 +70,12 @@ body{
     background: linear-gradient(to top, #2d4887 0%, #5cb85c 100%);
     */
     color: #212121;
-    font-weight: bold;
+    font-weight: bold;   
+}
+
+.modal-header h2{
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .modal-body {
@@ -84,14 +92,7 @@ body{
 }
 
 /* Header y Footer de los mensajes de error */
-#error {
-    padding: 2px 16px;
-    /*
-    background-color: #ff0000;
-    */
-    background: #fff;
-    color: white;
-}
+
 
 /* Estilos de tabla */
 .tabla {
@@ -300,7 +301,7 @@ input[type="number"]:not(.modal-input){
 
 .textoModal{
   color: #757575;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 
 .textoInvisible {
@@ -334,6 +335,7 @@ input[type="number"]:not(.modal-input){
 .textoBotonMaterial{
   color: #00897b;
   font-weight: bold;
+  font-family: Roboto, sans-serif;
 }
 
 .boton-header{
