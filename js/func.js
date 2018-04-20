@@ -153,7 +153,7 @@ function cambiarPagina(idPagina) {
         document.getElementsByClassName("boton-header")[0].style.display="none";
         document.getElementsByClassName("boton-header")[0].disabled=true
         document.getElementById("nombre-pagina").innerHTML = "Compras"
-        document.getElementsByClassName("plus")[1].innerHTML = "keyboard_arrow_right";
+        //document.getElementsByClassName("plus")[1].innerHTML = "keyboard_arrow_right";
     }
     else{
         document.getElementById("pag1").style.display="none";
@@ -161,7 +161,7 @@ function cambiarPagina(idPagina) {
         document.getElementsByClassName("boton-header")[0].style.display="";
         document.getElementsByClassName("boton-header")[0].disabled=false;
         document.getElementById("nombre-pagina").innerHTML = "Personas"
-        document.getElementsByClassName("plus")[1].innerHTML = "check";
+        //document.getElementsByClassName("plus")[1].innerHTML = "check";
     }
     //Funciona, pero le cambio el display en vez del color de letra para esconderlo
     // document.getElementsByClassName("boton-header")[0].classList.toggle("textoInvisible");
