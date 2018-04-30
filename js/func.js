@@ -1,3 +1,36 @@
+// Wait for device API libraries to load
+    //
+    function onLoad() {
+        //document.addEventListener("deviceready", onDeviceReady, false);
+        document.addEventListener("backbutton", onBackKeyDown, false);
+
+        document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
+    }
+
+    function onBackKeyDown() {
+        if(document.getElementById("pag1").style.display != "none"){
+            navigator.app.exitApp();
+        }
+        else{
+            cambiarPagina("pag1");
+        }
+    }
+
+    // // device APIs are available
+    // //
+    // function onDeviceReady() {
+    //     // Register the event listener
+    //     document.addEventListener("backbutton", onBackKeyDown, false);
+    // }
+
+    // // Handle the back button
+    // //
+    // function onBackKeyDown() {
+    //  window.alert("HOLA");
+    // }
+
+
+
 //Creo clases
 class Persona{
     constructor(nombre){
@@ -62,7 +95,7 @@ var placeholdersExtra2 = [  "Una noche con Pampita",
                             "El amor de ella"
                             ]
 
-window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
+//window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 //Agrega un input de compra o persona
 function agregar() {
 
@@ -86,14 +119,19 @@ function agregar() {
         nuevo.innerHTML = primerCampoCompra;
         inputNuevo = nuevo.getElementsByTagName("input")[0];
         inputNuevo.placeholder = cambiarPlaceholder(inputNuevo);
-        document.getElementById("page1").getElementsByTagName("tbody")[0].appendChild(nuevo);            
+        document.getElementById("page1").getElementsByTagName("tbody")[0].appendChild(nuevo);
+        inputNuevo.focus();
+        // var asd = document.getElementsByClassName("plHolderRand");
+        // asd = asd[asd.length-1];
+        // asd.focus();
     }
 
     //Si es una persona, a la pagina 2
     if(cla == "persona"){
         nuevo.innerHTML = primerCampoPersona;
+        inputNuevo = nuevo.getElementsByTagName("input")[0];
         document.getElementById("page2").getElementsByTagName("tbody")[0].appendChild(nuevo);    
-
+        inputNuevo.focus();
         //Activa el boton de seleccion de compras para ser usado
         //Esto va a cambiar con el uso de "modals" (para mostrar las compras en una ventana)
         var td = document.getElementById("page2").getElementsByTagName("tr");
@@ -718,7 +756,7 @@ function calcular(){
         div2.className = "detalles-" + personas[i].nombre;
         
         if (personas[i].plataPuesta>0) {
-            text = "Puesto : -$" + round(personas[i].plataPuesta, 0.5);
+            text = "Puso : -$" + round(personas[i].plataPuesta, 0.5);
             text = document.createTextNode(text);
             var parrafo2 = crearNodo("p");
             parrafo2.appendChild(text);
@@ -784,12 +822,11 @@ function calcular(){
         escribirModal(div2);
 
     }
-    //window.alert("HOLA");
     //Solo muestra los detalles de las compras si todas las personas tienen compras asignadas
     //Esto falla si solo la primer persona es vacio
     if(personas.length>0 && personas[0].nombre != ""){
-        setModoModal();
-        mostrarModal();   
+        //window.alert("HOLA");
+        setModoModal();   
     }
     else{
 
@@ -800,24 +837,24 @@ function calcular(){
         var texto = document.createTextNode("Ingrese al menos una persona con compras");
         parrafo.appendChild(texto);
 
-        //Crear boton de OK que esconde el modal
-        //var boton = document.createElement("input");
-        var boton = crearNodo("input", "boton-modal");
-        boton.type = "button";
-        boton.value = "OK";
-
-        boton.onclick = function() { 
-            esconderModal();
-        };
-        boton.classList.add("botonMaterial");
-        boton.classList.add("textoBotonMaterial");
-
-
-        setElementFooter(boton);
         setModoModal("error");
         escribirModal(parrafo);
-        mostrarModal();
     }
+    //Crear boton de OK que esconde el modal
+    //var boton = document.createElement("input");
+    var boton = crearNodo("input", "boton-modal");
+    boton.type = "button";
+    boton.value = "OK";
+
+    boton.onclick = function() { 
+        esconderModal();
+    };
+    boton.classList.add("botonMaterial");
+    boton.classList.add("textoBotonMaterial");
+
+
+    setElementFooter(boton);
+    mostrarModal();
 }
 
 
