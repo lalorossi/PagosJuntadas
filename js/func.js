@@ -98,7 +98,6 @@ var placeholdersExtra2 = [  "Una noche con Pampita",
 //window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 //Agrega un input de compra o persona
 function agregar() {
-
     /*
     var nuevo = document.createElement("tr");
     nuevo.className=cla;
@@ -117,10 +116,12 @@ function agregar() {
     //Si quiero agregar una compra, lo agreago a la pagina 1
     if(cla == "compra"){
         nuevo.innerHTML = primerCampoCompra;
-        inputNuevo = nuevo.getElementsByTagName("input")[0];
+        var inputNuevo = nuevo.getElementsByTagName("input")[0];
         inputNuevo.placeholder = cambiarPlaceholder(inputNuevo);
         document.getElementById("page1").getElementsByTagName("tbody")[0].appendChild(nuevo);
-        inputNuevo.focus();
+        if(cordova.plugins.Keyboard.isVisible){
+            inputNuevo.focus();
+        }
         // var asd = document.getElementsByClassName("plHolderRand");
         // asd = asd[asd.length-1];
         // asd.focus();
@@ -129,9 +130,11 @@ function agregar() {
     //Si es una persona, a la pagina 2
     if(cla == "persona"){
         nuevo.innerHTML = primerCampoPersona;
-        inputNuevo = nuevo.getElementsByTagName("input")[0];
+        var inputNuevo = nuevo.getElementsByTagName("input")[0];
         document.getElementById("page2").getElementsByTagName("tbody")[0].appendChild(nuevo);    
-        inputNuevo.focus();
+        if(cordova.plugins.Keyboard.isVisible){
+            inputNuevo.focus();
+        }
         //Activa el boton de seleccion de compras para ser usado
         //Esto va a cambiar con el uso de "modals" (para mostrar las compras en una ventana)
         var td = document.getElementById("page2").getElementsByTagName("tr");
