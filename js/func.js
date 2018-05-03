@@ -5,6 +5,17 @@
         document.addEventListener("backbutton", onBackKeyDown, false);
 
         document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
+
+        document.addEventListener(window.nativeGestures.EVENTS.GESTURE_SCALE, (e) => {
+            window.alert("hola");
+        });
+
+        navigator.notification.alert(
+            'You are the winner!',  // message
+            alertDismissed,         // callback
+            'Game Over',            // title
+            'Done'                  // buttonName
+        );
     }
 
     function onBackKeyDown() {
@@ -227,6 +238,10 @@ function avanzar(){
     }
 }
 
+function alertDismissed(){
+    
+}
+
 compras = [];   //Notar que al no poner var, se hace global
 function checkSubmit(){
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
@@ -257,6 +272,7 @@ function checkSubmit(){
         //return true;
     }
     else{
+        /*
         borrarModal();
         //var parrafo = document.createElement("p");
         var parrafo = crearNodo("P");
@@ -282,9 +298,19 @@ function checkSubmit(){
         setModoModal("error");
         escribirModal(parrafo);
         mostrarModal();
+        */
+
+        navigator.notification.alert(
+            'Ingrese al menos una compra con precio',  // message
+            alertDismissed,         // callback
+            'Ups...',            // title
+            'Ok'                  // buttonName
+        );
         //return false;
     }
 }
+
+
 
 function borrarModal(){
     //Borrar el modal y dejar el div modal-body vacio
@@ -830,9 +856,24 @@ function calcular(){
     if(personas.length>0 && personas[0].nombre != ""){
         //window.alert("HOLA");
         setModoModal();   
+        //Crear boton de OK que esconde el modal
+        //var boton = document.createElement("input");
+        var boton = crearNodo("input", "boton-modal");
+        boton.type = "button";
+        boton.value = "OK";
+
+        boton.onclick = function() { 
+            esconderModal();
+        };
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
+
+
+        setElementFooter(boton);
+        mostrarModal();
     }
     else{
-
+        /*
         borrarModal();
         //var parrafo = document.createElement("p");
         var parrafo = crearNodo("P");
@@ -842,22 +883,14 @@ function calcular(){
 
         setModoModal("error");
         escribirModal(parrafo);
+        */
+        navigator.notification.alert(
+            'Ingrese al menos una persona con compras',  // message
+            alertDismissed,         // callback
+            'Ups...',               // title
+            'Ok'                    // buttonName
+        );
     }
-    //Crear boton de OK que esconde el modal
-    //var boton = document.createElement("input");
-    var boton = crearNodo("input", "boton-modal");
-    boton.type = "button";
-    boton.value = "OK";
-
-    boton.onclick = function() { 
-        esconderModal();
-    };
-    boton.classList.add("botonMaterial");
-    boton.classList.add("textoBotonMaterial");
-
-
-    setElementFooter(boton);
-    mostrarModal();
 }
 
 
