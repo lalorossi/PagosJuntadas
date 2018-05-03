@@ -921,6 +921,29 @@ window.onclick = function(event) {
       }
 }
 
+function onConfirm(buttonIndex) {
+    if(buttonIndex==1){
+        navigator.notification.alert(
+            'Podés volver a empezar de nuevo',  // message
+            alertDismissed,         // callback
+            'Se borraron todos los datos',            // title
+            'Ok'                  // buttonName
+        );
+    }else{
+        navigator.notification.alert(
+            'No se borró nada',  // message
+            alertDismissed,         // callback
+            'Tibio',            // title
+            'OK'                  // buttonName
+        );
+    }
+}
 function borrar(){
-    window.alert("BORRA");
+
+navigator.notification.confirm(
+    'Se borrarán todos los datos ingresados', // message
+     onConfirm,            // callback to invoke with index of button pressed
+    'Estás Seguro?',           // title
+    ['Borrar','Cancelar']     // buttonLabels
+);
 }
