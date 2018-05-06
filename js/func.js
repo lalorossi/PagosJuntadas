@@ -6,9 +6,6 @@
 
         document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 
-        document.addEventListener(window.nativeGestures.EVENTS.GESTURE_SCALE, (e) => {
-            window.alert("hola");
-        });
 
         navigator.notification.alert(
             'You are the winner!',  // message
@@ -242,13 +239,68 @@ function alertDismissed(){
     
 }
 
+function actualizarParentesisPersonas(compraBorrada){
+    for (var i = personas.length - 1; i >= 0; i--) {
+        var bandera = 0;
+        for (var o = personas[i].comprasPorPersona.length - 1; o >= 0; o--) {
+            //Busco las personas que tengan la compra en su lista
+            if(personas[i].comprasPorPersona[o].producto == compraBorrada.producto){
+
+                //Si la persona tiene lal compra, le saco el parentesis
+                window.alert("persona a actualizar");
+                var filasPersonas = document.getElementsByClassName("persona");
+                for (var o = filasPersonas.length - 1; o >= 0; o--) {
+                    if(filasPersonas[o].getElementsByTagName("input")[0].value == personas[i].nombre){
+                        var parentesisPersona = filasPersonas[i].getElementsByTagName("td")[2].innerHTML;
+                        parentesisPersona = parentesisPersona.substr(1,1);
+                        window.alert(parentesisPersona);
+                        if(parentesisPersona > 1){
+                            filasPersonas[i].getElementsByTagName("td")[2].innerHTML = "(" + (parentesisPersona-1) + ")";                    
+                        }
+                        else{
+                            filasPersonas[i].getElementsByTagName("td")[2].innerHTML = "";                    
+
+                        }                            
+                    }
+                }
+            }
+            personas[i].comprasPorPersona.splice(o, 1);
+        }
+    }
+}
+
 compras = [];   //Notar que al no poner var, se hace global
+
+function filtrarComprasBorradas(){
+    var ingresadas = document.getElementsByClassName("compra");
+    for (var i = compras.length - 1; i >= 0; i--) {
+        var bandera = 0;
+        //window.alert("1");
+        for (var o = ingresadas.length - 1; o >= 0; o--) {
+            //window.alert("2");
+            var compraInput = ingresadas[o].getElementsByTagName("input")[0].value;
+            if(compraInput == compras[i].producto){
+                bandera = 1;
+                //window.alert("Encuentra el nombre");
+                //window.alert(personas[i].plataPuesta);
+            }
+        }
+        if(bandera != 1){
+            window.alert("tiene que borrar");
+            actualizarParentesisPersonas(compras[i]);
+            compras.splice(i, 1);
+            //Saca tambien el (1) de las personas con esa compra (deberia)
+        }
+    }
+
+}
+
 function checkSubmit(){
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
     var vacio = 0;
 
     var rows = document.getElementsByClassName("compra");
-
+    filtrarComprasBorradas();
     //Selecciona todas las compras y se fija si al menos una tiene todos los valores asignados
     for (var i = rows.length - 1; i >= 0; i--) {
         var celdas = rows[i].getElementsByTagName('input');
@@ -929,6 +981,8 @@ function onConfirm(buttonIndex) {
             'Se borraron todos los datos',            // title
             'Ok'                  // buttonName
         );
+
+        location.reload(true);
     }else{
         navigator.notification.alert(
             'No se borró nada',  // message
