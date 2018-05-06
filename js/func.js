@@ -7,12 +7,14 @@
         document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 
 
+        /*
         navigator.notification.alert(
             'You are the winner!',  // message
             alertDismissed,         // callback
             'Game Over',            // title
             'Done'                  // buttonName
         );
+        */
     }
 
     function onBackKeyDown() {
@@ -247,13 +249,13 @@ function actualizarParentesisPersonas(compraBorrada){
             if(personas[i].comprasPorPersona[o].producto == compraBorrada.producto){
 
                 //Si la persona tiene lal compra, le saco el parentesis
-                window.alert("persona a actualizar");
+                // window.alert("persona a actualizar");
                 var filasPersonas = document.getElementsByClassName("persona");
                 for (var o = filasPersonas.length - 1; o >= 0; o--) {
                     if(filasPersonas[o].getElementsByTagName("input")[0].value == personas[i].nombre){
                         var parentesisPersona = filasPersonas[i].getElementsByTagName("td")[2].innerHTML;
                         parentesisPersona = parentesisPersona.substr(1,1);
-                        window.alert(parentesisPersona);
+                        // window.alert(parentesisPersona);
                         if(parentesisPersona > 1){
                             filasPersonas[i].getElementsByTagName("td")[2].innerHTML = "(" + (parentesisPersona-1) + ")";                    
                         }
@@ -286,7 +288,7 @@ function filtrarComprasBorradas(){
             }
         }
         if(bandera != 1){
-            window.alert("tiene que borrar");
+            // window.alert("tiene que borrar");
             actualizarParentesisPersonas(compras[i]);
             compras.splice(i, 1);
             //Saca tambien el (1) de las personas con esa compra (deberia)
