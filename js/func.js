@@ -251,8 +251,8 @@ function actualizarParentesisPersonas(compraBorrada){
                 //Si la persona tiene lal compra, le saco el parentesis
                 // window.alert("persona a actualizar");
                 var filasPersonas = document.getElementsByClassName("persona");
-                for (var o = filasPersonas.length - 1; o >= 0; o--) {
-                    if(filasPersonas[o].getElementsByTagName("input")[0].value == personas[i].nombre){
+                for (var u = filasPersonas.length - 1; u >= 0; u--) {
+                    if(filasPersonas[u].getElementsByTagName("input")[0].value == personas[i].nombre){
                         var parentesisPersona = filasPersonas[i].getElementsByTagName("td")[2].innerHTML;
                         parentesisPersona = parentesisPersona.substr(1,1);
                         // window.alert(parentesisPersona);
@@ -265,8 +265,8 @@ function actualizarParentesisPersonas(compraBorrada){
                         }                            
                     }
                 }
+                personas[i].comprasPorPersona.splice(o, 1);
             }
-            personas[i].comprasPorPersona.splice(o, 1);
         }
     }
 }
