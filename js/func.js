@@ -601,7 +601,7 @@ function mostrarCompras(yo){
         mostrarModal();
 
         setUltimoBoton(yo);
-        yo.id = "desactivado";      //Desactiva el boton para que no sea activado mas de una vez sin seleccionar compras
+        //yo.id = "desactivado";      //Desactiva el boton para que no sea activado mas de una vez sin seleccionar compras
     }
 }
 
@@ -961,6 +961,21 @@ function dropdown() {
     opcActivadas = true;
 }
 
+//Para ver si un elemento esta entre los descendientes de otro
+function isDescendant(parent, child) {
+     var node = child.parentNode;
+     while (node != null) {
+         if (node == parent) {
+             return true;
+         }
+         node = node.parentNode;
+     }
+     return false;
+}
+
+
+var modalGlobal = document.getElementById("myModal");
+
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
     if (!event.target.matches('.dropbtn')) {
@@ -972,6 +987,10 @@ window.onclick = function(event) {
             openDropdown.classList.remove('show');
           }
         }
+      }
+      var header = document.getElementsByClassName("header")[0];
+      if(event.target == modalGlobal || isDescendant(header, event.target)){
+        modalGlobal.style.display = "none";
       }
 }
 
