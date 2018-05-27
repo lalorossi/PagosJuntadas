@@ -500,7 +500,7 @@ function mostrarCompras(yo){
         //Hace una lista conm checkboxes para seleccionar las compras
         for (var i = compras.length - 1; i >= 0; i--) {
             //div = document.createElement("div");
-            div = crearNodo("div");
+            div = crearNodo("p");
             //checkbox = document.createElement("input");
             checkbox = crearNodo("input");
 
