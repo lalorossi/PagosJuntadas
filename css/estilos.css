@@ -74,13 +74,15 @@ body{
     font-weight: bold;   
 }
 
-.modal-header h2{
+.modal-header h3{
     font-size: 20px;
     font-weight: 500;
+    margin-bottom: 0px;
 }
 
 .modal-body {
   padding: 16px;
+  padding-top: 0px;
 }
 
 .modal-footer {

@@ -198,7 +198,7 @@ function chau(yo) {
 
 function cambiarPagina(idPagina) {
     document.getElementById(idPagina).style.display="";
-    if(idPagina == "pag1"){
+    if(idPagina == "pag1" && modalGlobal.style.display == "none"){
         document.getElementById("pag2").style.display="none";
         //document.getElementsByClassName("boton-header")[0].style.color="#4285f4";
         document.getElementsByClassName("boton-header")[0].style.display="none";
@@ -233,7 +233,9 @@ function avanzar(){
         checkSubmit();
     }
     else{
-        calcular();
+        if(modalGlobal.style.display == "none"){
+            calcular();
+        }
     }
 }
 
@@ -380,7 +382,7 @@ function escribirModal(elemento){
 
 function mostrarModal(){
     var modal = document.getElementById("myModal");
-    modal.style.display = "block";  
+    modal.style.display = "block"; 
 }
 
 function esconderModal(){
@@ -951,14 +953,17 @@ function calcular(){
 
 
 
+var modalGlobal = document.getElementById("myModal");
 
 
 
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
 function dropdown() {
-    document.getElementById("myDropdown").classList.toggle("show");
-    opcActivadas = true;
+    if(modalGlobal.style.display == "none"){
+        document.getElementById("myDropdown").classList.toggle("show");
+        opcActivadas = true;
+    }
 }
 
 //Para ver si un elemento esta entre los descendientes de otro
@@ -974,7 +979,6 @@ function isDescendant(parent, child) {
 }
 
 
-var modalGlobal = document.getElementById("myModal");
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
@@ -989,7 +993,10 @@ window.onclick = function(event) {
         }
       }
       var header = document.getElementsByClassName("header")[0];
-      if(event.target == modalGlobal || isDescendant(header, event.target)){
+      if(event.target == modalGlobal){
+        modalGlobal.style.display = "none";
+      }
+      if(isDescendant(header, event.target) && modalGlobal.style.display == "block"){
         modalGlobal.style.display = "none";
       }
 }
@@ -1004,13 +1011,6 @@ function onConfirm(buttonIndex) {
         );
 
         location.reload(true);
-    }else{
-        navigator.notification.alert(
-            'No se borró nada',  // message
-            alertDismissed,         // callback
-            'Tibio',            // title
-            'OK'                  // buttonName
-        );
     }
 }
 function borrar(){
