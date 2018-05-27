@@ -996,9 +996,6 @@ window.onclick = function(event) {
       if(event.target == modalGlobal){
         modalGlobal.style.display = "none";
       }
-      if(isDescendant(header, event.target) && modalGlobal.style.display == "block"){
-        modalGlobal.style.display = "none";
-      }
 }
 
 function onConfirm(buttonIndex) {
