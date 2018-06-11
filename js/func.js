@@ -409,14 +409,17 @@ function resetFooter() {
 
 function resetHeader() {
     var header = document.getElementsByClassName("modal-header")[0];
-    header = header.getElementsByTagName("h3")[0];
     header.innerHTML = "";
+    //var h = document.createElement("h3");
+    var h = crearNodo("h3");
+    header.appendChild(h);
 }
 
 function setTextHeader(algo=""){
     var header = document.getElementsByClassName("modal-header")[0];
     header = header.getElementsByTagName("h3")[0];
     header.innerHTML = algo;
+    header.style = "text-align: left";
 }
 
 function setTextFooter(algo=""){
@@ -436,14 +439,15 @@ function setElementFooter(element){
     }
 }
 
-function setElementHeader(element=""){
-    var header = document.getElementsByClassName("modal-header")[0];
-    header.innerHTML = '';
+function setElementHeader(element){
+    var headerModal = document.getElementsByClassName("modal-header")[0];
+    headerModal.innerHTML = '';
+    headerModal.style = "text-align: right";
     if(!element){
         resteHeader();
     }
     else{
-        header.appendChild(element);
+        headerModal.appendChild(element);
     }
 }
 
@@ -796,6 +800,7 @@ function calcular(){
     filtrarPersonasBorradas();
     var pagoCompra = 0;
     borrarModal();
+    
     for (var i = personas.length - 1; i >= 0; i--) {
         //window.alert(personas[i].nombre);
         var comprasDePersona = personas[i].comprasPorPersona;
@@ -924,14 +929,18 @@ function calcular(){
         boton.classList.add("botonMaterial");
         boton.classList.add("textoBotonMaterial");
 
-        botonShare = crearNodo("input", "boton-modal");
-        botonShare.type = "button";
-        botonShare.value = "Compartir";
-        botonShare.onclick = function(){
+        var botonShare = crearNodo("button", "botonMaterial");
+        //botonShare.value = "SHARE";
+        botonShare.innerHTML = '<i style="padding:0px" class="material-icons">share</i>'
+        botonShare.classList.add("texto2");
+        botonShare.style = "padding-top: 10px";
+
+        botonShare.onclick = function() { 
             guardarImagen();
         };
-
+        //EDITAR ACA
         setElementHeader(botonShare);
+        
 
         setElementFooter(boton);
         mostrarModal();
@@ -1075,7 +1084,6 @@ function savebase64AsImageFile(folderpath,filename,content,contentType){
 
 //document.getElementById('btn').addEventListener('click', function() {
 function guardarImagen(){
-window.alert("compartiendo");
 var node = document.getElementsByClassName('modal-body')[0];
 
     domtoimage.toPng(node, {bgcolor: "white"})
@@ -1108,7 +1116,7 @@ var node = document.getElementsByClassName('modal-body')[0];
           console.log("Sharing failed with message: " + msg);
         }
 
-        window.alert(dataUrl);
+        //window.alert(dataUrl);
 
         /** Process the type1 base64 string **/
         var myBaseString = dataUrl; //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkYAAA.....";
@@ -1138,15 +1146,15 @@ var node = document.getElementsByClassName('modal-body')[0];
         //document.getElementById("here-appear-theimages").appendChild(imagen);
 
         //Saber si se puede compartir pot whatsapp
-        window.plugins.socialsharing.canShareVia('whatsapp', 'msg', null, pathImagenGuardada, null, function(e){alert(e)}, function(e){alert(e)});
+        //window.plugins.socialsharing.canShareVia('whatsapp', 'msg', null, pathImagenGuardada, null, function(e){alert(e)}, function(e){alert(e)});
 
         //Compartir imagen creada
         window.plugins.socialsharing.shareWithOptions(opcionesCompartir, exitoCompartir, errorCompartir);
         //window.plugins.socialsharing.shareViaWhatsApp('Message via WhatsApp', pathImagenGuardada /* img */, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)});
 
+        esconderModal();
     })
     .catch(function(error) {
       console.error('oops, something went wrong!', error);
     });
-
-};
+}
