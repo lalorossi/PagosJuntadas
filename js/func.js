@@ -930,7 +930,6 @@ function calcular(){
         boton.classList.add("textoBotonMaterial");
 
         var botonShare = crearNodo("button", "botonMaterial");
-        //botonShare.value = "SHARE";
         botonShare.innerHTML = '<i style="padding:0px" class="material-icons">share</i>'
         botonShare.classList.add("texto2");
         botonShare.style = "padding-top: 10px";
@@ -938,7 +937,6 @@ function calcular(){
         botonShare.onclick = function() { 
             guardarImagen();
         };
-        //EDITAR ACA
         setElementHeader(botonShare);
         
 
