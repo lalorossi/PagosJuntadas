@@ -924,6 +924,14 @@ function calcular(){
         boton.classList.add("botonMaterial");
         boton.classList.add("textoBotonMaterial");
 
+        botonShare = crearNodo("input", "boton-modal");
+        botonShare.type = "button";
+        botonShare.value = "Compartir";
+        botonShare.onclick = function(){
+            guardarImagen();
+        };
+
+        setElementHeader(botonShare);
 
         setElementFooter(boton);
         mostrarModal();
@@ -1019,3 +1027,126 @@ navigator.notification.confirm(
     ['Borrar','Cancelar']     // buttonLabels
 );
 }
+
+//Funciones para guardar imagenes
+function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+  var blob = new Blob(byteArrays, {type: contentType});
+  return blob;
+}
+
+function savebase64AsImageFile(folderpath,filename,content,contentType){
+// Convert the base64 string in a Blob
+    var DataBlob = b64toBlob(content,contentType);
+    
+    console.log("Starting to write the file :3");
+    
+    window.resolveLocalFileSystemURL(folderpath, function(dir) {
+        console.log("Access to the directory granted succesfully");
+        dir.getFile(filename, {create:true}, function(file) {
+            console.log("File created succesfully.");
+            file.createWriter(function(fileWriter) {
+                console.log("Writing content to file");
+                fileWriter.write(DataBlob);
+            }, function(){
+                alert('Unable to save file in path '+ folderpath);
+            });
+        });
+    });
+}
+
+//document.getElementById('btn').addEventListener('click', function() {
+function guardarImagen(){
+window.alert("compartiendo");
+var node = document.getElementsByClassName('modal-body')[0];
+
+    domtoimage.toPng(node, {bgcolor: "white"})
+    .then(function(dataUrl) {
+        console.log(dataUrl);
+        //window.open(dataUrl);
+        //var img = new Image();
+        //img.src = dataUrl;
+        //document.getElementById("here-appear-theimages").appendChild(img);
+        //var asd = document.getElementById("aaa");
+        //asd.href = dataUrl;
+        //asd.click();
+        var pathImagenGuardada = cordova.file.cacheDirectory;
+        pathImagenGuardada = pathImagenGuardada + "/myimage.png";
+        //window.alert(pathImagenGuardada);
+        var opcionesCompartir = {
+            message: '', // not supported on some apps (Facebook, Instagram)
+            subject: '', // fi. for email
+            files: [pathImagenGuardada], // an array of filenames either locally or remotely
+            url: '',
+            chooserTitle: 'Enviar pot medio de:' // Android only, you can override the default share sheet title
+        }
+
+        var exitoCompartir = function(result) {
+            console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+            console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+        }
+     
+        var errorCompartir = function(msg) {
+          console.log("Sharing failed with message: " + msg);
+        }
+
+        window.alert(dataUrl);
+
+        /** Process the type1 base64 string **/
+        var myBaseString = dataUrl; //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkYAAA.....";
+
+        // Split the base64 string in data and contentType
+        var block = myBaseString.split(";");
+
+        // Get the content type
+        var dataType = block[0].split(":")[1];// In this case "image/png"
+        //window.alert(dataType);
+
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1];// In this case "iVBORw0KGg...."
+
+        // The path where the file will be created
+        var folderpath = cordova.file.cacheDirectory;//"file:///storage/emulated/0/";
+        // The name of your file, note that you need to know if is .png,.jpeg etc
+        var filename = "myimage.png";
+
+        //Guardar la imagen en el dispositivo
+        savebase64AsImageFile(folderpath,filename,realData,dataType);
+
+        //Agregar la imagen a la vista
+        //var imagen = document.createElement("img");
+        //imagen.src = pathImagenGuardada;
+        //window.alert(imagen.innerHTML);
+        //document.getElementById("here-appear-theimages").appendChild(imagen);
+
+        //Saber si se puede compartir pot whatsapp
+        window.plugins.socialsharing.canShareVia('whatsapp', 'msg', null, pathImagenGuardada, null, function(e){alert(e)}, function(e){alert(e)});
+
+        //Compartir imagen creada
+        window.plugins.socialsharing.shareWithOptions(opcionesCompartir, exitoCompartir, errorCompartir);
+        //window.plugins.socialsharing.shareViaWhatsApp('Message via WhatsApp', pathImagenGuardada /* img */, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)});
+
+    })
+    .catch(function(error) {
+      console.error('oops, something went wrong!', error);
+    });
+
+};
