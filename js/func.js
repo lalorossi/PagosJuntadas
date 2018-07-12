@@ -602,7 +602,7 @@ function mostrarCompras(yo){
         divBotones.appendChild(boton);
 
         setElementFooter(divBotones);
-        setTextHeader("Compras");
+        setTextHeader(personaClicker);
         setModoModal();
         mostrarModal();
 
@@ -1156,3 +1156,31 @@ var node = document.getElementsByClassName('modal-body')[0];
       console.error('oops, something went wrong!', error);
     });
 }
+
+
+//GUARDAR REGISTRO
+/*
+
+
+Primero habría que comprobar que los campos de compras y/o personas no estén vacíos
+    Basicamente eso significa saber si se podría iniciar un cálculo con los datos que se presentan
+Me parece que convendría guardar los datos de los objetos en vez de los datos de los inputs
+    Porque en esos datos también están las relaciones de compras por persona
+Se podría hacer un guardado del tipo relacional, guardando los objetos por separado y después las relaciones como algo aparte
+    Para eso habría que pensar si se les asigna una key para poder hace la "tabla relacional"
+Una vez que tenga decidido cómo y qué guardar, se tiene que pasar todo a texto para guardarlo en un archivo
+    Supongo que el formato es xml pero la verdad que no tengo ni idea
+    Capaz que con JSon o algo así se estandariza y se hace más fácil poder pasarlo después a objetos
+Tiene que haber 4 funciones
+    La primera controla que se cumplan los requisitos previos al guardado
+    La segunda crea el string de datos que se va a guardar
+    Otra pordía crear y guardar el archivo (capaz que se pueden por separado)
+    El siguiente paso/función es para agregarle un comentario o nombre de guardado para que se amigable
+    Una función que deje buscar y seleccionar un archivo entre los ya guardados
+    Acá tiene que haber una opción para conservar los datos previos a la búsqueda (ver solo resultados)
+        Y orta para que se carguen los datos en los input (poder modificar el registro)
+    Otra que cree los objetos necesarios para que el programa siga funcinando desde donde esté
+    Y finalmente una que llene los inputs necesarios
+
+
+*/
