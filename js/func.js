@@ -1162,16 +1162,16 @@ var node = document.getElementsByClassName('modal-body')[0];
 /*
 
 
-Primero habría que comprobar que los campos de compras y/o personas no estén vacíos
+**Primero habría que comprobar que los campos de compras y/o personas no estén vacíos
     Basicamente eso significa saber si se podría iniciar un cálculo con los datos que se presentan
-Me parece que convendría guardar los datos de los objetos en vez de los datos de los inputs
+**Me parece que convendría guardar los datos de los objetos en vez de los datos de los inputs
     Porque en esos datos también están las relaciones de compras por persona
 Se podría hacer un guardado del tipo relacional, guardando los objetos por separado y después las relaciones como algo aparte
     Para eso habría que pensar si se les asigna una key para poder hace la "tabla relacional"
 Una vez que tenga decidido cómo y qué guardar, se tiene que pasar todo a texto para guardarlo en un archivo
     Supongo que el formato es xml pero la verdad que no tengo ni idea
     Capaz que con JSon o algo así se estandariza y se hace más fácil poder pasarlo después a objetos
-Tiene que haber 4 funciones
+**Tiene que haber 4 funciones
     La primera controla que se cumplan los requisitos previos al guardado
     La segunda crea el string de datos que se va a guardar
     Otra pordía crear y guardar el archivo (capaz que se pueden por separado)
@@ -1182,5 +1182,64 @@ Tiene que haber 4 funciones
     Otra que cree los objetos necesarios para que el programa siga funcinando desde donde esté
     Y finalmente una que llene los inputs necesarios
 
+-----USUARIO-----
+Abrir el menú y seleccionar la opcion de "guardar registro"
+Elegir entre guardar todos los datos o solo compras y precios
+    Si elije guardar solo compras, comprobar que al menos haya una
+    Si elije guardar todo, guarda las cosas "completas" que haya (compras con nombre y precio, personas con nombre y una compra)
+Escribir una etiqueta opcional para el archivo
+GUARDAR
+
+Abrir el menú y seleccionar la opción "explorar registros"
+Seleccionar para un regisrto las opciones "editar" o "utilizar"
+    Si elije "editar" permite cambiar la etiqueta o borrarlo (confimando cambios)
+    Si elije "utilizar" puede seleccionar entre "cargar datos" o "mostrar resultado"
+        Cargar datos rellena los inputs para que puedan ser editados antes de calcular
+        Mostrar resultado solo muestra el modal (si fuera posible hacer el cálculo)
+
+-----SISTEMA-----
+Para guardar solo compras
+    Lee los input de compra
+        Guarda nombre y precio de cada compra
+Para guardar todo
+    Lee los objetos compras y personas (al menos debe existir un objeto compra o persona)
+                                        Ver si no es requisito que haya al menos una compra
+    De cada persona guarda:
+        nombre
+        plata puesta
+        arreglo de nombres de compras
+    De cada compra guarda:
+        producto
+        precio
+        cantidad de compras
+
+
+
+Para cargar datos
+    Lee los datos de compras y los mete en inputs
+    Lee los datos de personas y los mete en inputs
+    Crea cada objeto compra
+    Crea cada objeto persona
+        Asigna a cada persona las compras que tiene
+
+
+apara mostrar resultado
+
+
+class Persona{
+    constructor(nombre){
+        this.nombre = nombre;
+        this.comprasPorPersona = [];
+        this.plataPuesta = 0;
+    }
+}
+
+class Compra{
+    constructor(producto, precio){
+        this.producto = producto;
+        this.precio = precio;
+        this.cantCompras = 0;
+    }
+}
 
 */
