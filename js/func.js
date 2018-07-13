@@ -230,7 +230,7 @@ function existeCompra(compra) {
 
 function avanzar(){
     if(document.getElementById("pag1").style.display != "none"){
-        checkSubmit();
+        checkSubmit(false);
     }
     else{
         if(modalGlobal.style.display == "none"){
@@ -299,7 +299,7 @@ function filtrarComprasBorradas(){
 
 }
 
-function checkSubmit(){
+function checkSubmit(seQueda){
     //Checkea que se pueda pasar a la siguiente pagina viendo si al menos un campo de compra está completo
     var vacio = 0;
 
@@ -324,8 +324,12 @@ function checkSubmit(){
 
     //Si encontro al menos una compra, pasa a la pagina2        
     if (vacio==1) {
-        cambiarPagina("pag2");
-        //return true;
+        if(seQueda==false){
+            cambiarPagina("pag2");
+        }
+        else{
+            return true;
+        }
     }
     else{
         /*
@@ -362,7 +366,7 @@ function checkSubmit(){
             'Ups...',            // title
             'Ok'                  // buttonName
         );
-        //return false;
+        return false;
     }
 }
 
@@ -573,11 +577,6 @@ function mostrarCompras(yo){
 
         boton.classList.add("botonMaterial");
         boton.classList.add("textoBotonMaterial");
-
-
-        boton.classList.add("botonMaterial");
-        boton.classList.add("textoBotonMaterial");
-
 
 
         boton.onclick = function() { 
@@ -1184,23 +1183,33 @@ Una vez que tenga decidido cómo y qué guardar, se tiene que pasar todo a texto
 
 -----USUARIO-----
 Abrir el menú y seleccionar la opcion de "guardar registro"
+**
 Elegir entre guardar todos los datos o solo compras y precios
     Si elije guardar solo compras, comprobar que al menos haya una
     Si elije guardar todo, guarda las cosas "completas" que haya (compras con nombre y precio, personas con nombre y una compra)
+Capaz que acá no sería necesario la selccion. Que guarde todo lo que haya completo y despúes la opción se da al cargar los datos
+**
 Escribir una etiqueta opcional para el archivo
+El nombre final es: AA_MM_DD_HH_MM - <etiqueta>
 GUARDAR
 
 Abrir el menú y seleccionar la opción "explorar registros"
 Seleccionar para un regisrto las opciones "editar" o "utilizar"
     Si elije "editar" permite cambiar la etiqueta o borrarlo (confimando cambios)
     Si elije "utilizar" puede seleccionar entre "cargar datos" o "mostrar resultado"
-        Cargar datos rellena los inputs para que puedan ser editados antes de calcular
+        Cargar datos deja elejir entre cargar todo o solo compras 
+            Cargar todo llena los inputs y crea los objetos necesarios con sus "relaciones" y deja continuar
+            Cargar solo compras solo llena los inputs de compra y crea esos objetos
+                (HABRIA QUE VER SI SE CONSERVAN LAS COMPRAS Y PERSONAS YA INGRESADAS)
+        Después rellena los inputs para que puedan ser editados antes de calcular
         Mostrar resultado solo muestra el modal (si fuera posible hacer el cálculo)
 
 -----SISTEMA-----
+**
 Para guardar solo compras
     Lee los input de compra
         Guarda nombre y precio de cada compra
+**
 Para guardar todo
     Lee los objetos compras y personas (al menos debe existir un objeto compra o persona)
                                         Ver si no es requisito que haya al menos una compra
@@ -1217,13 +1226,16 @@ Para guardar todo
 
 Para cargar datos
     Lee los datos de compras y los mete en inputs
-    Lee los datos de personas y los mete en inputs
     Crea cada objeto compra
-    Crea cada objeto persona
+    Si la opción es cargar también personas:
+        Lee los datos de personas y los mete en inputs
+        Crea cada objeto persona
         Asigna a cada persona las compras que tiene
 
 
-apara mostrar resultado
+Para mostrar resultado
+    Crea un conjunto de objetos aparte para no sobreescribir los que ya hay
+    Solo muestra el modal de resultados con el cálculo correspondiente
 
 
 class Persona{
@@ -1243,3 +1255,121 @@ class Compra{
 }
 
 */
+
+
+//Permite guardar todos los datos ingresados de compras y personas para poder buscarlos después
+function guardarRegistro(){
+    if(checkSubmit(true)){
+        //Pasar los objetos de compras usados (los que tienen input, aunque no se si es necesario ese checkeo)
+        var comprasJson = "";
+        compras.forEach(function(unaCompra){
+            var objetoJson = JSON.stringify(unaCompra);
+            comprasJson += objetoJson;
+        });
+
+        //Pasar los objetos de personas usados (idem compras)
+        filtrarComprasBorradas();
+        var personasJson = "";
+        personas.forEach(function(unaPersona){
+            var objetoJson = JSON.stringify(unaPersona);
+            personasJson += objetoJson;
+        });
+
+        //Nombre de guardado del archivo
+        var fecha = new Date();
+        var anno = fecha.getFullYear();
+        var mes = ("0" + fecha.getMonth()).slice(-2);
+        var dia = ("0" + fecha.getDate()).slice(-2);
+        var horas = ("0" + fecha.getHours()).slice(-2);
+        var minutos = ("0" + fecha.getMinutes()).slice(-2);
+        nombreArchivo = anno + "_" + mes + "_" + dia + "-" + horas + ":" + minutos;
+
+        //Ingreso de etiqueta (opcional para el usuario)
+        borrarModal();
+        setTextHeader("Guardar registro")
+        div = crearNodo("div");
+        div.classList.add("textoModal");
+        txt = document.createTextNode("Etiqueta del registro (opcional):");
+        var input = crearNodo("input", "modal-input");
+        input.classList.add("transparente1");
+        input.type = "text";
+        input.placeholder = "hola";
+
+        input.classList.add("transparente1");
+
+        div.appendChild(txt)
+        div.appendChild(input);
+        div.classList.add("textoModal");
+        escribirModal(div);
+
+        //Crea el boton para confirmar la etiqueta
+        var boton = crearNodo("input", "modal-boton");
+        boton.type = "button";
+        boton.value = "GUARDAR";
+
+
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
+        var botonCancelar = crearNodo("input", "modal-boton");
+        botonCancelar.type = "button";
+        botonCancelar.value = "CANCELAR";
+        botonCancelar.style.color = "#000";
+
+
+        botonCancelar.classList.add("botonMaterial");
+        botonCancelar.classList.add("textoBotonMaterial");
+
+        //Funcion que hace todos los pasos de guardado. Ver si se puede hacer por separado y no necesariamente declararla en el onclick acá
+        boton.onclick = function() { 
+            //Crea el nombre del archivo con la etiqueta
+            var etiqueta = document.getElementsByClassName("modal-body")[0];
+            etiqueta = etiqueta.getElementsByTagName("div");
+            etiqueta = etiqueta[etiqueta.length-1];
+            etiqueta = etiqueta.getElementsByTagName("input");
+            etiqueta = etiqueta[etiqueta.length-1].value;
+            if(etiqueta != ""){
+                nombreArchivo += ("-" + etiqueta);
+            }
+            window.alert(nombreArchivo);
+
+            //Mostrar el numero de compras y personas que se van a guardar
+            //Confirmar el guardado del registro
+            //Guardar el archivo
+        };
+
+
+        botonCancelar.onclick = function() { 
+            esconderModal();
+        };
+
+        var divBotones = crearNodo("div");
+        divBotones.appendChild(botonCancelar);
+        divBotones.appendChild(boton);
+
+        setElementFooter(divBotones);
+
+        mostrarModal();
+
+    }
+    else{
+        //ALERTA
+    }
+
+}
+
+function explorarRegistro(){
+    //Buscar archivos del tipo de registro
+    //Mostrar lista de archivos (si hubiera) o error
+    //Permitir seleccionar uno para edición o ser usado
+        //Edicion permite eliminarlo o cambiarle la etiqueta
+            //Cambiar etiqueta crea un nuevo archivo con la nueva etiqueta (misma fecha) y borra el anterior. O simlemente le cambia el nombre (no se si se puede hacer eso)
+            //Eliminar simplemente elimina el archivo
+            //Ambas opciones requieren de confirmación
+        //Usar el archivo muestra eleccion entre cargar datos o solo calcular
+            //Solo calcular crea los objetos necesarios sin sobreescribir los anteriores en uso
+            //Calcula y muestra el modal de resultados
+            //Editar archivo resetea la aplicación
+            //Crea los objetos y sus relaciones
+            //Llena los inputs            
+
+}
