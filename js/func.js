@@ -1260,25 +1260,7 @@ class Compra{
 
 */
 
-
-//Permite guardar todos los datos ingresados de compras y personas para poder buscarlos después
-function guardarRegistro(){
-    checkSubmit(true);
-    //Pasar los objetos de compras usados (los que tienen input, aunque no se si es necesario ese checkeo)
-    var comprasJson = "";
-    compras.forEach(function(unaCompra){
-        var objetoJson = JSON.stringify(unaCompra);
-        comprasJson += objetoJson;
-    });
-
-    //Pasar los objetos de personas usados (idem compras)
-    filtrarComprasBorradas();
-    var personasJson = "";
-    personas.forEach(function(unaPersona){
-        var objetoJson = JSON.stringify(unaPersona);
-        personasJson += objetoJson;
-    });
-
+function crearNombreArchivo(){
     //Nombre de guardado del archivo
     var fecha = new Date();
     var anno = fecha.getFullYear();
@@ -1286,94 +1268,176 @@ function guardarRegistro(){
     var dia = ("0" + fecha.getDate()).slice(-2);
     var horas = ("0" + fecha.getHours()).slice(-2);
     var minutos = ("0" + fecha.getMinutes()).slice(-2);
-    nombreArchivo = anno + "_" + mes + "_" + dia + "-" + horas + ":" + minutos;
+    nombreArchivo = anno + "_" + mes + "_" + dia + "-" + horas + "_" + minutos;
+    return nombreArchivo;
+}
 
-    //Mostrar el numero de compras y personas que se van a guardar
-    borrarModal();
-    setTextHeader("Guardar registro")
-    // div = crearNodo("div");
-    // div.classList.add("textoModal");
+function aceptarGuardado(comprasJson, personasJson) { 
+    var nombreArchivo = crearNombreArchivo();
 
-    //Mensaje de guardado
-    var msj = "El registro contiene " + compras.length + " compra";
-    if(compras.length>1)
-        msj + "s";
-    if(personas.length>0){
-        msj += " y " + personas.length + " persona";
-        if(personas.length>1)
-            msj += "s";
+    //Crea el nombre del archivo con la etiqueta
+    var etiqueta = document.getElementsByClassName("modal-body")[0];
+    etiqueta = etiqueta.getElementsByTagName("input");
+    etiqueta = etiqueta[etiqueta.length-1].value;
+    if(etiqueta != ""){
+        nombreArchivo += ("-" + etiqueta);
     }
-    txtCant = document.createTextNode(msj);
-    var parrafo = crearNodo("p", "textoModal");
-    parrafo.appendChild(txtCant);
-    parrafo.style.fontSize="0.8em";
-    parrafo.style.marginTop = "6px";
-    //div.appendChild(parrafo);
-    //div.appendChild(crearNodo("br"));
+    nombreArchivo += ".txt";
+    // window.alert(nombreArchivo);
 
-    //Ingreso de etiqueta (opcional para el usuario)
-    txt = document.createTextNode("Etiqueta del registro (opcional):");
-    var input = crearNodo("input", "modal-input");
-    input.classList.add("transparente1");
-    input.type = "text";
-    input.placeholder = "_";
-    input.style.width = "90%";
+    //Guardar el archivo en cordova.file.dataDirectory
+    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    //var directorio = cordova.file.dataDirectory;
+    //var nombreArchivo = "myfile.txt"; //Solo para pruebas
+    // window.alert(directorio);
+    window.resolveLocalFileSystemURL(directorio, function(dir) {
+        dir.getFile(nombreArchivo, {create:true}, function(fileEntry) {
+            // el archivo ha sido creado satisfactoriamente.
+            // Usa fileEntry para leer el contenido o borrar el archivo
 
-    input.classList.add("transparente1");
-    var parrafo2 = crearNodo("p", "textoModal");
-    parrafo2.appendChild(txt);
-    parrafo2.appendChild(input);
-    // div.appendChild(parrafo2);
-    // div.appendChild(input);
-    // div.classList.add("textoModal");
-    escribirModal(parrafo2);
-    escribirModal(input);
-    escribirModal(parrafo);
-    //escribirModal(div);
+            fileEntry.createWriter(function (fileWriter) {
+                fileWriter.write(comprasJson);
+                if(personasJson != "")
+                    fileWriter.write(personasJson);
+                }, onErrorWriteFile);
+            }, onErrorWriteFile);
+        }, onErrorWriteFile);
 
-    //Crea el boton para confirmar la etiqueta
-    var boton = crearNodo("input", "modal-boton");
-    boton.type = "button";
-    boton.value = "GUARDAR";
+    // Leer un archivo de tetxo
+    /*
+    window.resolveLocalFileSystemURL(directorio, function(dir) {
+            dir.getFile(nombreArchivo, {create: false}, function (fileEntry) {
+                fileEntry.file(function (file) {
+                    var reader = new FileReader();
+
+                    reader.readAsText(file);
+                    reader.onloadend = function() {
+                        window.alert("Successful file read: " + this.result);
+                        //displayFileData(fileEntry.fullPath + ": " + this.result);
+                    };
+                }, onErrorReadFile);
+            }, onErrorReadFile);
+        }, onErrorReadFile);
+    */
+};
+
+function onErrorWriteFile(){
+    navigator.notification.alert(
+        'Ocurrió un error en la escritura. Reintente la operación',  // message
+        alertDismissed,         // callback
+        'Ups...',               // title
+        'Ok'                    // buttonName
+    );
+}   
+
+function onErrorReadFile(){
+    navigator.notification.alert(
+        'Ocurrió un error en la lectura. Reintente la operación',  // message
+        alertDismissed,         // callback
+        'Ups...',               // title
+        'Ok'                    // buttonName
+    );
+}
+
+//Permite guardar todos los datos ingresados de compras y personas para poder buscarlos después
+function guardarRegistro(){
+    if(checkSubmit(true)){
+        //Pasar los objetos de compras usados (los que tienen input, aunque no se si es necesario ese checkeo)
+        var comprasJson = "";
+        compras.forEach(function(unaCompra){
+            var objetoJson = JSON.stringify(unaCompra);
+            comprasJson += objetoJson;
+        });
+
+        //Pasar los objetos de personas usados (idem compras)
+        filtrarComprasBorradas();
+        var personasJson = "";
+        personas.forEach(function(unaPersona){
+            var objetoJson = JSON.stringify(unaPersona);
+            personasJson += objetoJson;
+        });
 
 
-    boton.classList.add("botonMaterial");
-    boton.classList.add("textoBotonMaterial");
-    var botonCancelar = crearNodo("input", "modal-boton");
-    botonCancelar.type = "button";
-    botonCancelar.value = "CANCELAR";
-    botonCancelar.style.color = "#000";
+        //Mostrar el numero de compras y personas que se van a guardar
+        borrarModal();
+        setTextHeader("Guardar registro")
+        // div = crearNodo("div");
+        // div.classList.add("textoModal");
 
-
-    botonCancelar.classList.add("botonMaterial");
-    botonCancelar.classList.add("textoBotonMaterial");
-
-    //Funcion que hace todos los pasos de guardado. Ver si se puede hacer por separado y no necesariamente declararla en el onclick acá
-    boton.onclick = function() { 
-        //Crea el nombre del archivo con la etiqueta
-        var etiqueta = document.getElementsByClassName("modal-body")[0];
-        etiqueta = etiqueta.getElementsByTagName("input");
-        etiqueta = etiqueta[etiqueta.length-1].value;
-        if(etiqueta != ""){
-            nombreArchivo += ("-" + etiqueta);
+        //Mensaje de guardado
+        var msj = "El registro contiene " + compras.length + " compra";
+        if(compras.length>1)
+            msj + "s";
+        if(personas.length>0){
+            msj += " y " + personas.length + " persona";
+            if(personas.length>1)
+                msj += "s";
         }
-        window.alert(nombreArchivo);
+        txtCant = document.createTextNode(msj);
+        var parrafo = crearNodo("p", "textoModal");
+        parrafo.appendChild(txtCant);
+        parrafo.style.fontSize="0.8em";
+        parrafo.style.marginTop = "6px";
+        //div.appendChild(parrafo);
+        //div.appendChild(crearNodo("br"));
 
-        //Guardar el archivo
-    };
+        //Ingreso de etiqueta (opcional para el usuario)
+        txt = document.createTextNode("Etiqueta del registro (opcional):");
+        var input = crearNodo("input", "modal-input");
+        input.classList.add("transparente1");
+        input.type = "text";
+        input.placeholder = "_";
+        input.style.width = "90%";
+
+        input.classList.add("transparente1");
+        var parrafo2 = crearNodo("p", "textoModal");
+        parrafo2.appendChild(txt);
+        parrafo2.appendChild(input);
+        // div.appendChild(parrafo2);
+        // div.appendChild(input);
+        // div.classList.add("textoModal");
+        escribirModal(parrafo2);
+        escribirModal(input);
+        escribirModal(parrafo);
+        //escribirModal(div);
+
+        //Crea el boton para confirmar la etiqueta
+        var boton = crearNodo("input", "modal-boton");
+        boton.type = "button";
+        boton.value = "GUARDAR";
 
 
-    botonCancelar.onclick = function() { 
-        esconderModal();
-    };
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
+        var botonCancelar = crearNodo("input", "modal-boton");
+        botonCancelar.type = "button";
+        botonCancelar.value = "CANCELAR";
+        botonCancelar.style.color = "#000";
 
-    var divBotones = crearNodo("div");
-    divBotones.appendChild(botonCancelar);
-    divBotones.appendChild(boton);
 
-    setElementFooter(divBotones);
+        botonCancelar.classList.add("botonMaterial");
+        botonCancelar.classList.add("textoBotonMaterial");
 
-    mostrarModal();
+        //Funcion que hace todos los pasos de guardado. Ver si se puede hacer por separado y no necesariamente declararla en el onclick acá
+        boton.onclick = function() {
+            aceptarGuardado(comprasJson, personasJson);
+        }
+
+        botonCancelar.onclick = function() { 
+            esconderModal();
+        };
+
+        var divBotones = crearNodo("div");
+        divBotones.appendChild(botonCancelar);
+        divBotones.appendChild(boton);
+
+        setElementFooter(divBotones);
+
+        mostrarModal();
+    }
+    else{
+        //ERROR
+    }
 }
 
 function explorarRegistro(){
