@@ -392,7 +392,15 @@ function mostrarModal(){
 function esconderModal(){
     var modal = document.getElementById("myModal");
     modal.style.display = "none";
-    ultimoBoton.id = "activado";
+    //ultimoBoton.id = "activado";
+    //
+    //  
+    //  
+    //          ESTO PUEDE FALLAR  
+    //  
+    //  
+    //  
+
 }
 
 function setModoModal(estado=""){
@@ -603,7 +611,16 @@ function mostrarCompras(yo){
         setElementFooter(divBotones);
         setTextHeader(personaClicker);
         setModoModal();
-        mostrarModal();
+        if(personaClicker != "")
+            mostrarModal();
+        else{
+            navigator.notification.alert(
+                'Ingrese el nombre de la persona',  // message
+                alertDismissed,         // callback
+                'Ups..',            // title
+                'OK'                  // buttonName
+            );
+        }
 
         setUltimoBoton(yo);
         //yo.id = "desactivado";      //Desactiva el boton para que no sea activado mas de una vez sin seleccionar compras
@@ -1272,13 +1289,15 @@ function crearNombreArchivo(){
     return nombreArchivo;
 }
 
-function aceptarGuardado(comprasJson, personasJson) { 
+function aceptarGuardado(comprasJson, personasJson, resultado) { 
     var nombreArchivo = crearNombreArchivo();
 
     //Crea el nombre del archivo con la etiqueta
     var etiqueta = document.getElementsByClassName("modal-body")[0];
-    etiqueta = etiqueta.getElementsByTagName("input");
-    etiqueta = etiqueta[etiqueta.length-1].value;
+    //etiqueta = etiqueta.getElementsByTagName("input");
+    //etiqueta = etiqueta[etiqueta.length-1].value;
+    var etiqueta = resultado.input1;
+    //window.alert(etiqueta);
     if(etiqueta != ""){
         nombreArchivo += ("-" + etiqueta);
     }
@@ -1302,24 +1321,7 @@ function aceptarGuardado(comprasJson, personasJson) {
                 }, onErrorWriteFile);
             }, onErrorWriteFile);
         }, onErrorWriteFile);
-
-    // Leer un archivo de tetxo
-    /*
-    window.resolveLocalFileSystemURL(directorio, function(dir) {
-            dir.getFile(nombreArchivo, {create: false}, function (fileEntry) {
-                fileEntry.file(function (file) {
-                    var reader = new FileReader();
-
-                    reader.readAsText(file);
-                    reader.onloadend = function() {
-                        window.alert("Successful file read: " + this.result);
-                        //displayFileData(fileEntry.fullPath + ": " + this.result);
-                    };
-                }, onErrorReadFile);
-            }, onErrorReadFile);
-        }, onErrorReadFile);
-    */
-};
+}
 
 function onErrorWriteFile(){
     navigator.notification.alert(
@@ -1330,14 +1332,6 @@ function onErrorWriteFile(){
     );
 }   
 
-function onErrorReadFile(){
-    navigator.notification.alert(
-        'Ocurrió un error en la lectura. Reintente la operación',  // message
-        alertDismissed,         // callback
-        'Ups...',               // title
-        'Ok'                    // buttonName
-    );
-}
 
 //Permite guardar todos los datos ingresados de compras y personas para poder buscarlos después
 function guardarRegistro(){
@@ -1364,7 +1358,7 @@ function guardarRegistro(){
         // div = crearNodo("div");
         // div.classList.add("textoModal");
 
-        //Mensaje de guardado
+        //Crear mensaje de guardado
         var msj = "El registro contiene " + compras.length + " compra";
         if(compras.length>1)
             msj + "s";
@@ -1405,20 +1399,17 @@ function guardarRegistro(){
         var boton = crearNodo("input", "modal-boton");
         boton.type = "button";
         boton.value = "GUARDAR";
-
-
         boton.classList.add("botonMaterial");
         boton.classList.add("textoBotonMaterial");
+
         var botonCancelar = crearNodo("input", "modal-boton");
         botonCancelar.type = "button";
         botonCancelar.value = "CANCELAR";
         botonCancelar.style.color = "#000";
-
-
         botonCancelar.classList.add("botonMaterial");
         botonCancelar.classList.add("textoBotonMaterial");
 
-        //Funcion que hace todos los pasos de guardado. Ver si se puede hacer por separado y no necesariamente declararla en el onclick acá
+        //Funcion que hace todos los pasos de guardado
         boton.onclick = function() {
             aceptarGuardado(comprasJson, personasJson);
         }
@@ -1433,7 +1424,17 @@ function guardarRegistro(){
 
         setElementFooter(divBotones);
 
-        mostrarModal();
+        //mostrarModal();
+
+        navigator.notification.prompt(
+            'Etiqueta del registro (opcional)',  // message
+            function(results) {
+                aceptarGuardado(comprasJson, personasJson, results);
+            },                  // callback to invoke
+            'Guardar registro',            // title
+            ['Guardar','Cancelar'],             // buttonLabels
+            ''                 // defaultText
+        );
     }
     else{
         //ERROR
@@ -1442,6 +1443,18 @@ function guardarRegistro(){
 
 function explorarRegistro(){
     //Buscar archivos del tipo de registro
+    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    // Leer un archivo de tetxo
+    window.resolveLocalFileSystemURL(directorio, function(dir) {
+            //Lector de directorio
+            var directoryReader = dir.createReader();
+            //Mostrar la lisa de directorios
+            directoryReader.readEntries(verArchivos ,onErrorReadFile);
+
+        }, 
+    onErrorReadFile);
+
+
     //Mostrar lista de archivos (si hubiera) o error
     //Permitir seleccionar uno para edición o ser usado
         //Edicion permite eliminarlo o cambiarle la etiqueta
@@ -1453,6 +1466,133 @@ function explorarRegistro(){
             //Calcula y muestra el modal de resultados
             //Editar archivo resetea la aplicación
             //Crea los objetos y sus relaciones
-            //Llena los inputs            
+            //Llena los inputs        
+
+
+/*
+            dir.getFile(nombreArchivo, {create: false}, function (fileEntry) {
+                fileEntry.file(function (file) {
+                    var reader = new FileReader();
+
+                    reader.readAsText(file);
+                    reader.onloadend = function() {
+                        window.alert("Successful file read: " + this.result);
+                        //displayFileData(fileEntry.fullPath + ": " + this.result);
+                    };
+                }, onErrorReadFile);
+            }, onErrorReadFile);
+            */
+
+}
+
+
+function onErrorReadFile(){
+    navigator.notification.alert(
+        'Ocurrió un error en la lectura. Reintente la operación',  // message
+        alertDismissed,         // callback
+        'Ups...',               // title
+        'Ok'                    // buttonName
+    );
+}
+
+
+function verArchivos(lecturas) {
+    var i;
+    var registros = filtrarArchivos(lecturas);
+    if(registros.length <= 0){
+        window.alert("No hay registros guardados");
+    }
+    var divContenedor = crearNodo("div");
+    for (i=0; i<registros.length; i++) {
+        var checked = i==0;
+        //window.alert(checked);
+        var dir = lecturas[i].name;
+        divContenedor.innerHTML+=radioButton(dir, checked);
+    }
+
+    //Crea el boton para confirmar la etiqueta
+    var boton = crearNodo("input", "modal-boton");
+    boton.type = "button";
+    boton.value = "GUARDAR";
+    boton.classList.add("botonMaterial");
+    boton.classList.add("textoBotonMaterial");
+
+    var botonCancelar = crearNodo("input", "modal-boton");
+    botonCancelar.type = "button";
+    botonCancelar.value = "CANCELAR";
+    botonCancelar.style.color = "#000";
+    botonCancelar.classList.add("botonMaterial");
+    botonCancelar.classList.add("textoBotonMaterial");
+
+    //Funcion que hace todos los pasos de guardado
+    boton.onclick = function() {
+        esconderModal();
+    }
+
+    botonCancelar.onclick = function() { 
+        esconderModal();
+    };
+
+    var divBotones = crearNodo("div");
+    divBotones.appendChild(botonCancelar);
+    divBotones.appendChild(boton);
+
+    borrarModal();
+    setElementFooter(divBotones);
+    setTextHeader("Explorar registros");    
+    esconderModal();
+    escribirModal(divContenedor);
+    mostrarModal();
+}
+
+//Filtra para dejar solo los archivos de interes de registro
+function filtrarArchivos(lecturas){
+    var registros = lecturas;
+    for (i=0; i<registros.length; i++) {
+        var dir = registros[i].name;
+        var tipo = dir.substr(dir.length -4);
+        if(tipo==".txt" && dir[4]=="_" && dir[7]=="_" && dir[10]=="-" && dir[13]=="_"){
+        }
+        else{
+            registros.splice(i, 1);
+            i--;
+        }
+    }
+    return registros;
+}
+
+
+
+
+//Devuelve un input radio con el nombre amigable para el usuario
+function radioButton(nombreArchivo, checked){
+    var contenido = nombreVisual(nombreArchivo);
+    var divContenedor = '<input type="radio" name="seleccion"';
+    if(checked)
+        divContenedor += ' checked';
+    divContenedor += '/>'+contenido+'</br>';
+    //window.alert("asdfgh");
+    //window.alert(divContenedor);
+    return divContenedor;
+}
+
+
+//Cambia el nombre de archivo para que sea amigable
+function nombreVisual(nombreArchivo){
+    //AAAA_MM_DD-HH_MM-CCCCCCCCC
+    //01234567890123456789012345
+    var anno = nombreArchivo.substr(0,4);
+    var mes = nombreArchivo.substr(5,2);
+    var dia = nombreArchivo.substr(8,2);
+    var hora = nombreArchivo.substr(11,2);
+    var minuto = nombreArchivo.substr(14,2);
+    var nombreAmigable = dia + "/" + mes +"/" + anno;
+    nombreAmigable += " " + hora + ":" + minuto;
+    //Si tiene comentario: <fecha y hora (comentario)> cambia el formato de fecha
+    if(nombreArchivo[16] == "-"){
+        var comentario = nombreArchivo.substr(17, nombreArchivo.length-21);
+        nombreAmigable += " (" + comentario + ")";
+    }
+    return nombreAmigable;
 
 }
