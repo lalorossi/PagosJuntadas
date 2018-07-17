@@ -1506,8 +1506,8 @@ function verArchivos(lecturas) {
     for (i=0; i<registros.length; i++) {
         var checked = i==0;
         //window.alert(checked);
-        var dir = lecturas[i].name;
-        divContenedor.innerHTML+=radioButton(dir, checked);
+        var dir = registros[i].name;
+        divContenedor.innerHTML += radioButton(dir, checked);
     }
 
     //Crea el boton para confirmar la etiqueta
@@ -1567,12 +1567,13 @@ function filtrarArchivos(lecturas){
 //Devuelve un input radio con el nombre amigable para el usuario
 function radioButton(nombreArchivo, checked){
     var contenido = nombreVisual(nombreArchivo);
-    var divContenedor = '<input type="radio" name="seleccion"';
+    var divContenedor = '<input type="radio" name="seleccion" value="' + nombreArchivo + '"';
     if(checked)
         divContenedor += ' checked';
     divContenedor += '/>'+contenido+'</br>';
     //window.alert("asdfgh");
     //window.alert(divContenedor);
+    divContenedor = agregarOpciones(divContenedor);
     return divContenedor;
 }
 
@@ -1595,4 +1596,49 @@ function nombreVisual(nombreArchivo){
     }
     return nombreAmigable;
 
+}
+
+//Toma un div con el radio input y le agrega boton de borrar o editar
+function agregarOpciones(divContenedor){
+    //Crea el boton de borrado
+    var botonBorrar = crearNodo("button", "botonMaterial");
+    botonBorrar.classList.add("texto2");
+
+    botonBorrar.innerHTML = '<i class="material-icons" style="font-size: 1.6em;">delete</i>';
+
+    botonBorrar.addEventListener("click", function(){
+        //Confirmar borrado
+        //El confirmar llama a una funcion que
+        //Obtener el nombre de archivo por el value del dir
+        //Funcion que busca y borra el archivo
+        //Muestra resultado de borrado y deja el modal de archivos abierto (actualizado)
+        //Muestra con etiqueta que desaparece??
+    });
+
+    //Crea el boton de cambiar nombre
+    var botonEditar = crearNodo("button", "botonMaterial");
+    botonEditar.classList.add("texto2");
+
+    botonEditar.innerHTML = '<i class="material-icons" style="font-size: 1.6em;">edit</i>';
+
+    botonEditar.addEventListener("click", function(){
+        //Muestra un prompt para conseguir el nombre de archivo
+        //El aceptar del prompt llama a la funcion que lo busca y le cambia el nombre
+        //Muestra resultado de modificacion y deja el modal de archivos abierto (actualizado)
+        //Muestra con etiqueta que desaparece??
+    });
+}
+
+//Borra un registro dado por su nombre (puede cambiar)
+function borrarRegistro(archivo){
+    //Obtener archivo
+    //Borrarlo
+    //Mostrar confirmacion de borrado
+}
+
+//Cambia el nombre de un registro
+function cambiarNombre(){
+    //Obtener archivo
+    //No se si se crea uno nuevo o directamente se sobreescribe
+    //Mostrar confirmación de borrado
 }
