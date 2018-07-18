@@ -1502,7 +1502,8 @@ function verArchivos(lecturas) {
     if(registros.length <= 0){
         window.alert("No hay registros guardados");
     }
-    var divContenedor = crearNodo("div");
+    //El div que contiene los radio button, con id "divContenedor"
+    var divContenedor = crearNodo("div", "", "divContenedor");
     for (i=0; i<registros.length; i++) {
         var checked = i==0;
         //window.alert(checked);
@@ -1524,9 +1525,10 @@ function verArchivos(lecturas) {
     botonCancelar.classList.add("botonMaterial");
     botonCancelar.classList.add("textoBotonMaterial");
 
-    //Funcion que hace todos los pasos de guardado
+    //Funcion que hace todos los pasos de carga
     boton.onclick = function() {
-        esconderModal();
+        //Hay que pasarle el value del radio o directamente el archivo
+        cargarRegistro();
     }
 
     botonCancelar.onclick = function() { 
@@ -1641,4 +1643,94 @@ function cambiarNombre(){
     //Obtener archivo
     //No se si se crea uno nuevo o directamente se sobreescribe
     //Mostrar confirmación de borrado
+}
+
+//Carga el registro, preguntando si es solo compras o todo
+function cargarRegistro(){
+    var archivo = buscarArchivoRadio();
+    var reader = new FileReader();
+
+    reader.readAsText(archivo);
+    reader.onloadend = function() {
+        window.alert("Successful file read: " + this.result);
+        stringObjetos = this.result;
+        //displayFileData(fileEntry.fullPath + ": " + this.result);
+    };
+    //Obtener TODOS los obejtos en un array (compras y personas)
+    var objetosCarga = obtenerObjetos(stringObjetos);
+    var comprasCarga = separarCompras(objetosCarga);
+    var personasCarga = separarPersonas(objetosCarga);  //Ver si se puede "restar" los dos arrays anteriores
+}
+
+//Busca el archivo seleccionado en radio input
+function buscarArchivoRadio(){
+    var divContenedor = document.getElementById("divContenedor");
+    var radios = divContenedor.getElementsByTagName("input");
+    for (var i = radios.length - 1; i >= 0; i--) {
+        if(radios[i].checked)
+            var radioSeleccionado = radios[i].value;
+    }
+
+    //Obetener el filentry a partir del nombre del archivo
+    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    window.resolveLocalFileSystemURL(directorio, function(dir) {
+        dir.getFile(radioSeleccionado, {create: false}, function (fileEntry) {
+            fileEntry.file(function (file) {
+                /*
+                var reader = new FileReader();
+
+                reader.readAsText(file);
+                reader.onloadend = function() {
+                    window.alert("Successful file read: " + this.result);
+                    //displayFileData(fileEntry.fullPath + ": " + this.result);
+                };
+                */
+                var archivoRadio = file;
+            }, onErrorReadFile);
+        }, onErrorReadFile);
+    });
+    return archivoRadio;
+}
+
+//Lee un string y crea todos los objetos de cualquier tipo en un array
+function obtenerObjetos(stringObjetos){
+    var objetos = [];
+    var unaLectura = "";
+    for (var i = stringObjetos.length - 1; i >= 0; i--) {
+        //A menos que encuentre el fin de un objeto, guarda el string
+        if(stringObjetos[i] != '}'){
+            unaLectura += stringObjetos[i];
+        }
+        //Si encuentra el fin del objeto, lo guarda y resetea el string
+        else{
+            unaLectura += stringObjetos[i];     //Pone el } al final
+            var obj = JSON.parse(stringObjetos);
+            objetos.push(obj);
+            unaLectura = "";
+        }
+    }
+}
+
+//Comprueba si cada objeto tiene la propiedad producto para diferenciar las compras
+function separarCompras(objetosCarga){
+    // obj.producto == undefined
+    var comprasCarga = [];
+    objetosCarga.forEach(function(unObjeto){
+        if(unObjeto.producto != undefined){
+            comprasCarga.push(unObjeto);
+        }
+    });
+    return comprasCarga;
+}
+
+//Comprueba si cada objeto tiene la propiedad nombre para diferenciar las personas
+function separarPersonas(objetosCarga){
+    // obj.producto == undefined
+    var personasCarga = [];
+    objetosCarga.forEach(function(unObjeto){
+        if(unObjeto.nombre != undefined){
+            personasCarga.push(unObjeto);
+        }
+    });
+    return personasCarga;
 }
