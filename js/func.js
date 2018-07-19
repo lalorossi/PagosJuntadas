@@ -107,7 +107,8 @@ var placeholdersExtra2 = [  "Una noche con Pampita",
 
 //window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 //Agrega un input de compra o persona
-function agregar() {
+//Manda el forzado para poder agregar personas aunque la pagina de personas no este abierta (durante la carga)
+function agregar(personasForzado) {
     /*
     var nuevo = document.createElement("tr");
     nuevo.className=cla;
@@ -116,6 +117,10 @@ function agregar() {
         var cla = "compra";
     }
     else{
+        var cla = "persona";
+    }
+    //Si quiero forzar el agregar una persona, me aseguro con personasForzado
+    if(personasForzado){
         var cla = "persona";
     }
     //window.alert(cla);
@@ -513,6 +518,7 @@ function mostrarCompras(yo){
 
     borrarModal();
 
+    //OJO ACÁ. 
     if(yo.id == "activado"){
         //Busca los datos de las compras desde el array de compras
         //Hace una lista conm checkboxes para seleccionar las compras
@@ -1035,13 +1041,15 @@ window.onclick = function(event) {
 
 function onConfirm(buttonIndex) {
     if(buttonIndex==1){
+        //Esto mostraria una notificacion de borrado, pero me parece molesta
+        /*
         navigator.notification.alert(
             'Podés volver a empezar de nuevo',  // message
             alertDismissed,         // callback
             'Se borraron todos los datos',            // title
             'Ok'                  // buttonName
         );
-
+        */
         location.reload(true);
     }
 }
@@ -1629,6 +1637,10 @@ function agregarOpciones(divContenedor){
         //Muestra resultado de modificacion y deja el modal de archivos abierto (actualizado)
         //Muestra con etiqueta que desaparece??
     });
+
+    divContenedor.appendChild(botonBorrar);
+    divContenedor.appendChild(botonEditar);
+    return divContenedor;
 }
 
 //Borra un registro dado por su nombre (puede cambiar)
@@ -1657,9 +1669,30 @@ function cargarRegistro(){
         //displayFileData(fileEntry.fullPath + ": " + this.result);
     };
     //Obtener TODOS los obejtos en un array (compras y personas)
+    //Falta comprobar que haga bien las asosiaciones entre personas y compras
+    //Si no, puedo hacer una funcion que cambie los arrays de compras por personas para que "apunten"
+    //a cada compra creada y no a un nuevo objeto
     var objetosCarga = obtenerObjetos(stringObjetos);
-    var comprasCarga = separarCompras(objetosCarga);
-    var personasCarga = separarPersonas(objetosCarga);  //Ver si se puede "restar" los dos arrays anteriores
+
+    //Los hace globales como los arrays originales de compras y personas
+    comprasCarga = separarCompras(objetosCarga);
+    personasCarga = separarPersonas(objetosCarga);  //Ver si se puede "restar" los dos arrays anteriores
+
+    //Confirm: "El registro contiene x compras (y x personas)" Botones cargar o ver resultados
+    var msjAlerta = "El registro contiene " + compras.length + " compra";
+    if(compras.length>1)
+        msjAlerta + "s";
+    if(personas.length>0){
+        msjAlerta += " y " + personas.length + " persona";
+        if(personas.length>1)
+            msjAlerta += "s";
+    }
+    navigator.notification.confirm(
+        msjAlerta, // message
+        confirmarCarga,            // callback to invoke with index of button pressed
+        'Opciones de carga',           // title
+        ['Cargar todo','Solo resultado']     // buttonLabels
+    );
 }
 
 //Busca el archivo seleccionado en radio input
@@ -1685,6 +1718,7 @@ function buscarArchivoRadio(){
                     //displayFileData(fileEntry.fullPath + ": " + this.result);
                 };
                 */
+                //Ojo: puede que no guarde la variable cuando salga de la funcion
                 var archivoRadio = file;
             }, onErrorReadFile);
         }, onErrorReadFile);
@@ -1733,4 +1767,99 @@ function separarPersonas(objetosCarga){
         }
     });
     return personasCarga;
+}
+
+fucntion confirmarCarga(indexBoton){
+    //Si presiono el boton de Cargar todo
+    if(indexBoton == 0){
+        //Resetea la app
+        borrar();
+
+        //Como ya se borró la app, setea las compras y personas globales
+        compras = comprasCarga;
+        personas = personasCarga;
+
+        //Llena los inputs de compras
+        llenarInputsCompra();
+
+        //Llena los nombres de personas
+        llenarInputsPerona();
+
+        //Revisar como se rellenan originalmente los modals de cada personas
+        //Porque si lo hace con datos de objetos, sería automático con solo tener compras creadas
+        //REVSISAR PARA ESO LA FUNCION esCompra
+        //Al parecer sí es automático
+    }
+
+    //Si presiono el boton de solo resultados
+    if(indexBoton == 1){
+        //Guarda el estado de compras y personas actuales
+        comprasAnt = compras;
+        personasAnt = personas;
+        compras = comprasCarga;
+        personas = personasCarga;
+
+        //Realiza el mismo proceso que para calcular desde los inputs
+        calcular();
+
+        //Reestablece las compras y personas originales
+        compras = comprasAnt;
+        personas = personasAnt;
+    }
+}
+
+function llenarInputsCompra(){
+    for (var i = compras.length - 1; i >= 0; i--) {
+        llenarUnaCompra(compras[i].producto, compras[i].precio);
+    }
+}
+
+function llenarUnaCompra(producto, precio){
+    //Busca un input disponible
+    var ultimoProducto = document.getElementsByClassName("inputProducto").lastChild.value;
+    var ultimoPrecio = document.getElementsByClassName("inputPrecio").lastChild.value;
+    //Si el producto o precio del ultimo input son vacios, los uso
+    if(ultimoPrecio == "" || ultimoProducto == ""){
+        //Creo que si directamente uso ultimoPrecio, ultimoPrecio, escribe en los inputs
+        ultimoPrecio = precio;
+        ultimoProducto = producto;
+        //Comprobar, y de ultima volver a buscar los inputs
+    }
+    //Si el ultimo input ya esta cargado
+    else{
+        //Agrega un espacio para compra
+        agregar(false);
+
+        //LLena el ultimo espacio
+        document.getElementsByClassName("inputProducto").lastChild.value = producto;
+        document.getElementsByClassName("inputPrecio").lastChild.value = precio;
+    }
+
+}
+
+function llenarInputsPersona(){
+    //Cuando llamo a agregar(), personasForzado debe ser true "agregar(true)"
+    for (var i = persona.length - 1; i >= 0; i--) {
+        llenarUnaPersona(personas[i].nombre);
+    }
+}
+
+function llenarUnaPersona(nombre){
+    //Busca un input disponible
+    var ultimoNombre = document.getElementsByClassName("inputNombre").lastChild.value;
+    //Si el producto o precio del ultimo input son vacios, los uso
+    if(ultimoNombre == ""){
+        //Creo que si directamente uso ultimoNombre, escribe en los inputs
+        ultimoNombre = nombre;
+        //Comprobar, y de ultima volver a buscar los inputs
+    }
+    //Si el ultimo input ya esta cargado
+    else{
+        //Agrega un espacio para persona
+        agregar(true);
+
+        //LLena el ultimo espacio
+        document.getElementsByClassName("inputNombre").lastChild.value = nombre;
+    }
+
 }

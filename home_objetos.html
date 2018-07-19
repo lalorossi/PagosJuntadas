@@ -65,9 +65,9 @@
         <table id="page1" class="tabla-form fondo2">
             <tr class="compra texto2">
                 <td style="width: 10%">Compra</td>
-                <td style="width:50%"><input style="width:85%" type="text" id="concepto" class="table-text transparente1 plHolderRand"> </td>
+                <td style="width:50%"><input style="width:85%" type="text" id="concepto" class="table-text transparente1 plHolderRand inputProducto"> </td>
                 <td class="texto2">$</td>
-                <td style="width:20%"><input style="width:75%" type="number" id="precio" placeholder="00.0" class="table-number transparente1"></td>
+                <td style="width:20%"><input style="width:75%" type="number" id="precio" placeholder="00.0" class="table-number transparente1 inputPrecio"></td>
                 
                 <td><button type="button" class="eliminar botonMaterial" onclick="chau(this)"><i class="material-icons">delete</i></button></td>
             </tr>
@@ -144,7 +144,7 @@
 
 <div id="container-floating">
 
-  <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" onclick="agregar()">
+  <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" onclick="agregar(false)">
     <p class="plus">
         <i class="material-icons plus">add</i>
     </p>
