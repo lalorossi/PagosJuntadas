@@ -1297,38 +1297,44 @@ function crearNombreArchivo(){
     return nombreArchivo;
 }
 
-function aceptarGuardado(comprasJson, personasJson, resultado) { 
-    var nombreArchivo = crearNombreArchivo();
+function aceptarGuardado(totalJson, resultado, msj) { 
+    if(resultado.buttonIndex == 1){
+        var nombreArchivo = crearNombreArchivo();
 
-    //Crea el nombre del archivo con la etiqueta
-    var etiqueta = document.getElementsByClassName("modal-body")[0];
-    //etiqueta = etiqueta.getElementsByTagName("input");
-    //etiqueta = etiqueta[etiqueta.length-1].value;
-    var etiqueta = resultado.input1;
-    //window.alert(etiqueta);
-    if(etiqueta != ""){
-        nombreArchivo += ("-" + etiqueta);
-    }
-    nombreArchivo += ".txt";
-    // window.alert(nombreArchivo);
+        //Crea el nombre del archivo con la etiqueta
+        var etiqueta = document.getElementsByClassName("modal-body")[0];
+        //etiqueta = etiqueta.getElementsByTagName("input");
+        //etiqueta = etiqueta[etiqueta.length-1].value;
+        var etiqueta = resultado.input1;
+        //window.alert(etiqueta);
+        if(etiqueta != ""){
+            nombreArchivo += ("-" + etiqueta);
+        }
+        nombreArchivo += ".txt";
+        // window.alert(nombreArchivo);
 
-    //Guardar el archivo en cordova.file.dataDirectory
-    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
-    //var directorio = cordova.file.dataDirectory;
-    //var nombreArchivo = "myfile.txt"; //Solo para pruebas
-    // window.alert(directorio);
-    window.resolveLocalFileSystemURL(directorio, function(dir) {
-        dir.getFile(nombreArchivo, {create:true}, function(fileEntry) {
-            // el archivo ha sido creado satisfactoriamente.
-            // Usa fileEntry para leer el contenido o borrar el archivo
+        //Guardar el archivo en cordova.file.dataDirectory
+        var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        //var directorio = cordova.file.dataDirectory;
+        //var nombreArchivo = "myfile.txt"; //Solo para pruebas
+        // window.alert(directorio);
+        window.resolveLocalFileSystemURL(directorio, function(dir) {
+            dir.getFile(nombreArchivo, {create:true}, function(fileEntry) {
+                // el archivo ha sido creado satisfactoriamente.
+                // Usa fileEntry para leer el contenido o borrar el archivo
 
-            fileEntry.createWriter(function (fileWriter) {
-                fileWriter.write(comprasJson);
-                if(personasJson != "")
-                    fileWriter.write(personasJson);
+                fileEntry.createWriter(function (fileWriter) {
+                    fileWriter.write(totalJson);
+                    navigator.notification.alert(
+                        msj,  // message
+                        alertDismissed,         // callback
+                        'Registro Guardado',               // title
+                        'Ok'                    // buttonName
+                    );
+                    }, onErrorWriteFile);
                 }, onErrorWriteFile);
             }, onErrorWriteFile);
-        }, onErrorWriteFile);
+    }
 }
 
 function onErrorWriteFile(){
@@ -1359,6 +1365,10 @@ function guardarRegistro(){
             personasJson += objetoJson;
         });
 
+        var totalJson = comprasJson + " " + personasJson;
+
+        //window.alert(totalJson);
+
 
         //Mostrar el numero de compras y personas que se van a guardar
         borrarModal();
@@ -1375,6 +1385,7 @@ function guardarRegistro(){
             if(personas.length>1)
                 msj += "s";
         }
+        /*
         txtCant = document.createTextNode(msj);
         var parrafo = crearNodo("p", "textoModal");
         parrafo.appendChild(txtCant);
@@ -1419,7 +1430,7 @@ function guardarRegistro(){
 
         //Funcion que hace todos los pasos de guardado
         boton.onclick = function() {
-            aceptarGuardado(comprasJson, personasJson);
+            aceptarGuardado(totalJson);
         }
 
         botonCancelar.onclick = function() { 
@@ -1433,11 +1444,11 @@ function guardarRegistro(){
         setElementFooter(divBotones);
 
         //mostrarModal();
-
+        */
         navigator.notification.prompt(
             'Etiqueta del registro (opcional)',  // message
             function(results) {
-                aceptarGuardado(comprasJson, personasJson, results);
+                aceptarGuardado(totalJson, results, msj);
             },                  // callback to invoke
             'Guardar registro',            // title
             ['Guardar','Cancelar'],             // buttonLabels
@@ -1491,6 +1502,7 @@ function explorarRegistro(){
             }, onErrorReadFile);
             */
 
+
 }
 
 
@@ -1508,51 +1520,58 @@ function verArchivos(lecturas) {
     var i;
     var registros = filtrarArchivos(lecturas);
     if(registros.length <= 0){
-        window.alert("No hay registros guardados");
-    }
-    //El div que contiene los radio button, con id "divContenedor"
-    var divContenedor = crearNodo("div", "", "divContenedor");
-    for (i=0; i<registros.length; i++) {
-        var checked = i==0;
-        //window.alert(checked);
-        var dir = registros[i].name;
-        divContenedor.innerHTML += radioButton(dir, checked);
-    }
+        navigator.notification.alert(
+            'No hay registros guardados',  // message
+            alertDismissed,         // callback
+            'Ups...',               // title
+            'Ok'                    // buttonName
+        );
+    }else{
+        //El div que contiene los radio button, con id "divContenedor"
+        var divContenedor = crearNodo("div", "", "divContenedor");
+        for (i=0; i<registros.length; i++) {
+            var checked = i==0;
+            //window.alert(checked);
+            var dir = registros[i].name;
+            divContenedor.appendChild(radioButton(dir, checked));
+        }
 
-    //Crea el boton para confirmar la etiqueta
-    var boton = crearNodo("input", "modal-boton");
-    boton.type = "button";
-    boton.value = "GUARDAR";
-    boton.classList.add("botonMaterial");
-    boton.classList.add("textoBotonMaterial");
+        //Crea el boton para confirmar la etiqueta
+        var boton = crearNodo("input", "modal-boton");
+        boton.type = "button";
+        boton.value = "CARGAR";
+        boton.classList.add("botonMaterial");
+        boton.classList.add("textoBotonMaterial");
 
-    var botonCancelar = crearNodo("input", "modal-boton");
-    botonCancelar.type = "button";
-    botonCancelar.value = "CANCELAR";
-    botonCancelar.style.color = "#000";
-    botonCancelar.classList.add("botonMaterial");
-    botonCancelar.classList.add("textoBotonMaterial");
+        var botonCancelar = crearNodo("input", "modal-boton");
+        botonCancelar.type = "button";
+        botonCancelar.value = "CANCELAR";
+        botonCancelar.style.color = "#000";
+        botonCancelar.classList.add("botonMaterial");
+        botonCancelar.classList.add("textoBotonMaterial");
 
-    //Funcion que hace todos los pasos de carga
-    boton.onclick = function() {
-        //Hay que pasarle el value del radio o directamente el archivo
-        cargarRegistro();
-    }
+        //Funcion que hace todos los pasos de carga
+        boton.onclick = function() {
+            esconderModal();
+            //Hay que pasarle el value del radio o directamente el archivo
+            cargarRegistro();
+        }
 
-    botonCancelar.onclick = function() { 
+        botonCancelar.onclick = function() { 
+            esconderModal();
+        };
+
+        var divBotones = crearNodo("div");
+        divBotones.appendChild(botonCancelar);
+        divBotones.appendChild(boton);
+
+        borrarModal();
+        setElementFooter(divBotones);
+        setTextHeader("Explorar registros");    
         esconderModal();
-    };
-
-    var divBotones = crearNodo("div");
-    divBotones.appendChild(botonCancelar);
-    divBotones.appendChild(boton);
-
-    borrarModal();
-    setElementFooter(divBotones);
-    setTextHeader("Explorar registros");    
-    esconderModal();
-    escribirModal(divContenedor);
-    mostrarModal();
+        escribirModal(divContenedor);
+        mostrarModal();
+    }
 }
 
 //Filtra para dejar solo los archivos de interes de registro
@@ -1577,13 +1596,13 @@ function filtrarArchivos(lecturas){
 //Devuelve un input radio con el nombre amigable para el usuario
 function radioButton(nombreArchivo, checked){
     var contenido = nombreVisual(nombreArchivo);
-    var divContenedor = '<input type="radio" name="seleccion" value="' + nombreArchivo + '"';
+    var inputRadio = '<input type="radio" name="seleccion" value="' + nombreArchivo + '"';
     if(checked)
-        divContenedor += ' checked';
-    divContenedor += '/>'+contenido+'</br>';
+        inputRadio += ' checked';
+    inputRadio += '/>'+contenido+'</br>';
     //window.alert("asdfgh");
-    //window.alert(divContenedor);
-    divContenedor = agregarOpciones(divContenedor);
+    //window.alert(inputRadio);
+    var divContenedor = agregarOpciones(inputRadio);
     return divContenedor;
 }
 
@@ -1609,7 +1628,7 @@ function nombreVisual(nombreArchivo){
 }
 
 //Toma un div con el radio input y le agrega boton de borrar o editar
-function agregarOpciones(divContenedor){
+function agregarOpciones(inputRadio){
     //Crea el boton de borrado
     var botonBorrar = crearNodo("button", "botonMaterial");
     botonBorrar.classList.add("texto2");
@@ -1637,9 +1656,10 @@ function agregarOpciones(divContenedor){
         //Muestra resultado de modificacion y deja el modal de archivos abierto (actualizado)
         //Muestra con etiqueta que desaparece??
     });
-
-    divContenedor.appendChild(botonBorrar);
+    var divContenedor = crearNodo("div");
+    divContenedor.innerHTML += inputRadio;
     divContenedor.appendChild(botonEditar);
+    divContenedor.appendChild(botonBorrar);
     return divContenedor;
 }
 
@@ -1661,10 +1681,9 @@ function cambiarNombre(){
 function cargarRegistro(){
     var archivo = buscarArchivoRadio();
     var reader = new FileReader();
-
     reader.readAsText(archivo);
     reader.onloadend = function() {
-        window.alert("Successful file read: " + this.result);
+        //window.alert("Successful file read: " + this.result);
         stringObjetos = this.result;
         //displayFileData(fileEntry.fullPath + ": " + this.result);
     };
@@ -1673,17 +1692,16 @@ function cargarRegistro(){
     //Si no, puedo hacer una funcion que cambie los arrays de compras por personas para que "apunten"
     //a cada compra creada y no a un nuevo objeto
     var objetosCarga = obtenerObjetos(stringObjetos);
-
     //Los hace globales como los arrays originales de compras y personas
     comprasCarga = separarCompras(objetosCarga);
     personasCarga = separarPersonas(objetosCarga);  //Ver si se puede "restar" los dos arrays anteriores
 
     //Confirm: "El registro contiene x compras (y x personas)" Botones cargar o ver resultados
-    var msjAlerta = "El registro contiene " + compras.length + " compra";
-    if(compras.length>1)
-        msjAlerta + "s";
-    if(personas.length>0){
-        msjAlerta += " y " + personas.length + " persona";
+    var msjAlerta = "El registro contiene " + comprasCarga.length + " compra";
+    if(comprasCarga.length>1)
+        msjAlerta += "s";
+    if(personasCarga.length>0){
+        msjAlerta += " y " + personasCarga.length + " persona";
         if(personas.length>1)
             msjAlerta += "s";
     }
@@ -1719,7 +1737,7 @@ function buscarArchivoRadio(){
                 };
                 */
                 //Ojo: puede que no guarde la variable cuando salga de la funcion
-                var archivoRadio = file;
+                archivoRadio = file;
             }, onErrorReadFile);
         }, onErrorReadFile);
     });
@@ -1730,7 +1748,8 @@ function buscarArchivoRadio(){
 function obtenerObjetos(stringObjetos){
     var objetos = [];
     var unaLectura = "";
-    for (var i = stringObjetos.length - 1; i >= 0; i--) {
+    /*
+    for (var i = 0; i <stringObjetos.length; i++) {
         //A menos que encuentre el fin de un objeto, guarda el string
         if(stringObjetos[i] != '}'){
             unaLectura += stringObjetos[i];
@@ -1738,11 +1757,41 @@ function obtenerObjetos(stringObjetos){
         //Si encuentra el fin del objeto, lo guarda y resetea el string
         else{
             unaLectura += stringObjetos[i];     //Pone el } al final
-            var obj = JSON.parse(stringObjetos);
+            var obj = JSON.parse(unaLectura);
             objetos.push(obj);
             unaLectura = "";
         }
     }
+    */
+    var abiertos = 0;
+    for(var i = 0; i < stringObjetos.length; i++){
+        //Si encuentra unn { abre un objeto (los siguientes { no lo hacen)
+        if(stringObjetos[i] == "{"){
+            unaLectura += stringObjetos[i];
+            abiertos += 1;
+        }
+        else if(stringObjetos[i] == "}"){
+            //Si encuentra un } dentro de un objeto comun
+            if(abiertos == 1){
+                //Termina el objeto
+                unaLectura += stringObjetos[i];     //Pone el } al final
+                window.alert(unaLectura);
+                var obj = JSON.parse(unaLectura);
+                objetos.push(obj);
+                unaLectura = "";
+            }
+            //Si encuentra un } dentro de otro {}, continua leyendo
+            else{
+                //Continua leyendo
+                unaLectura += stringObjetos[i];
+            }
+            abiertos -= 1;
+        }
+        //Cualquier otro caracter se agrega a la lectura
+        else
+            unaLectura += stringObjetos[i];
+    }
+    return objetos;
 }
 
 //Comprueba si cada objeto tiene la propiedad producto para diferenciar las compras
@@ -1769,11 +1818,14 @@ function separarPersonas(objetosCarga){
     return personasCarga;
 }
 
-fucntion confirmarCarga(indexBoton){
+function confirmarCarga(indexBoton){
+    //Haga lo que haga, esconde el modal primero
+    esconderModal();
+
     //Si presiono el boton de Cargar todo
-    if(indexBoton == 0){
-        //Resetea la app
-        borrar();
+    if(indexBoton == 1){
+        //Borrar los inputs (no borrar la aplicacion porque se borran todos los arrays que se cargan)
+        vaciarInputs();
 
         //Como ya se borró la app, setea las compras y personas globales
         compras = comprasCarga;
@@ -1783,7 +1835,7 @@ fucntion confirmarCarga(indexBoton){
         llenarInputsCompra();
 
         //Llena los nombres de personas
-        llenarInputsPerona();
+        llenarInputsPersona();
 
         //Revisar como se rellenan originalmente los modals de cada personas
         //Porque si lo hace con datos de objetos, sería automático con solo tener compras creadas
@@ -1792,7 +1844,7 @@ fucntion confirmarCarga(indexBoton){
     }
 
     //Si presiono el boton de solo resultados
-    if(indexBoton == 1){
+    if(indexBoton == 2){
         //Guarda el estado de compras y personas actuales
         comprasAnt = compras;
         personasAnt = personas;
@@ -1801,11 +1853,35 @@ fucntion confirmarCarga(indexBoton){
 
         //Realiza el mismo proceso que para calcular desde los inputs
         calcular();
+        //No esta mostrando el calculo por alguna razon (puede que ni siquiera lo haga y haya un error en el medio)
+        //Si trato de mostrar solo resultados y despues calcular lo que ya habia, no funciona
 
         //Reestablece las compras y personas originales
         compras = comprasAnt;
         personas = personasAnt;
     }
+}
+
+function vaciarInputs(){
+    var productos = document.getElementsByClassName("inputProducto");
+    var precios = document.getElementsByClassName("inputPrecio");
+    var nombres = document.getElementsByClassName("inputNombre");
+    window.alert(productos.length);
+    window.alert(precios.length);
+    window.alert(nombres.length);
+    for (var i = productos.length - 1; i >= 0; i--) {
+        chau(productos[i]);
+    }
+    /*
+    for (var i = precios.length - 1; i >= 0; i--) {
+        chau(precios[i]);
+    }
+    */
+    for (var i = nombres.length - 1; i >= 0; i--) {
+        chau(nombres[i]);
+    }
+    agregar(true);
+    agregar(false);
 }
 
 function llenarInputsCompra(){
@@ -1816,13 +1892,15 @@ function llenarInputsCompra(){
 
 function llenarUnaCompra(producto, precio){
     //Busca un input disponible
-    var ultimoProducto = document.getElementsByClassName("inputProducto").lastChild.value;
-    var ultimoPrecio = document.getElementsByClassName("inputPrecio").lastChild.value;
+    var ultimoProducto = document.getElementsByClassName("inputProducto");
+    var valorUltimoProducto = ultimoProducto[ultimoProducto.length -1].value;
+    var ultimoPrecio = document.getElementsByClassName("inputPrecio");
+    var valorUltimoPrecio = ultimoPrecio[ultimoPrecio.length -1].value;
     //Si el producto o precio del ultimo input son vacios, los uso
-    if(ultimoPrecio == "" || ultimoProducto == ""){
+    if(valorUltimoPrecio == "" || valorUltimoProducto == ""){
         //Creo que si directamente uso ultimoPrecio, ultimoPrecio, escribe en los inputs
-        ultimoPrecio = precio;
-        ultimoProducto = producto;
+        ultimoPrecio[ultimoPrecio.length -1].value = precio;
+        ultimoProducto[ultimoProducto.length -1].value = producto;
         //Comprobar, y de ultima volver a buscar los inputs
     }
     //Si el ultimo input ya esta cargado
@@ -1831,26 +1909,27 @@ function llenarUnaCompra(producto, precio){
         agregar(false);
 
         //LLena el ultimo espacio
-        document.getElementsByClassName("inputProducto").lastChild.value = producto;
-        document.getElementsByClassName("inputPrecio").lastChild.value = precio;
+        ultimoPrecio[ultimoPrecio.length -1].value = precio;
+        ultimoProducto[ultimoProducto.length -1].value = producto;
     }
 
 }
 
 function llenarInputsPersona(){
     //Cuando llamo a agregar(), personasForzado debe ser true "agregar(true)"
-    for (var i = persona.length - 1; i >= 0; i--) {
+    for (var i = personas.length - 1; i >= 0; i--) {
         llenarUnaPersona(personas[i].nombre);
     }
 }
 
 function llenarUnaPersona(nombre){
     //Busca un input disponible
-    var ultimoNombre = document.getElementsByClassName("inputNombre").lastChild.value;
+    var ultimoNombre = document.getElementsByClassName("inputNombre");
+    var valorUltimoNombre = ultimoNombre[ultimoNombre.length -1].value;
     //Si el producto o precio del ultimo input son vacios, los uso
-    if(ultimoNombre == ""){
+    if(valorUltimoNombre == ""){
         //Creo que si directamente uso ultimoNombre, escribe en los inputs
-        ultimoNombre = nombre;
+        ultimoNombre[ultimoNombre.length -1].value = nombre;
         //Comprobar, y de ultima volver a buscar los inputs
     }
     //Si el ultimo input ya esta cargado
@@ -1859,7 +1938,8 @@ function llenarUnaPersona(nombre){
         agregar(true);
 
         //LLena el ultimo espacio
-        document.getElementsByClassName("inputNombre").lastChild.value = nombre;
+        ultimoNombre[ultimoNombre.length -1].value = nombre;
     }
 
 }
+
