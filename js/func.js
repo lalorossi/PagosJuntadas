@@ -108,20 +108,22 @@ var placeholdersExtra2 = [  "Una noche con Pampita",
 //window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
 //Agrega un input de compra o persona
 //Manda el forzado para poder agregar personas aunque la pagina de personas no este abierta (durante la carga)
-function agregar(personasForzado) {
+function agregar(claseForzada) {
     /*
     var nuevo = document.createElement("tr");
     nuevo.className=cla;
     */
-    if(document.getElementById("pag1").style.display != "none"){
-        var cla = "compra";
-    }
-    else{
-        var cla = "persona";
+    if(claseForzada == ""){
+        if(document.getElementById("pag1").style.display != "none"){
+            var cla = "compra";
+        }
+        else{
+            var cla = "persona";
+        }
     }
     //Si quiero forzar el agregar una persona, me aseguro con personasForzado
-    if(personasForzado){
-        var cla = "persona";
+    else{
+        var cla = claseForzada;
     }
     //window.alert(cla);
 
@@ -239,7 +241,7 @@ function avanzar(){
     }
     else{
         if(modalGlobal.style.display == "none"){
-            calcular();
+            calcular(false);
         }
     }
 }
@@ -817,9 +819,11 @@ function filtrarPersonasBorradas(){
     */
 }
 
-function calcular(){
+function calcular(carga){
 
-    filtrarPersonasBorradas();
+    if(carga == false){
+        filtrarPersonasBorradas();
+    }
     var pagoCompra = 0;
     borrarModal();
     
@@ -1460,7 +1464,7 @@ function guardarRegistro(){
     }
 }
 
-function explorarRegistro(){
+function explorarRegistro(despuesDeBorrado){
     //Buscar archivos del tipo de registro
     var directorio = "file:///storage/emulated/0";  //Solo para pruebas
     // Leer un archivo de tetxo
@@ -1468,7 +1472,9 @@ function explorarRegistro(){
             //Lector de directorio
             var directoryReader = dir.createReader();
             //Mostrar la lisa de directorios
-            directoryReader.readEntries(verArchivos ,onErrorReadFile);
+            directoryReader.readEntries(function(entries){
+                    verArchivos(entries, despuesDeBorrado);
+                } ,onErrorReadFile);
 
         }, 
     onErrorReadFile);
@@ -1516,16 +1522,18 @@ function onErrorReadFile(){
 }
 
 
-function verArchivos(lecturas) {
+function verArchivos(lecturas, despuesDeBorrado) {
     var i;
     var registros = filtrarArchivos(lecturas);
     if(registros.length <= 0){
-        navigator.notification.alert(
-            'No hay registros guardados',  // message
-            alertDismissed,         // callback
-            'Ups...',               // title
-            'Ok'                    // buttonName
-        );
+        if(despuesDeBorrado == false){
+            navigator.notification.alert(
+                'No hay registros guardados',  // message
+                alertDismissed,         // callback
+                'Ups...',               // title
+                'Ok'                    // buttonName
+            );
+        }
     }else{
         //El div que contiene los radio button, con id "divContenedor"
         var divContenedor = crearNodo("div", "", "divContenedor");
@@ -1602,7 +1610,7 @@ function radioButton(nombreArchivo, checked){
     inputRadio += '/>'+contenido+'</br>';
     //window.alert("asdfgh");
     //window.alert(inputRadio);
-    var divContenedor = agregarOpciones(inputRadio);
+    var divContenedor = agregarOpciones(inputRadio, nombreArchivo);
     return divContenedor;
 }
 
@@ -1628,20 +1636,23 @@ function nombreVisual(nombreArchivo){
 }
 
 //Toma un div con el radio input y le agrega boton de borrar o editar
-function agregarOpciones(inputRadio){
+function agregarOpciones(inputRadio, nombreArchivo){
     //Crea el boton de borrado
     var botonBorrar = crearNodo("button", "botonMaterial");
     botonBorrar.classList.add("texto2");
+    botonBorrar.classList.add("eliminar");
 
     botonBorrar.innerHTML = '<i class="material-icons" style="font-size: 1.6em;">delete</i>';
 
     botonBorrar.addEventListener("click", function(){
+        esconderModal();
         //Confirmar borrado
-        //El confirmar llama a una funcion que
-        //Obtener el nombre de archivo por el value del dir
-        //Funcion que busca y borra el archivo
-        //Muestra resultado de borrado y deja el modal de archivos abierto (actualizado)
-        //Muestra con etiqueta que desaparece??
+        navigator.notification.confirm(
+            "Seguro que desea eliminar el registro?", // message
+            confirmarBorrado,            // callback to invoke with index of button pressed
+            'Borrar registro',           // title
+            ['Eliminar','Cancelar']     // buttonLabels
+        );
     });
 
     //Crea el boton de cambiar nombre
@@ -1652,6 +1663,16 @@ function agregarOpciones(inputRadio){
 
     botonEditar.addEventListener("click", function(){
         //Muestra un prompt para conseguir el nombre de archivo
+        esconderModal();
+        navigator.notification.prompt(
+            'Etiqueta del registro (opcional)',  // message
+            function(results) {
+                cambiarNombre(results, nombreArchivo);
+            },                  // callback to invoke
+            'Editar registro',            // title
+            ['Guardar','Cancelar'],             // buttonLabels
+            ''                 // defaultText
+        );
         //El aceptar del prompt llama a la funcion que lo busca y le cambia el nombre
         //Muestra resultado de modificacion y deja el modal de archivos abierto (actualizado)
         //Muestra con etiqueta que desaparece??
@@ -1664,53 +1685,151 @@ function agregarOpciones(inputRadio){
 }
 
 //Borra un registro dado por su nombre (puede cambiar)
-function borrarRegistro(archivo){
-    //Obtener archivo
-    //Borrarlo
-    //Mostrar confirmacion de borrado
+function confirmarBorrado(indexBoton){
+    if(indexBoton == 1){
+        //Obtener archivo
+        var nombreArchivo = buscarArchivoRadio();
+        var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        //Borrarlo
+        window.resolveLocalFileSystemURL(directorio, function(dir) {
+            dir.getFile(nombreArchivo, {create:false}, function(fileEntry) {
+                    fileEntry.remove(function(){
+                        // The file has been removed succesfully
+                        navigator.notification.alert(
+                            'Se eliminó el registro correctamente',  // message
+                            function(){
+                                esconderModal();
+                                explorarRegistro(true);
+                            },         // callback
+                            'Registro eliminado',               // title
+                            'Ok'                    // buttonName
+                        );
+                      },function(error){
+                          // Error deleting the file
+                          navigator.notification.alert(
+                            'Ocurrió un error borrando el registro. Reintente la operación',  // message
+                            alertDismissed,         // callback
+                            'Ups...',               // title
+                            'Ok'                    // buttonName
+                        );
+                      },function(){
+                         // The file doesn't exist
+                         navigator.notification.alert(
+                            'Ocurrió un error buscando el regisrto. Reintente la operación',  // message
+                            alertDismissed,         // callback
+                            'Ups...',               // title
+                            'Ok'                    // buttonName
+                        );
+                      });
+            });
+        });
+    }
+    if(indexBoton == 2){
+
+    }
 }
 
 //Cambia el nombre de un registro
-function cambiarNombre(){
-    //Obtener archivo
-    //No se si se crea uno nuevo o directamente se sobreescribe
-    //Mostrar confirmación de borrado
+function cambiarNombre(resultado, nombreArchivo){
+    if(resultado.buttonIndex == 1){
+        var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        var fechaArchivo = nombreArchivo.substr(0, 16);
+        var nuevoComentario = resultado.input1;
+        if(nuevoComentario == ""){
+            var nuevoNombreArchivo = fechaArchivo + ".txt";
+        }
+        else{
+            var nuevoNombreArchivo = fechaArchivo + "-" + nuevoComentario + ".txt";   
+        }
+        //Obtener archivo
+        window.resolveLocalFileSystemURL(directorio, function(dir) {
+            dir.getFile(nombreArchivo, {create:false}, function(fileEntry) {
+                fileEntry.moveTo(dir, nuevoNombreArchivo, function(){
+                    //Mover bien
+                    navigator.notification.alert(
+                        'Se editó el registro correctamente',  // message
+                        function(){                                                
+                            esconderModal();
+                            explorarRegistro(false);
+                        },         // callback
+                        'Registro editado',               // title
+                        'Ok'                    // buttonName
+                    );
+                }, function(){
+                    //Mover mal
+                    navigator.notification.alert(
+                        'Ocurrió un error buscando el regisrto. Reintente la operación',  // message
+                        alertDismissed,         // callback
+                        'Ups...',               // title
+                        'Ok'                    // buttonName
+                    );
+                });
+            });
+        });
+    }
 }
 
 //Carga el registro, preguntando si es solo compras o todo
 function cargarRegistro(){
-    var archivo = buscarArchivoRadio();
-    var reader = new FileReader();
-    reader.readAsText(archivo);
-    reader.onloadend = function() {
-        //window.alert("Successful file read: " + this.result);
-        stringObjetos = this.result;
-        //displayFileData(fileEntry.fullPath + ": " + this.result);
-    };
+    //NO SEPARAR LA LECTURA DE LA BUSQUEDA DEL ARCHIVO
+    var nombreArchivo = buscarArchivoRadio();
+    //Obetener el filentry a partir del nombre del archivo
+    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    window.resolveLocalFileSystemURL(directorio, function(dir) {
+        dir.getFile(nombreArchivo, {create: false}, function (fileEntry) {
+            fileEntry.file(function (file) {
+                /*
+                var reader = new FileReader();
+
+                reader.readAsText(file);
+                reader.onloadend = function() {
+                    window.alert("Successful file read: " + this.result);
+                    //displayFileData(fileEntry.fullPath + ": " + this.result);
+                };
+                */          
+                var reader = new FileReader();
+                reader.readAsText(file);
+                reader.onloadend = function() {
+                    //window.alert("Successful file read: " + this.result);
+                    stringObjetos = this.result;
+                    //displayFileData(fileEntry.fullPath + ": " + this.result);
+                    var objetosCarga = obtenerObjetos(stringObjetos);
+                    //Los hace globales como los arrays originales de compras y personas
+                    comprasCarga = separarCompras(objetosCarga);
+                    personasCarga = separarPersonas(objetosCarga);  //Ver si se puede "restar" los dos arrays anteriores
+
+                    //Confirm: "El registro contiene x compras (y x personas)" Botones cargar o ver resultados
+                    var msjAlerta = "El registro contiene " + comprasCarga.length + " compra";
+                    if(comprasCarga.length>1)
+                        msjAlerta += "s";
+                    if(personasCarga.length>0){
+                        msjAlerta += " y " + personasCarga.length + " persona";
+                        if(personas.length>1)
+                            msjAlerta += "s";
+                    }
+                    navigator.notification.confirm(
+                        msjAlerta, // message
+                        confirmarCarga,            // callback to invoke with index of button pressed
+                        'Opciones de carga',           // title
+                        ['Cargar todo','Solo resultado']     // buttonLabels
+                    );
+                };
+                //Ojo: puede que no guarde la variable cuando salga de la funcion
+                archivoRadio = file;
+            }, onErrorReadFile);
+        }, onErrorReadFile);
+    });
     //Obtener TODOS los obejtos en un array (compras y personas)
     //Falta comprobar que haga bien las asosiaciones entre personas y compras
     //Si no, puedo hacer una funcion que cambie los arrays de compras por personas para que "apunten"
     //a cada compra creada y no a un nuevo objeto
-    var objetosCarga = obtenerObjetos(stringObjetos);
-    //Los hace globales como los arrays originales de compras y personas
-    comprasCarga = separarCompras(objetosCarga);
-    personasCarga = separarPersonas(objetosCarga);  //Ver si se puede "restar" los dos arrays anteriores
 
-    //Confirm: "El registro contiene x compras (y x personas)" Botones cargar o ver resultados
-    var msjAlerta = "El registro contiene " + comprasCarga.length + " compra";
-    if(comprasCarga.length>1)
-        msjAlerta += "s";
-    if(personasCarga.length>0){
-        msjAlerta += " y " + personasCarga.length + " persona";
-        if(personas.length>1)
-            msjAlerta += "s";
-    }
-    navigator.notification.confirm(
-        msjAlerta, // message
-        confirmarCarga,            // callback to invoke with index of button pressed
-        'Opciones de carga',           // title
-        ['Cargar todo','Solo resultado']     // buttonLabels
-    );
+
+    //HACER TODO ADENTRO DE LA LECTURA???
+
+
+    
+    
 }
 
 //Busca el archivo seleccionado en radio input
@@ -1722,26 +1841,7 @@ function buscarArchivoRadio(){
             var radioSeleccionado = radios[i].value;
     }
 
-    //Obetener el filentry a partir del nombre del archivo
-    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
-    window.resolveLocalFileSystemURL(directorio, function(dir) {
-        dir.getFile(radioSeleccionado, {create: false}, function (fileEntry) {
-            fileEntry.file(function (file) {
-                /*
-                var reader = new FileReader();
-
-                reader.readAsText(file);
-                reader.onloadend = function() {
-                    window.alert("Successful file read: " + this.result);
-                    //displayFileData(fileEntry.fullPath + ": " + this.result);
-                };
-                */
-                //Ojo: puede que no guarde la variable cuando salga de la funcion
-                archivoRadio = file;
-            }, onErrorReadFile);
-        }, onErrorReadFile);
-    });
-    return archivoRadio;
+    return radioSeleccionado;
 }
 
 //Lee un string y crea todos los objetos de cualquier tipo en un array
@@ -1775,7 +1875,7 @@ function obtenerObjetos(stringObjetos){
             if(abiertos == 1){
                 //Termina el objeto
                 unaLectura += stringObjetos[i];     //Pone el } al final
-                window.alert(unaLectura);
+                //window.alert(unaLectura);
                 var obj = JSON.parse(unaLectura);
                 objetos.push(obj);
                 unaLectura = "";
@@ -1852,7 +1952,7 @@ function confirmarCarga(indexBoton){
         personas = personasCarga;
 
         //Realiza el mismo proceso que para calcular desde los inputs
-        calcular();
+        calcular(true);
         //No esta mostrando el calculo por alguna razon (puede que ni siquiera lo haga y haya un error en el medio)
         //Si trato de mostrar solo resultados y despues calcular lo que ya habia, no funciona
 
@@ -1866,9 +1966,6 @@ function vaciarInputs(){
     var productos = document.getElementsByClassName("inputProducto");
     var precios = document.getElementsByClassName("inputPrecio");
     var nombres = document.getElementsByClassName("inputNombre");
-    window.alert(productos.length);
-    window.alert(precios.length);
-    window.alert(nombres.length);
     for (var i = productos.length - 1; i >= 0; i--) {
         chau(productos[i]);
     }
@@ -1880,8 +1977,8 @@ function vaciarInputs(){
     for (var i = nombres.length - 1; i >= 0; i--) {
         chau(nombres[i]);
     }
-    agregar(true);
-    agregar(false);
+    agregar("compra");
+    agregar("persona");
 }
 
 function llenarInputsCompra(){
@@ -1906,7 +2003,7 @@ function llenarUnaCompra(producto, precio){
     //Si el ultimo input ya esta cargado
     else{
         //Agrega un espacio para compra
-        agregar(false);
+        agregar("compra");
 
         //LLena el ultimo espacio
         ultimoPrecio[ultimoPrecio.length -1].value = precio;
@@ -1916,7 +2013,6 @@ function llenarUnaCompra(producto, precio){
 }
 
 function llenarInputsPersona(){
-    //Cuando llamo a agregar(), personasForzado debe ser true "agregar(true)"
     for (var i = personas.length - 1; i >= 0; i--) {
         llenarUnaPersona(personas[i].nombre);
     }
@@ -1935,7 +2031,7 @@ function llenarUnaPersona(nombre){
     //Si el ultimo input ya esta cargado
     else{
         //Agrega un espacio para persona
-        agregar(true);
+        agregar("persona");
 
         //LLena el ultimo espacio
         ultimoNombre[ultimoNombre.length -1].value = nombre;
