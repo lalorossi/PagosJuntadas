@@ -1318,8 +1318,8 @@ function aceptarGuardado(totalJson, resultado, msj) {
         // window.alert(nombreArchivo);
 
         //Guardar el archivo en cordova.file.dataDirectory
-        var directorio = "file:///storage/emulated/0";  //Solo para pruebas
-        //var directorio = cordova.file.dataDirectory;
+        // var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        var directorio = cordova.file.dataDirectory;
         //var nombreArchivo = "myfile.txt"; //Solo para pruebas
         // window.alert(directorio);
         window.resolveLocalFileSystemURL(directorio, function(dir) {
@@ -1466,7 +1466,8 @@ function guardarRegistro(){
 
 function explorarRegistro(despuesDeBorrado){
     //Buscar archivos del tipo de registro
-    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    // var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    var directorio = cordova.file.dataDirectory;
     // Leer un archivo de tetxo
     window.resolveLocalFileSystemURL(directorio, function(dir) {
             //Lector de directorio
@@ -1689,7 +1690,8 @@ function confirmarBorrado(indexBoton){
     if(indexBoton == 1){
         //Obtener archivo
         var nombreArchivo = buscarArchivoRadio();
-        var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        // var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        var directorio = cordova.file.dataDirectory;
         //Borrarlo
         window.resolveLocalFileSystemURL(directorio, function(dir) {
             dir.getFile(nombreArchivo, {create:false}, function(fileEntry) {
@@ -1732,7 +1734,8 @@ function confirmarBorrado(indexBoton){
 //Cambia el nombre de un registro
 function cambiarNombre(resultado, nombreArchivo){
     if(resultado.buttonIndex == 1){
-        var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        // var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+        var directorio = cordova.file.dataDirectory;
         var fechaArchivo = nombreArchivo.substr(0, 16);
         var nuevoComentario = resultado.input1;
         if(nuevoComentario == ""){
@@ -1774,7 +1777,8 @@ function cargarRegistro(){
     //NO SEPARAR LA LECTURA DE LA BUSQUEDA DEL ARCHIVO
     var nombreArchivo = buscarArchivoRadio();
     //Obetener el filentry a partir del nombre del archivo
-    var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    // var directorio = "file:///storage/emulated/0";  //Solo para pruebas
+    var directorio = cordova.file.dataDirectory;
     window.resolveLocalFileSystemURL(directorio, function(dir) {
         dir.getFile(nombreArchivo, {create: false}, function (fileEntry) {
             fileEntry.file(function (file) {
