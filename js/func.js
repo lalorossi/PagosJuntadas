@@ -96,13 +96,21 @@ var placeholdersExtra = [   "Algo mas?",
                             ];
 
 //Este array no tiene los numeros para darlos de baja porque cuando llego acá, si sigo agregando compras tengo que repetir en algun punto
-var placeholdersExtra2 = [  "Una noche con Pampita",
-                            "Enanos",
-                            "Dignidad",
-                            "Pancho de Bob Esponja",
-                            "Trabas",
-                            "Ya en serio, para",
-                            "El amor de ella"
+var placeholdersExtra2 = [  "Papitas",
+                            "Chizitos",
+                            "Cerveza",
+                            "Gaseosas",
+                            "Helado",
+                            "Pizzas",
+                            "Aderezos",
+                            "Hamburguesas",
+                            "Panes",
+                            "Delivery",
+                            "Agua mineral",
+                            "Verduras",
+                            "Mani",
+                            "Carbon",
+                            "Queso cheddar"
                             ]
 
 //window.onload = document.getElementsByClassName("plHolderRand")[0].placeholder = cambiarPlaceholder(document.getElementsByClassName("plHolderRand")[0]);
